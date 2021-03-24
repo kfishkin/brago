@@ -13,7 +13,7 @@ class ArtifactSellPage extends React.Component {
     var checkers = [];
     var id = 0;
     checkers.push({ id: id++, label: "Atk% Gloves", fn: this.SellAtkPercentGloves });
-    checkers.push({ id: id++, label: "Epic or Lego without SPD substat", fn: this.SellEpicOrLegoWithoutSpeedSubstat });
+    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.SellThreeSubstatsNoSpeed });
     checkers.push({ id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats });
     checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.SellEpicNonSpeedBoots });
     checkers.push({ id: id++, label: "Check CD Gloves", fn: this.SellMostCDGloves });
@@ -46,23 +46,19 @@ class ArtifactSellPage extends React.Component {
     return "Atk% gloves";
   }
 
-  SellEpicOrLegoWithoutSpeedSubstat(artifact) {
+  SellThreeSubstatsNoSpeed(artifact) {
     if (!artifact) return null;
     if (!artifact.rarity) return null;
     if (artifact.requiredFraction) return null; // accessory
-    var lc = artifact.rarity.toLowerCase();
-    if (!(lc === "epic" || lc === "legendary")) return null;
     var main = artifact.primaryBonus;
     if (main.kind.toLowerCase() === "speed") return null;
     var secondaries = artifact.secondaryBonuses;
-    if (!secondaries) {
-      return "Epic or Lego with no SPD substat";
-    }
+    if (!secondaries || secondaries.length < 3) return null;
     var hasInSecondary = secondaries.some((bonus) => {
       return bonus.kind.toLowerCase() === "speed";
     });
     if (!hasInSecondary) {
-      return "Epic or Lego with no SPD substat";
+      return "no Speed substat";
     }
   }
 

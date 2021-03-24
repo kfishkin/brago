@@ -92,13 +92,13 @@ class HelpPage extends React.Component {
                 That's why you don't see anything recommended at the start.
             </p>
             <p>
-                The most aggressive one is probably 'Epic or Lego without SPD substat'. Turn that
+                The most aggressive one is probably '&gt; 2 substats, none SPD'. Turn that
                 toggle on, and you'll see the display change to something like this:
                 <img src="pix/help/sell_1.png" alt="1 check on" />
             </p>
             <p>
-                This one check found 319 possible artifacts to sell for me. The first two
-                are a 5* Epic Immortal Gloves, and a 5* Epic Speed Chest.
+                This one check found 344 possible artifacts to sell for me. The first two
+                are a 6* Epic 'Divine Speed' Gloves, and a 5* Epic Immortal Gloves.
             </p>
             <p>
                 You can sort this output on any column - for example, you may want this grouped by
@@ -112,7 +112,7 @@ class HelpPage extends React.Component {
             </p>
             <p>
                 Now, turn on the 'Check worn gear' toggle and you'll see the total go up. For example, in the output below,
-                the first two pieces are worn by 'Hurler' and 'Grinner', while the third piece is unworn:
+                the first two pieces are worn by 'Hurler' and 'Grinner':
                 <img src="pix/help/sell_worn.png" alt="include worn gear" />
             </p>
         </div>

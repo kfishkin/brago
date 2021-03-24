@@ -1,7 +1,7 @@
 
 # Description
 
-This project ('[Brago](https://github.com/kfishkin/brago)'was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project ('[Brago](https://github.com/kfishkin/brago)') was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
 This is a React app that takes a JSON file created by
