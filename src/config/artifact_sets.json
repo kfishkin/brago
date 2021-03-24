@@ -1,0 +1,489 @@
+{
+    "sets": [
+        {
+            "key": "life",
+            "jsonKey": "Hp",
+            "label": "Life",
+            "icon": "life.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "off",
+            "jsonKey": "AttackPower",
+            "label": "Offense",
+            "icon": "off.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "def",
+            "jsonKey": "Defense",
+            "label": "Defense",
+            "icon": "def.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "cr",
+            "jsonKey": "CriticalChance",
+            "label": "Critical Rate",
+            "icon": "cr.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "cr",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "cd",
+            "jsonKey": "CriticalDamage",
+            "label": "Crit Damage",
+            "icon": "cd.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "cd",
+                    "isAbsolute": false,
+                    "value": 0.20
+                }
+            ]
+        },
+        {
+            "key": "acc",
+            "jsonKey": "Accuracy",
+            "label": "Accuracy",
+            "icon": "acc.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "acc",
+                    "isAbsolute": true,
+                    "value": 40
+                }
+            ]
+        },
+        {
+            "key": "spd",
+            "jsonKey": "AttackSpeed",
+            "label": "Speed",
+            "icon": "spd.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "spd",
+                    "isAbsolute": false,
+                    "value": 0.12
+                }
+            ]
+        },
+        {
+            "key": "res",
+            "jsonKey": "Resistance",
+            "label": "Resistance",
+            "icon": "res.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "res",
+                    "isAbsolute": true,
+                    "value": 40
+                }
+            ]
+        },
+        {
+            "key": "steal",
+            "jsonKey": "LifeDrain",
+            "label": "Lifesteal",
+            "icon": "steal.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "fury",
+            "jsonKey": "DamageIncreaseOnHpDecrease",
+            "label": "Fury",
+            "icon": "fury.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "daze",
+            "jsonKey": "SleepChance",
+            "label": "Daze",
+            "icon": "daze.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "cursed",
+            "jsonKey": "BlockHealChance",
+            "label": "Cursed",
+            "icon": "cursed.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "frost",
+            "jsonKey": "FreezeRateOnDamageReceived",
+            "label": "Frost",
+            "icon": "frost.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "frenzy",
+            "jsonKey": "Stamina",
+            "label": "Frenzy",
+            "icon": "frenzy.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "regen",
+            "jsonKey": "Heal",
+            "label": "Regeneration",
+            "icon": "regen.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "immune",
+            "jsonKey": "BlockDebuff",
+            "label": "Immunity",
+            "icon": "immunity.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "shield",
+            "jsonKey": "Shield",
+            "label": "Shield",
+            "icon": "shield.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "relent",
+            "jsonKey": "GetExtraTurn",
+            "label": "Relentless",
+            "icon": "relentless.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "savage",
+            "jsonKey": "IgnoreDefense",
+            "label": "Savage",
+            "icon": "savage.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "destroy",
+            "jsonKey": "DecreaseMaxHp",
+            "label": "Destroy",
+            "icon": "destroy.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "stun",
+            "jsonKey": "StunChance",
+            "label": "Stun",
+            "icon": "stun.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "toxic",
+            "jsonKey": "DotRate",
+            "label": "Toxic",
+            "icon": "toxic.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "taunt",
+            "jsonKey": "ProvokeChance",
+            "label": "Taunting",
+            "icon": "taunt.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "retal",
+            "jsonKey": "Counterattack",
+            "label": "Retaliation",
+            "icon": "retal.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "aveng",
+            "jsonKey": "CounterattackOnCrit",
+            "label": "Avenging",
+            "icon": "avenging.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "stalwart",
+            "jsonKey": "AoeDamageDecrease",
+            "label": "Stalwart",
+            "icon": "stalwart.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "reflex",
+            "jsonKey": "CooldownReductionChance",
+            "label": "Reflex",
+            "icon": "reflex.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "cure",
+            "jsonKey": "CriticalHealMultiplier",
+            "label": "Curing",
+            "icon": "cure.png",
+            "set_size": 4,
+            "bonuses": []
+        },
+        {
+            "key": "cruel",
+            "label": "Cruel",
+            "jsonKey": "AttackPowerAndIgnoreDefense",
+            "icon": "cruel.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "imm",
+            "jsonKey": "HpAndHeal",
+            "label": "Immortal",
+            "icon": "imm.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "divoff",
+            "jsonKey": "ShieldAndAttackPower",
+            "label": "Divine Offense",
+            "icon": "divoff.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "divcr",
+            "jsonKey": "ShieldAndCriticalChance",
+            "label": "Divine Crit Rate",
+            "icon": "divcr.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "cr",
+                    "isAbsolute": false,
+                    "value": 0.12
+                }
+            ]
+        },
+        {
+            "key": "divlife",
+            "jsonKey": "ShieldAndHp",
+            "label": "Divine Life",
+            "icon": "divlife.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "key": "divspd",
+            "jsonKey": "ShieldAndSpeed",
+            "label": "Divine Speed",
+            "icon": "divspd.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "spd",
+                    "isAbsolute": false,
+                    "value": 0.12
+                }
+            ]
+        },
+        {
+            "key": "parry",
+            "jsonKey": "UnkillableAndSpdAndCrDmg",
+            "label": "Swift Parry",
+            "icon": "parry.png",
+            "set_size": 4,
+            "bonuses": [
+                {
+                    "kind": "spd",
+                    "isAbsolute": false,
+                    "value": 0.18
+                },
+                {
+                    "kind": "cd",
+                    "isAbsolute": false,
+                    "value": 0.30
+                }
+            ]
+        },
+        {
+            "key": "deflect",
+            "jsonKey": "BlockReflectDebuffAndHpAndDef",
+            "label": "Deflection",
+            "icon": "deflect.png",
+            "set_size": 4,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.20
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.20
+                }
+            ]
+        },
+        {
+            "key": "resil",
+            "jsonKey": "HpAndDefence",
+            "label": "Resilience",
+            "icon": "resil.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.10
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.10
+                }
+            ]
+        },
+        {
+            "key": "percep",
+            "jsonKey": "AccuracyAndSpeed",
+            "label": "Perception",
+            "icon": "percep.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "acc",
+                    "isAbsolute": true,
+                    "value": 40
+                },
+                {
+                    "kind": "spd",
+                    "isAbsolute": false,
+                    "value": 0.05
+                }
+            ]
+        },
+        {
+            "key": "breaker",
+            "jsonKey": "CritDmgAndTransformWeekIntoCritHit",
+            "label": "Affinity Breaker",
+            "icon": "breaker.png",
+            "set_size": 4,
+            "bonuses": [
+                {
+                    "kind": "cd",
+                    "isAbsolute": false,
+                    "value": 0.30
+                }
+            ]
+        },
+        {
+            "key": "untouch",
+            "label": "Untouchable",
+            "icon": "untouch.png",
+            "set_size": 4,
+            "bonuses": [
+                {
+                    "kind": "res",
+                    "isAbsolute": true,
+                    "value": 40
+                }
+            ]
+        },
+        {
+            "key": "fatal",
+            "jsonKey": "AttackAndCritRate",
+            "label": "Fatal",
+            "icon": "fatal.png",
+            "set_size": 2,
+            "bonuses": [
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.15
+                },
+                {
+                    "kind": "cr",
+                    "isAbsolute": false,
+                    "value": 0.05
+                }
+            ]
+        },
+        {
+            "key": "bite",
+            "label": "Frostbite",
+            "icon": "frost.png",
+            "set_size": 2,
+            "bonuses": []
+        }
+    ]
+}

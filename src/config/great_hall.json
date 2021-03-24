@@ -1,0 +1,362 @@
+{
+  "rows": [
+    {
+      "key": "magic",
+      "label": "magic",
+      "icon": "pix/hall/magic_icon.png"
+    },
+    {
+      "key": "spirit",
+      "label": "spirit",
+      "icon": "pix/hall/spirit_icon.png"
+    },
+    {
+      "key": "force",
+      "label": "force",
+      "icon": "pix/hall/force_icon.png"
+    },
+    {
+      "key": "void",
+      "label": "void",
+      "icon": "pix/hall/void_icon.png"
+    }
+  ],
+  "columns": [
+    {
+      "key": "hp",
+      "label": "HP",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": false,
+          "value": 0.02
+        },
+        {
+          "level": 2,
+          "isAbsolute": false,
+          "value": 0.03
+        },
+        {
+          "level": 3,
+          "isAbsolute": false,
+          "value": 0.04
+        },
+        {
+          "level": 4,
+          "isAbsolute": false,
+          "value": 0.06
+        },
+        {
+          "level": 5,
+          "isAbsolute": false,
+          "value": 0.08
+        },
+        {
+          "level": 6,
+          "isAbsolute": false,
+          "value": 0.10
+        },
+        {
+          "level": 7,
+          "isAbsolute": false,
+          "value": 0.12
+        },
+        {
+          "level": 8,
+          "isAbsolute": false,
+          "value": 0.14
+        },
+        {
+          "level": 9,
+          "isAbsolute": false,
+          "value": 0.17
+        },
+        {
+          "level": 10,
+          "isAbsolute": false,
+          "value": 0.20
+        }
+      ]
+    },
+    {
+      "key": "atk",
+      "label": "ATK",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": false,
+          "value": 0.02
+        },
+        {
+          "level": 2,
+          "isAbsolute": false,
+          "value": 0.03
+        },
+        {
+          "level": 3,
+          "isAbsolute": false,
+          "value": 0.04
+        },
+        {
+          "level": 4,
+          "isAbsolute": false,
+          "value": 0.06
+        },
+        {
+          "level": 5,
+          "isAbsolute": false,
+          "value": 0.08
+        },
+        {
+          "level": 6,
+          "isAbsolute": false,
+          "value": 0.10
+        },
+        {
+          "level": 7,
+          "isAbsolute": false,
+          "value": 0.12
+        },
+        {
+          "level": 8,
+          "isAbsolute": false,
+          "value": 0.14
+        },
+        {
+          "level": 9,
+          "isAbsolute": false,
+          "value": 0.17
+        },
+        {
+          "level": 10,
+          "isAbsolute": false,
+          "value": 0.20
+        }
+      ]
+    },
+    {
+      "key": "def",
+      "label": "DEF",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": false,
+          "value": 0.02
+        },
+        {
+          "level": 2,
+          "isAbsolute": false,
+          "value": 0.03
+        },
+        {
+          "level": 3,
+          "isAbsolute": false,
+          "value": 0.04
+        },
+        {
+          "level": 4,
+          "isAbsolute": false,
+          "value": 0.06
+        },
+        {
+          "level": 5,
+          "isAbsolute": false,
+          "value": 0.08
+        },
+        {
+          "level": 6,
+          "isAbsolute": false,
+          "value": 0.10
+        },
+        {
+          "level": 7,
+          "isAbsolute": false,
+          "value": 0.12
+        },
+        {
+          "level": 8,
+          "isAbsolute": false,
+          "value": 0.14
+        },
+        {
+          "level": 9,
+          "isAbsolute": false,
+          "value": 0.17
+        },
+        {
+          "level": 10,
+          "isAbsolute": false,
+          "value": 0.20
+        }
+      ]
+    },
+    {
+      "key": "cd",
+      "label": "C.DMG",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": false,
+          "value": 0.02
+        },
+        {
+          "level": 2,
+          "isAbsolute": false,
+          "value": 0.04
+        },
+        {
+          "level": 3,
+          "isAbsolute": false,
+          "value": 0.06
+        },
+        {
+          "level": 4,
+          "isAbsolute": false,
+          "value": 0.08
+        },
+        {
+          "level": 5,
+          "isAbsolute": false,
+          "value": 0.10
+        },
+        {
+          "level": 6,
+          "isAbsolute": false,
+          "value": 0.12
+        },
+        {
+          "level": 7,
+          "isAbsolute": false,
+          "value": 0.15
+        },
+        {
+          "level": 8,
+          "isAbsolute": false,
+          "value": 0.18
+        },
+        {
+          "level": 9,
+          "isAbsolute": false,
+          "value": 0.21
+        },
+        {
+          "level": 10,
+          "isAbsolute": false,
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "key": "res",
+      "label": "RESIST",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": true,
+          "value": 5
+        },
+        {
+          "level": 2,
+          "isAbsolute": true,
+          "value": 10
+        },
+        {
+          "level": 3,
+          "isAbsolute": true,
+          "value": 15
+        },
+        {
+          "level": 4,
+          "isAbsolute": true,
+          "value": 20
+        },
+        {
+          "level": 5,
+          "isAbsolute": true,
+          "value": 30
+        },
+        {
+          "level": 6,
+          "isAbsolute": true,
+          "value": 40
+        },
+        {
+          "level": 7,
+          "isAbsolute": true,
+          "value": 50
+        },
+        {
+          "level": 8,
+          "isAbsolute": true,
+          "value": 60
+        },
+        {
+          "level": 9,
+          "isAbsolute": true,
+          "value": 70
+        },
+        {
+          "level": 10,
+          "isAbsolute": true,
+          "value": 80
+        }
+      ]
+    },
+    {
+      "key": "acc",
+      "label": "ACC",
+      "bonuses": [
+        {
+          "level": 1,
+          "isAbsolute": true,
+          "value": 5
+        },
+        {
+          "level": 2,
+          "isAbsolute": true,
+          "value": 10
+        },
+        {
+          "level": 3,
+          "isAbsolute": true,
+          "value": 15
+        },
+        {
+          "level": 4,
+          "isAbsolute": true,
+          "value": 20
+        },
+        {
+          "level": 5,
+          "isAbsolute": true,
+          "value": 30
+        },
+        {
+          "level": 6,
+          "isAbsolute": true,
+          "value": 40
+        },
+        {
+          "level": 7,
+          "isAbsolute": true,
+          "value": 50
+        },
+        {
+          "level": 8,
+          "isAbsolute": true,
+          "value": 60
+        },
+        {
+          "level": 9,
+          "isAbsolute": true,
+          "value": 70
+        },
+        {
+          "level": 10,
+          "isAbsolute": true,
+          "value": 80
+        }
+      ]
+    }
+  ]
+}

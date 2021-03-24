@@ -1,0 +1,290 @@
+{
+    "levels": [
+        {
+            "key": "b_1",
+            "label": "Bronze I",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.01
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.01
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.01
+                }
+            ],
+            "icon": "pix/arena/bronze_1.png"
+        },
+        {
+            "key": "b_2",
+            "label": "Bronze II",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.02
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.02
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.02
+                }
+            ],
+            "icon": "pix/arena/bronze_2.png"
+        },
+        {
+            "key": "b_3",
+            "label": "Bronze III",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.03
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.03
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.03
+                }
+            ],
+            "icon": "pix/arena/bronze_3.png"
+        },
+        {
+            "key": "b_4",
+            "label": "Bronze IV",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.04
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.04
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.04
+                }
+            ],
+            "icon": "pix/arena/bronze_4.png"
+        },
+        {
+            "key": "s_1",
+            "label": "Silver I",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.06
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.06
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.06
+                }
+            ],
+            "icon": "pix/arena/silver_1.png"
+        },
+        {
+            "key": "s_2",
+            "label": "Silver II",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.08
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.08
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.08
+                }
+            ],
+            "icon": "pix/arena/silver_2.png"
+        },
+        {
+            "key": "s_3",
+            "label": "Silver III",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.10
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.10
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.10
+                }
+            ],
+            "icon": "pix/arena/silver_3.png"
+        },
+        {
+            "key": "s_4",
+            "label": "Silver IV",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.12
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.12
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.12
+                }
+            ],
+            "icon": "pix/arena/silver_4.png"
+        },
+        {
+            "key": "g_1",
+            "label": "Gold I",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.14
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.14
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.14
+                }
+            ],
+            "icon": "pix/arena/gold_1.png"
+        },
+        {
+            "key": "g_2",
+            "label": "Gold II",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.16
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.16
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.16
+                }
+            ],
+            "icon": "pix/arena/gold_2.png"
+        },
+        {
+            "key": "g_3",
+            "label": "Gold III",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.18
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.18
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.18
+                }
+            ],
+            "icon": "pix/arena/gold_3.png"
+        },
+        {
+            "key": "g_4",
+            "label": "Gold IV",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.20
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.20
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.20
+                }
+            ],
+            "icon": "pix/arena/gold_4.png"
+        },
+        {
+            "key": "p_1",
+            "label": "Platinum",
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": false,
+                    "value": 0.25
+                },
+                {
+                    "kind": "atk",
+                    "isAbsolute": false,
+                    "value": 0.25
+                },
+                {
+                    "kind": "def",
+                    "isAbsolute": false,
+                    "value": 0.25
+                }
+            ],
+            "icon": "pix/arena/platinum_1.png"
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "artifact_types": [
+        {
+            "ordinality": 0,
+            "key": "weapon",
+            "label": "Weapon",
+            "plural": "Weapons",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 1,
+            "key": "helmet",
+            "label": "Helmet",
+            "plural": "Helmets",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 2,
+            "key": "shield",
+            "label": "Shield",
+            "plural": "Shields",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 3,
+            "key": "gloves",
+            "label": "Gloves",
+            "plural": "Pairs of Gloves",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 4,
+            "key": "chest",
+            "label": "Chest",
+            "plural": "Chestpieces",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 5,
+            "key": "boots",
+            "label": "Boots",
+            "plural": "Pairs of Boots",
+            "isAccessory": false
+        },
+        {
+            "ordinality": 6,
+            "key": "ring",
+            "label": "Ring",
+            "plural": "Rings",
+            "isAccessory": true
+        },
+        {
+            "ordinality": 7,
+            "key": "cloak",
+            "label": "Amulet",
+            "plural": "Amulets",
+            "isAccessory": true
+        },
+        {
+            "ordinality": 6,
+            "key": "banner",
+            "label": "Banner",
+            "plural": "Banners",
+            "isAccessory": true
+        }
+    ]
+}

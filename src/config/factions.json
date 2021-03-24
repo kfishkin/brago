@@ -1,0 +1,82 @@
+{
+    "factions": [
+        {
+            "key": "BannerLords",
+            "ordinality": 0,
+            "label": "BannerLords",
+            "icon": "pix/factions/banner_lords.png"
+        },
+        {
+            "key": "HighElves",
+            "ordinality": 1,
+            "label": "High Elves",
+            "icon": "pix/factions/high_elves.png"
+        },
+        {
+            "key": "SacredOrder",
+            "ordinality": 2,
+            "label": "The Sacred Order",
+            "icon": "pix/factions/sacred_order.png"
+        },
+        {
+            "key": "Barbarians",
+            "ordinality": 3,
+            "label": "Barbarians",
+            "icon": "pix/factions/barbarians.png"
+        },
+        {
+            "key": "OgrynTribes",
+            "ordinality": 4,
+            "label": "Ogryn Tribes",
+            "icon": "pix/factions/ogryn_tribes.png"
+        },
+        {
+            "key": "LizardMen",
+            "ordinality": 5,
+            "label": "Lizardmen",
+            "icon": "pix/factions/lizardmen.png"
+        },
+        {
+            "key": "Skinwalkers",
+            "ordinality": 6,
+            "label": "Skinwalkers",
+            "icon": "pix/factions/skinwalkers.png"
+        },
+        {
+            "key": "Orcs",
+            "ordinality": 7,
+            "label": "Orcs",
+            "icon": "pix/factions/orcs.png"
+        },
+        {
+            "key": "Demonspawn",
+            "ordinality": 8,
+            "label": "Demonspawn",
+            "icon": "pix/factions/demonspawn.png"
+        },
+        {
+            "key": "UndeadHordes",
+            "ordinality": 9,
+            "label": "Undead Hordes",
+            "icon": "pix/factions/undead_hordes.png"
+        },
+        {
+            "key": "DarkElves",
+            "ordinality": 10,
+            "label": "Dark Elves",
+            "icon": "pix/factions/dark_elves.png"
+        },
+        {
+            "key": "KnightsRevenant",
+            "ordinality": 11,
+            "label": "Knight Revenant",
+            "icon": "pix/factions/knights_revenant.png"
+        },
+        {
+            "key": "Dwarves",
+            "ordinality": 12,
+            "label": "Dwarves",
+            "icon": "pix/factions/dwarves.png"
+        }
+    ]
+}

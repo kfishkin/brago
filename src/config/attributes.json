@@ -1,0 +1,52 @@
+{
+    "attributes": [
+        {
+            "ordinality": 0,
+            "key": "hp",
+            "jsonKey": "health",
+            "label": "Health Points"
+        },
+        {
+            "ordinality": 1,
+            "key": "atk",
+            "jsonKey": "attack",
+            "label": "Attack"
+        },
+        {
+            "ordinality": 2,
+            "key": "def",
+            "jsonKey": "defense",
+            "label": "Defense"
+        },
+        {
+            "ordinality": 3,
+            "key": "spd",
+            "jsonKey": "speed",
+            "label": "Speed"
+        },
+        {
+            "ordinality": 4,
+            "key": "cr",
+            "jsonKey": "criticalChance",
+            "label": "Critical Rate"
+        },
+        {
+            "ordinality": 5,
+            "key": "cd",
+            "jsonKey": "criticalDamage",
+            "label": "Critical Damage"
+        },
+        {
+            "ordinality": 6,
+            "key": "res",
+            "jsonKey": "resistance",
+            "label": "Debuff Resistance"
+        },
+        {
+            "ordinality": 7,
+            "key": "acc",
+            "jsonKey": "accuracy",
+            "label": "Debuff Accuracy"
+        }
+    ]
+}

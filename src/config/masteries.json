@@ -1,0 +1,510 @@
+{
+    "masteries": [
+        {
+            "branch": "offense",
+            "tier": 1,
+            "label": "Blade Disciple",
+            "key": 500112,
+            "bonuses": [
+                {
+                    "kind": "atk",
+                    "isAbsolute": true,
+                    "value": 75
+                }
+            ]
+        },
+        {
+            "branch": "offense",
+            "tier": 1,
+            "key": 500113,
+            "label": "Deadly Precision",
+            "bonuses": [
+                {
+                    "kind": "cr",
+                    "isAbsolute": false,
+                    "value": 0.05
+                }
+            ]
+        },
+        {
+            "branch": "offense",
+            "tier": 2,
+            "label": "Heart of Glory",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 2,
+            "label": "Keen Strike",
+            "key": 500122,
+            "bonuses": [
+                {
+                    "kind": "cd",
+                    "isAbsolute": false,
+                    "value": 0.10
+                }
+            ]
+        },
+        {
+            "branch": "offense",
+            "tier": 2,
+            "label": "Shield Breaker",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 2,
+            "label": "Grim Resolve",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 3,
+            "label": "Single Out",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 3,
+            "label": "Life Drinker",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 3,
+            "label": "Whirlwind of Death",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 3,
+            "label": "Ruthless Ambush",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 4,
+            "label": "Bring It Down",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 4,
+            "label": "Wrath of the Slain",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 4,
+            "label": "Cycle of Violence",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 4,
+            "label": "Opportunist",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 5,
+            "label": "Methodical",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 5,
+            "label": "Kill Streak",
+            "bonuses": []
+        },
+        {
+            "branch": "Blood Shield",
+            "tier": 5,
+            "label": "Methodical",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 5,
+            "label": "Stoked to Fury",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 6,
+            "label": "Warmaster",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 6,
+            "label": "Helmsmasher",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 6,
+            "label": "Giant Slayer",
+            "bonuses": []
+        },
+        {
+            "branch": "offense",
+            "tier": 6,
+            "label": "Flawless Execution",
+            "bonuses": [
+                {
+                    "kind": "cd",
+                    "isAbsolute": false,
+                    "value": 0.20
+                }
+            ]
+        },
+        {
+            "branch": "defense",
+            "tier": 1,
+            "label": "Tough Skin",
+            "key": 500212,
+            "bonuses": [
+                {
+                    "kind": "def",
+                    "isAbsolute": true,
+                    "value": 75
+                }
+            ]
+        },
+        {
+            "branch": "defense",
+            "tier": 1,
+            "label": "Defiant",
+            "key": 500213,
+            "bonuses": [
+                {
+                    "kind": "res",
+                    "isAbsolute": true,
+                    "value": 10
+                }
+            ]
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Blastproof",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Rejuvenation",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Mighty Endurance",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Improved Parry",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 3,
+            "label": "Shadow Heal",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 3,
+            "label": "Resurgent",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 3,
+            "label": "Bloodthirst",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 3,
+            "label": "Wisdom of Battle",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 4,
+            "label": "Solidarity",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 4,
+            "label": "Delay Death",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 4,
+            "label": "Harvest Despair",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 4,
+            "label": "Stubbornness",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 5,
+            "label": "Selfless Defender",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 5,
+            "label": "Cycle of Revenge",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Retribution",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 2,
+            "label": "Deterrence",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 6,
+            "label": "Iron Skin",
+            "key": 500261,
+            "bonuses": [
+                {
+                    "kind": "def",
+                    "isAbsolute": true,
+                    "value": 200
+                }
+            ]
+        },
+        {
+            "branch": "defense",
+            "tier": 6,
+            "label": "Bulwark",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 6,
+            "label": "Fearsome Presence",
+            "bonuses": []
+        },
+        {
+            "branch": "defense",
+            "tier": 6,
+            "label": "Unshakeable",
+            "key": 500264,
+            "bonuses": [
+                {
+                    "kind": "res",
+                    "isAbsolute": true,
+                    "value": 50
+                }
+            ]
+        },
+        {
+            "branch": "support",
+            "tier": 1,
+            "label": "Steadfast",
+            "key": 500312,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": true,
+                    "value": 810
+                }
+            ]
+        },
+        {
+            "branch": "support",
+            "tier": 1,
+            "label": "Pinpoint Accuracy",
+            "key": 500313,
+            "bonuses": [
+                {
+                    "kind": "acc",
+                    "isAbsolute": true,
+                    "value": 10
+                }
+            ]
+        },
+        {
+            "branch": "support",
+            "tier": 2,
+            "label": "Lay on Hands",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 2,
+            "label": "Shieldbearer",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 2,
+            "label": "Exalt in Death",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 2,
+            "label": "Charged Focus",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 3,
+            "label": "Healing Savior",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 3,
+            "label": "Rapid Response",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 2,
+            "label": "Swarm Smiter",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 3,
+            "label": "Arcane Celerity",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 4,
+            "label": "Merciful Aid",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 4,
+            "label": "Cycle of Magic",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 4,
+            "label": "Lore of Steel",
+            "key": 500343,
+            "setBonusFor": [
+                "life",
+                "offense",
+                "defense",
+                "speed",
+                "critical rate",
+                "crit damage",
+                "accuracy",
+                "resistance",
+                "cruel",
+                "immortal",
+                "divine offense",
+                "divine critical rate",
+                "divine life",
+                "divine speed",
+                "swift parry",
+                "deflection",
+                "resilience",
+                "perception"
+            ],
+            "bonuses": [
+                {
+                    "kind": "inherit",
+                    "isAbsolute": false,
+                    "value": 0.15
+                }
+            ]
+        },
+        {
+            "branch": "support",
+            "tier": 4,
+            "label": "Evil Eye",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 5,
+            "label": "Lasting Gifts",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 5,
+            "label": "spirit Haste",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 5,
+            "label": "Sniper",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 5,
+            "label": "Master Hexer",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 6,
+            "label": "Elixir of Life",
+            "key": 500361,
+            "bonuses": [
+                {
+                    "kind": "hp",
+                    "isAbsolute": true,
+                    "value": 3000
+                }
+            ]
+        },
+        {
+            "branch": "support",
+            "tier": 6,
+            "label": "Timely Intervention",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 6,
+            "label": "Oppressor",
+            "bonuses": []
+        },
+        {
+            "branch": "support",
+            "tier": 5,
+            "label": "Master Hexer",
+            "key": 500364,
+            "bonuses": [
+                {
+                    "kind": "acc",
+                    "isAbsolute": true,
+                    "value": 50
+                }
+            ]
+        }
+    ]
+}

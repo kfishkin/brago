@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.Content {
+  background-color: red;
+  min-width: 500px;
+}
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+div.arena_current_level {
+  background-color: rosybrown;
+}
+
+div.header_detail {
+  color: antiquewhite;
+}
+
+span.arena_label {
+  font-weight: bold;
+}
+
+div[status="gtg"] {
+  background-color: gold;
+}
+
+li[status="gtg"] {
+  background-color: gold;
+}
+
+div.lock_list {
+  cursor: pointer;
+}
+
+div[status="locked"] {
+  background-color: gray;
+}
+
+span[status="locked"] {
+  background-color: gray;
+}
+
+p.warning {
+  background-color: mediumpurple;
+}
+
+.error_message {
+  background-color:#bbb ;
+  color: #a00;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
