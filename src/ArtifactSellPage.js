@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Switch, Table } from 'antd';
+import { Col, Row, Switch, Table, Tooltip } from 'antd';
 import Numberer from './Numberer';
 import Formatter from './Formatter';
 
@@ -14,14 +14,29 @@ class ArtifactSellPage extends React.Component {
     var id = 0;
     checkers.push({ id: id++, label: "Atk% Gloves", fn: this.SellAtkPercentGloves });
     checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.SellThreeSubstatsNoSpeed });
-    checkers.push({ id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats });
+    checkers.push({
+      id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats,
+      ttip: "A 'bad' substat is flat ATK,DEF,RES, or HP"
+    });
     checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.SellEpicNonSpeedBoots });
-    checkers.push({ id: id++, label: "Check CD Gloves", fn: this.SellMostCDGloves });
+    checkers.push({
+      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.SellMostCDGloves,
+      ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
+    });
     checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.SellDefensiveBootsWithoutSpeed });
     checkers.push({ id: id++, label: "Attack Amulets", fn: this.SellAttackAmulets });
-    checkers.push({ id: id++, label: "Defensive Rings w/o 2 good substats", fn: this.SellDefenseRingWithoutTwoGoodSubstats });
-    checkers.push({ id: id++, label: "Defensive Rings w/o Defensive substats", fn: this.SellDefensiveRingWithoutDefensiveSubstats });
-    checkers.push({ id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.SellNonLegoRingWith2BadSubstats });
+    checkers.push({
+      id: id++, label: "Defense Rings w/o 2 good substats", fn: this.SellDefenseRingWithoutTwoGoodSubstats,
+      ttip: "Ring of Defense without 2 substats that are either % boost, or Spd"
+    });
+    checkers.push({
+      id: id++, label: "Defensive Rings w/o Defensive substat", fn: this.SellDefensiveRingWithoutDefensiveSubstats,
+      ttip: "Ring of DEF or HP with no substat of HP%, DEF%, or Speed"
+    });
+    checkers.push({
+      id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.SellNonLegoRingWith2BadSubstats,
+      ttip: "Non-Legendary ring with 2 substats that are flat and not Speed"
+    });
     checkers.push({ id: id++, label: "Under 5 stars", fn: this.SellUnder5Stars });
     checkers.push({ id: id++, label: "bottom row flat HP/ATK/DEF", fn: this.SellBottomRowFlatMainStat });
     // map from checkerid to whether enabled. Not an array to be fancy:
@@ -263,6 +278,13 @@ class ArtifactSellPage extends React.Component {
     this.setState({ checkedByCheckerId: cur });
   }
 
+  checkerHtmlLabel(checker) {
+    var text = checker.label ? checker.label : checker.id;
+    return checker.ttip ?
+      (<Tooltip title={checker.ttip}>{text}</Tooltip>)
+      : text;
+  }
+
   renderSelectorPart() {
     var rows = [];
     var curCols = [];
@@ -278,7 +300,8 @@ class ArtifactSellPage extends React.Component {
       }
       var cur = this.state.checkedByCheckerId[checker.id];
       curCols.push(<Col className="gutter-row" span={span}>
-        <div><Switch size="small" checked={cur} onChange={(checked, e) => { this.onFilterChange(checked, checker) }}></Switch>&nbsp;{checker.label ? checker.label : checker.id}</div>
+        <div><Switch size="small" checked={cur} onChange={(checked, e) => { this.onFilterChange(checked, checker) }}></Switch>&nbsp;
+          {this.checkerHtmlLabel(checker)}</div>
       </Col>)
     });
     if (curCols.length > 0) {
