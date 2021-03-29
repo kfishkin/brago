@@ -60,7 +60,12 @@ class ArtifactPage extends React.Component {
         title: 'Faction',
         dataIndex: 'requiredFraction',
         key: 'faction',
-        render: (factionKey) => formatter.Faction(factionKey)
+        render: (factionKey) => formatter.Faction(factionKey),
+        sorter: (a, b) => {
+          var aFaction = a.requiredFraction ? a.requiredFraction : "";
+          var bFaction = b.requiredFraction ? b.requiredFraction : "";
+          return aFaction.localeCompare(bFaction);
+        }
       },
       {
         title: 'Wearer',

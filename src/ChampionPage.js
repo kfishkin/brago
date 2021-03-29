@@ -28,14 +28,18 @@ class ChampionPage extends React.Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        sorter: (a, b) => a.name - b.name,
+        sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
         title: 'Faction',
         dataIndex: 'faction',
         key: 'faction',
         render: (factionKey) => formatter.Faction(factionKey),
-        sorter: (a, b) => a.faction - b.faction,
+        sorter: (a, b) => {
+          var aFaction = a.faction ? a.faction : "";
+          var bFaction = b.faction ? b.faction : "";
+          return aFaction.localeCompare(bFaction);
+        }
       },
       {
         title: 'Rank',
@@ -87,7 +91,8 @@ class ChampionPage extends React.Component {
       var rowData = {
         key: champion.id,
         id: champion.id,
-        name: champion.name,
+        // sometimes we get champions with no name, odd
+        name: champion.name ? champion.name : "no name: id " + champion.id,
         faction: champion.fraction,
         grade: numberer.RankFromStars(champion.grade),
         element: champion.element,
@@ -95,6 +100,7 @@ class ChampionPage extends React.Component {
         inStorage: champion.inStorage,
         artifacts: artifacts
       };
+
       dataByRows.push(rowData);
 
     });
