@@ -77,6 +77,12 @@
             "ordinality": 12,
             "label": "Dwarves",
             "icon": "pix/factions/dwarves.png"
+        },
+        {
+            "key": "Shadowkin",
+            "ordinality": 13,
+            "label": "Shadowkin",
+            "icon": "pix/factions/shadowkin.png"
         }
     ]
 }
