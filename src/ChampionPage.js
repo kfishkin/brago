@@ -12,7 +12,7 @@ class ChampionPage extends React.Component {
     var pieces = [];
     artifacts.forEach((artifact, index) => {
       //console.log('artifact = ' + JSON.stringify(artifact));
-      pieces.push(<li>{formatter.ArtifactShort(artifact)}</li>);
+      pieces.push(<li key={artifact.id}>{formatter.ArtifactShort(artifact)}</li>);
     });
     return (<ul>{pieces}</ul>);
   }

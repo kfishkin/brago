@@ -131,6 +131,7 @@ class ChampionDetailPage extends React.Component {
           if (!(attr in bonuses)) {
             bonuses[attr] = [];
           }
+          // TODO: add support for 'lore of steel' here.
           bonuses[attr].push(entry);
         });
       }
