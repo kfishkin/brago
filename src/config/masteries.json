@@ -5,6 +5,7 @@
             "tier": 1,
             "label": "Blade Disciple",
             "key": 500112,
+            "img": "pix/masteries/offense/Blade_Disciple.png",
             "bonuses": [
                 {
                     "kind": "atk",
@@ -18,6 +19,7 @@
             "tier": 1,
             "key": 500113,
             "label": "Deadly Precision",
+            "img": "pix/masteries/offense/Deadly_Precision.png",
             "bonuses": [
                 {
                     "kind": "cr",
@@ -30,12 +32,14 @@
             "branch": "offense",
             "tier": 2,
             "label": "Heart of Glory",
+            "img": "pix/masteries/offense/Heart_of_glory.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 2,
             "label": "Keen Strike",
+            "img": "pix/masteries/offense/Keen_Strike.png",
             "key": 500122,
             "bonuses": [
                 {
@@ -49,108 +53,131 @@
             "branch": "offense",
             "tier": 2,
             "label": "Shield Breaker",
+            "img": "pix/masteries/offense/Shield_Breaker.png",
+            "key": 500123,
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 2,
             "label": "Grim Resolve",
+            "img": "pix/masteries/offense/Grim_Resolve.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 3,
             "label": "Single Out",
+            "key": 500131,
+            "img": "pix/masteries/offense/Single_Out.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 3,
             "label": "Life Drinker",
+            "key": 500132,
+            "img": "pix/masteries/offense/Life_Drinker.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 3,
             "label": "Whirlwind of Death",
+            "key": 500133,
+            "img": "pix/masteries/offense/Whirlwind_of_Death.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 3,
             "label": "Ruthless Ambush",
+            "img": "pix/masteries/offense/Ruthless_Ambush.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 4,
             "label": "Bring It Down",
+            "key": 500141,
+            "img": "pix/masteries/offense/Bring_It_Down.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 4,
             "label": "Wrath of the Slain",
+            "img": "pix/masteries/offense/Wrath_of_the_Slain.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 4,
             "label": "Cycle of Violence",
+            "img": "pix/masteries/offense/Cycle_of_Violence.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 4,
             "label": "Opportunist",
+            "img": "pix/masteries/offense/Opportunist.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 5,
             "label": "Methodical",
+            "img": "pix/masteries/offense/Methodical.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 5,
             "label": "Kill Streak",
+            "img": "pix/masteries/offense/Kill_Streak.png",
             "bonuses": []
         },
         {
-            "branch": "Blood Shield",
+            "branch": "offense",
             "tier": 5,
-            "label": "Methodical",
+            "label": "Blood Shield",
+            "img": "pix/masteries/offense/Blood_Shield.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 5,
             "label": "Stoked to Fury",
+            "img": "pix/masteries/offense/Stoked_to_Fury.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 6,
             "label": "Warmaster",
+            "img": "pix/masteries/offense/Warmaster.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 6,
             "label": "Helmsmasher",
+            "img": "pix/masteries/offense/Helmsmasher.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 6,
             "label": "Giant Slayer",
+            "img": "pix/masteries/offense/Giant_Slayer.png",
             "bonuses": []
         },
         {
             "branch": "offense",
             "tier": 6,
             "label": "Flawless Execution",
+            "img": "pix/masteries/offense/Flawless_Execution.png",
             "bonuses": [
                 {
                     "kind": "cd",
@@ -163,6 +190,7 @@
             "branch": "defense",
             "tier": 1,
             "label": "Tough Skin",
+            "img": "pix/masteries/defense/Tough_Skin.png",
             "key": 500212,
             "bonuses": [
                 {
@@ -176,6 +204,7 @@
             "branch": "defense",
             "tier": 1,
             "label": "Defiant",
+            "img": "pix/masteries/defense/Defiant.png",
             "key": 500213,
             "bonuses": [
                 {
@@ -189,102 +218,121 @@
             "branch": "defense",
             "tier": 2,
             "label": "Blastproof",
+            "img": "pix/masteries/defense/Blastproof.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 2,
             "label": "Rejuvenation",
+            "img": "pix/masteries/defense/Rejuvenation.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 2,
             "label": "Mighty Endurance",
+            "img": "pix/masteries/defense/Mighty_Endurance.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 2,
             "label": "Improved Parry",
+            "key": 500224,
+            "img": "pix/masteries/defense/Improved_Parry.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 3,
             "label": "Shadow Heal",
+            "img": "pix/masteries/defense/Shadow_Heal.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 3,
             "label": "Resurgent",
+            "img": "pix/masteries/defense/Resurgent.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 3,
             "label": "Bloodthirst",
+            "img": "pix/masteries/defense/Bloodthirst.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 3,
             "label": "Wisdom of Battle",
+            "img": "pix/masteries/defense/Wisdom_of_Battle.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 4,
             "label": "Solidarity",
+            "img": "pix/masteries/defense/Solidarity.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 4,
             "label": "Delay Death",
+            "img": "pix/masteries/defense/Delay_Death.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 4,
             "label": "Harvest Despair",
+            "img": "pix/masteries/defense/Harvest_Despair.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 4,
             "label": "Stubbornness",
+            "img": "pix/masteries/defense/Stubbornness.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 5,
             "label": "Selfless Defender",
+            "img": "pix/masteries/defense/Selfless Defender.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 5,
             "label": "Cycle of Revenge",
+            "img": "pix/masteries/defense/Cycle of Revenge.png",
             "bonuses": []
         },
         {
             "branch": "defense",
-            "tier": 2,
+            "tier": 5,
             "label": "Retribution",
+            "key": 500253,
+            "img": "pix/masteries/defense/Retribution.png",
             "bonuses": []
         },
         {
             "branch": "defense",
-            "tier": 2,
+            "tier": 5,
             "label": "Deterrence",
+            "img": "pix/masteries/defense/Deterrence.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 6,
             "label": "Iron Skin",
+            "img": "pix/masteries/defense/Iron Skin.png",
             "key": 500261,
             "bonuses": [
                 {
@@ -298,18 +346,21 @@
             "branch": "defense",
             "tier": 6,
             "label": "Bulwark",
+            "img": "pix/masteries/defense/Bulwark.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 6,
             "label": "Fearsome Presence",
+            "img": "pix/masteries/defense/Fearsome Presence.png",
             "bonuses": []
         },
         {
             "branch": "defense",
             "tier": 6,
             "label": "Unshakeable",
+            "img": "pix/masteries/defense/Unshakeable.png",
             "key": 500264,
             "bonuses": [
                 {
@@ -323,6 +374,7 @@
             "branch": "support",
             "tier": 1,
             "label": "Steadfast",
+            "img": "pix/masteries/support/Steadfast.png",
             "key": 500312,
             "bonuses": [
                 {
@@ -336,6 +388,7 @@
             "branch": "support",
             "tier": 1,
             "label": "Pinpoint Accuracy",
+            "img": "pix/masteries/support/Pinpoint_Accuracy.png",
             "key": 500313,
             "bonuses": [
                 {
@@ -348,91 +401,107 @@
         {
             "branch": "support",
             "tier": 2,
+            "key": 500321,
             "label": "Lay on Hands",
+            "img": "pix/masteries/support/Lay_on_Hands.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 2,
             "label": "Shieldbearer",
+            "img": "pix/masteries/support/Shieldbearer.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 2,
             "label": "Exalt in Death",
+            "img": "pix/masteries/support/Exalt_in_Death.png",
+            "key": 500323,
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 2,
             "label": "Charged Focus",
+            "key": 500324,
+            "img": "pix/masteries/support/Charged_Focus.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 3,
             "label": "Healing Savior",
+            "key": 500331,
+            "img": "pix/masteries/support/Healing_Savior.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 3,
             "label": "Rapid Response",
+            "img": "pix/masteries/support/Rapid_Response.png",
+            "key": 500332,
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 2,
             "label": "Swarm Smiter",
+            "img": "pix/masteries/support/Swarm_Smiter.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 3,
             "label": "Arcane Celerity",
+            "img": "pix/masteries/support/Arcane_Celerity.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 4,
             "label": "Merciful Aid",
+            "img": "pix/masteries/support/Merciful_Aid.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 4,
             "label": "Cycle of Magic",
+            "img": "pix/masteries/support/Cycle_of_Magic.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 4,
             "label": "Lore of Steel",
+            "img": "pix/masteries/support/Lore_of_Steel.png",
             "key": 500343,
             "setBonusFor": [
-                "life",
-                "offense",
-                "defense",
-                "speed",
-                "critical rate",
-                "crit damage",
-                "accuracy",
-                "resistance",
-                "cruel",
-                "immortal",
-                "divine offense",
-                "divine critical rate",
-                "divine life",
-                "divine speed",
-                "swift parry",
-                "deflection",
-                "resilience",
-                "perception"
+                "Hp",
+                "AttackPower",
+                "Defense",
+                "AttackSpeed",
+                "CriticalChance",
+                "CriticalDamage",
+                "Accuracy",
+                "Resistance",
+                "AttackPowerAndIgnoreDefense",
+                "HpAndHeal",
+                "ShieldAndAttackPower",
+                "ShieldAndCriticalChance",
+                "ShieldAndHp",
+                "ShieldAndSpeed",
+                "UnkillableAndSpdAndCrDmg",
+                "BlockReflectDebuffAndHpAndDef",
+                "HpAndDefence",
+                "AccuracyAndSpeed"
             ],
             "bonuses": [
                 {
-                    "kind": "inherit",
+                    "kind": "amplify",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -442,36 +511,42 @@
             "branch": "support",
             "tier": 4,
             "label": "Evil Eye",
+            "img": "pix/masteries/support/Evil_Eye.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 5,
             "label": "Lasting Gifts",
+            "img": "pix/masteries/support/Lasting_Gifts.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 5,
-            "label": "spirit Haste",
+            "label": "Spirit Haste",
+            "img": "pix/masteries/support/Spirit_Haste.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 5,
             "label": "Sniper",
+            "img": "pix/masteries/support/Sniper.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 5,
             "label": "Master Hexer",
+            "img": "pix/masteries/support/Master_Hexer.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 6,
             "label": "Elixir of Life",
+            "img": "pix/masteries/support/Elixir_of_Life.png",
             "key": 500361,
             "bonuses": [
                 {
@@ -485,18 +560,21 @@
             "branch": "support",
             "tier": 6,
             "label": "Timely Intervention",
+            "img": "pix/masteries/support/Timely_Intervention.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 6,
             "label": "Oppressor",
+            "img": "pix/masteries/support/Oppressor.png",
             "bonuses": []
         },
         {
             "branch": "support",
             "tier": 5,
             "label": "Master Hexer",
+            "img": "pix/masteries/support/Master_Hexer.png",
             "key": 500364,
             "bonuses": [
                 {

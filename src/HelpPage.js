@@ -2,7 +2,7 @@ import React from 'react';
 
 class HelpPage extends React.Component {
     render() {
-        return (<div style={{ textAlign: 'left' }}>
+        return (<div className="help_page" style={{ textAlign: 'left' }}>
 
             <p>Welcome! This program can take a JSON file containing
         the state of your <i>Raid Shadow Legends</i> champions and artifacts,
@@ -26,19 +26,34 @@ class HelpPage extends React.Component {
                 You will then see the left nav menu change, to show that you
                 now have loaded the data. For example, something like this:
             <img src="pix/help/left_nav_after_load.png" alt="nav menu after load" />
+            <h3>The pages</h3>
+            <ul>
+            <li><a href="#view_champions">The 'View Champions' page</a></li>
+            <li><a href="#view_artifacts">The 'View Artifacts' page</a></li>
+            <li><a href="#to_bump">The 'Artifacts to bump' page</a></li>
+                <li><a href="#to_sell">The 'Artifacts to Sell' page</a></li>
+            <li><a href="#champion_detail">The 'Champion Detail' page</a></li>
+            <li><a href="#arena">The 'Arena Tier' screen</a></li>
+                <li><a href="#great_hall">The 'Great Hall' page</a></li>
+                
+
+            </ul>
             </p>
+            <a id="view_champions"/>
             <h2>The 'View Champions' screen</h2>
             <p>
                 This screen isn't really very useful, it just dumps out
                 all the info on your champions that was in the JSON. At this point
                 it's more just for debugging.
         </p>
+        <a id="view_artifacts"/>
             <h2>The 'View Artifacts' screen</h2>
             <p>
                 This screen isn't really very useful either, it just dumps out
                 all the info on your artifacts that was in the JSON. At this point
                 it's more just for debugging.
         </p>
+        <a id="to_bump"/>
             <h2>The 'Check for artifacts to bu...' screen</h2>
             <p>
                 The 'bu...' is the word 'bumped', clipped.
@@ -69,6 +84,7 @@ class HelpPage extends React.Component {
                 arrows by it. So for example you could group them by what 'Set'
                 they're from, or what Artifact slot they take.
             </p>
+            <a id="to_sell"/>
             <h2>The 'Check for artifacts to sell' screen</h2>
             <p>
                 If you're like me, you're always running out of room for your Artifacts.
@@ -114,6 +130,94 @@ class HelpPage extends React.Component {
                 Now, turn on the 'Check worn gear' toggle and you'll see the total go up. For example, in the output below,
                 the first two pieces are worn by 'Hurler' and 'Grinner':
                 <img src="pix/help/sell_worn.png" alt="include worn gear" />
+            </p>
+            <a id="champion_detail"/>
+            <h2>The 'Champion Detail' screen</h2>
+            <p>
+                The visuals on this page are very rough, so be kind :).
+                It lets you view all the information about a champion, including, most importantly,
+                a more detailed breakdown of their 'total stats' than the game gives you.
+            </p>
+            <p>
+                Once you've loaded a JSON file, if you go to this page, you will see an auto-complete box.
+                This lets you choose which champion you want details on.
+                <img src="pix/help/detail_auto_start.png" alt="champion chooser" />
+            </p>
+            <p>
+                As you type, you will see champions who have what you've typed in their name. For example, below you see what
+                I get after typing 'Arm'. If you've put a marker on your champ, you will see that in parentheses.
+                For example, I have an Armiger with the 'Build II' marker. If you <i>don't</i> have a marker
+                on the champ, you will see its ID in parentheses, this helps you if you have a buncha champions
+                with the same name and you haven't put markers on them.
+                <img src="pix/help/detail_auto_typing.png" alt="typing away" />
+            </p>
+            <p>
+                In this case, I picked Kael (we <i>all</i> have a Kael, right? :)
+                Note three things at the top of the screen:
+                <img src="pix/help/detail_top.png" alt="the top 3 lines" />
+                </p>
+                <ul>
+                    <li>The 'Looking at' line in the header shows who you chose, and you'll see it as you go
+                        into other pages in the app. The idea is that someday you might be able to
+                        do other things, like optimize gear or whatever.
+                    </li>
+                    <li>
+                        The chooser is still there - type somebody else's name to pick a diffferent champ.
+        
+                    </li>
+                    <li>
+                        The third line is just like the first, but starts to add more detail.
+                    </li>
+                </ul>
+                <p>
+                    Below that, you'll see a dump of all the gear your champion is wearing, including
+                    main stats, sub stats, and enhancements (those are in the parens after a substat).
+                    For example, my Kael has an Epic 5* Speed weapon, level 16, with an Attack main stat. The first substat is a 5% boost to 'Atk %', enchanted to 7%.
+                </p>
+                <img src="pix/help/detail_artifacts.png" alt="the top 3 lines" />
+                <p>
+                    Below that, you'll see the 'Known Masteries'. My program only knows about some of the masteries in the game - I'm 
+                    adding to the list as I uncover the meaning of the IDs the game assigns to masteries.
+                    In this case, you'll see the program knows about 7 of Kael's masteries, including
+                    'Lore of Steel' (you get this by hovering over an icon).
+                </p>
+                <img src="pix/help/detail_masteries.png" alt="the masteries" />
+                <p>
+                    The best comes last: the 'total stats'. This is the same as the 'total stats' you see in the game, or at least
+                    tries to be. It includes your Greath Hall bonuses (if you entered those in), and your Arena level (if you entered thos in),
+                    and your masteries (for masteries the program knows about). The results should be within 1 of
+                    what you see in the game - there can be rounding differences. If you see a difference of more than 1,
+                    it means there's a mastery I don't know about yet. If you see this, if you could send me your JSON file, with a description of the
+                    champion and the mastery that's missing, that would help.
+                </p>
+                <img src="pix/help/detail_stats.png" alt="the masteries" />
+                <p>
+                    The one thing here that adds value over what you see in the game are the numbers
+                    in <span color="blue">blue</span>. If you hover over those, you will get a detailed
+                    breakdown. For example, if I hover over the '14871' HP I get from Artifacts,
+                    I can see this broken down. I find this helpful.
+                </p>
+                <img src="pix/help/detail_breakdown.png" alt="stat breakdown" />
+                <a id="arena"/>
+            <h2>The 'Arena Tier' screen</h2>
+            <p>
+                This page lets you enter what Arena Tier you're in (it's not stored in the JSON file).
+                If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
+            </p>
+            <p>
+                The information is stored in a cookie, so you don't have to re-type it every time
+                you come to the site.
+            </p>
+            <a id="great_hall" href="#">
+            <h2>The 'Great Hall' screen</h2>
+            </a>
+            <p>
+                This page lets you enter your Great Hall levels (it's not stored in the JSON file).
+                If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
+            </p>
+            <p>
+                The information is stored in a cookie, so you don't have to re-type it every time
+                you come to the site.
             </p>
         </div>
         );

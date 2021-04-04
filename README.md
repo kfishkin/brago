@@ -17,3 +17,11 @@ goal was to write a gear optimizer; when the Hell Hades one
 came out I dropped the project. I then resumed it to add the
 tips on 'bumping' and selling artifacts. But the stuff laying
 the groundwork for optimizing is still there.
+
+## Version log
+
+### 1.02 (4 April)
+  Added champion detail page, total stat computation, and supporting pages.
+
+### 1.01
+The start.

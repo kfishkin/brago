@@ -116,7 +116,7 @@ class ChampionPage extends React.Component {
       <div>
         <h3>There are {dataByRows.length} Champions.</h3>
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
-      </div>
+      </div >
     );
   }
 }

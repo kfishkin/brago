@@ -5,6 +5,7 @@
             "key": "weapon",
             "label": "Weapon",
             "plural": "Weapons",
+            "icon": "pix/artifacts/weapon.png",
             "isAccessory": false
         },
         {
@@ -12,6 +13,7 @@
             "key": "helmet",
             "label": "Helmet",
             "plural": "Helmets",
+            "icon": "pix/artifacts/helmet.png",
             "isAccessory": false
         },
         {
@@ -19,6 +21,7 @@
             "key": "shield",
             "label": "Shield",
             "plural": "Shields",
+            "icon": "pix/artifacts/shield.png",
             "isAccessory": false
         },
         {
@@ -26,6 +29,7 @@
             "key": "gloves",
             "label": "Gloves",
             "plural": "Pairs of Gloves",
+            "icon": "pix/artifacts/gloves.png",
             "isAccessory": false
         },
         {
@@ -33,6 +37,7 @@
             "key": "chest",
             "label": "Chest",
             "plural": "Chestpieces",
+            "icon": "pix/artifacts/chest.png",
             "isAccessory": false
         },
         {
@@ -40,6 +45,7 @@
             "key": "boots",
             "label": "Boots",
             "plural": "Pairs of Boots",
+            "icon": "pix/artifacts/boots.png",
             "isAccessory": false
         },
         {
@@ -47,6 +53,7 @@
             "key": "ring",
             "label": "Ring",
             "plural": "Rings",
+            "icon": "pix/artifacts/ring.png",
             "isAccessory": true
         },
         {
@@ -54,6 +61,7 @@
             "key": "cloak",
             "label": "Amulet",
             "plural": "Amulets",
+            "icon": "pix/artifacts/amulet.png",
             "isAccessory": true
         },
         {
@@ -61,6 +69,7 @@
             "key": "banner",
             "label": "Banner",
             "plural": "Banners",
+            "icon": "pix/artifacts/banner.png",
             "isAccessory": true
         }
     ]

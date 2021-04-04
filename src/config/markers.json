@@ -1,0 +1,56 @@
+{
+    "markers": [
+        {
+            "key": "None",
+            "ordinality": 0
+        },
+        {
+            "key": "Favorite",
+            "ordinality": 1,
+            "label": "Favorite",
+            "icon": "pix/markers/Favorite.png"
+        },
+        {
+            "key": "First",
+            "ordinality": 2,
+            "label": "Build I",
+            "icon": "pix/markers/Build_I.png"
+        },
+        {
+            "key": "Second",
+            "ordinality": 3,
+            "label": "Build II",
+            "icon": "pix/markers/Build_II.png"
+        },
+        {
+            "key": "Third",
+            "ordinality": 4,
+            "label": "Build III",
+            "icon": "pix/markers/Build_III.png"
+        },
+        {
+            "key": "Attack",
+            "ordinality": 5,
+            "label": "Attack",
+            "icon": "pix/markers/Attack.png"
+        },
+        {
+            "key": "Defence",
+            "ordinality": 6,
+            "label": "Defense",
+            "icon": "pix/markers/Defense.png"
+        },
+        {
+            "key": "Support",
+            "ordinality": 7,
+            "label": "Support",
+            "icon": "pix/markers/Support.png"
+        },
+        {
+            "key": "Speed",
+            "ordinality": 8,
+            "label": "Speed",
+            "icon": "pix/markers/Speed.png"
+        }
+    ]
+}

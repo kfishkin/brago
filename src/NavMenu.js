@@ -69,6 +69,9 @@ class NavMenu extends React.Component {
         <Menu.Item onClick={() => this.props.handleShowPage('sell artifacts')}>
           Check for artifacts to sell
         </Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('arena')}>Arena Tier</Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('great hall')}>Great Hall</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('about')}>About</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('help')}>Help</Menu.Item>
       </Menu >

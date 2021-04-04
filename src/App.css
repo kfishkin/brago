@@ -71,6 +71,59 @@ p.warning {
   color: #a00;
 }
 
+img.mastery_icon {
+  width: 48px;
+}
+
+img.marker_icon {
+  height: 32px;
+}
+
+img.artifact_icon {
+  height: 32px;
+  border-width: thick;
+  border-style: outset;
+  background-color: #448;
+}
+
+img.artifact_icon[rarity="Common"] {
+  border-color: #AEAEAE;
+}
+
+img.artifact_icon[rarity="Rare"] {
+  border-color: #2697FF;
+}
+
+img.artifact_icon[rarity="Epic"] {
+  border-color: #E74AFF;
+}
+
+img.artifact_icon[rarity="Legendary"] {
+  border-color: #EE8100;
+}
+
+span.has_popover {
+  color: blue;
+}
+
+ul.mastery_list {
+  text-align: left;
+}
+
+ul.substats {
+  text-align: left;
+}
+
+.bonus_popover {
+  background-color: aliceblue;
+}
+
+div.help_page img {
+  border-style: solid;
+  border-width: thin;
+  border-color: gray;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -6,6 +6,7 @@ import artifactSetConfig from './config/artifact_sets.json';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
 import greatHallConfig from './config/great_hall.json';
+import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
 import ArtifactOneLiner from './ArtifactOneLiner';
 import { Row, Col } from 'antd';
@@ -53,15 +54,31 @@ class ChampionDetailPage extends React.Component {
   onSelect(value, option) {
     this.props.reporter(this.props.champions[option.index]);
   }
+
+  markerFromKey(markerKey) {
+    if (!markerKey || markerKey === "None") return null;
+    var answer = null;
+    markersConfig.markers.some((markerSpec) => {
+      if (markerSpec.key === markerKey) {
+        answer = markerSpec;
+        return true;
+      }
+      return false;
+    });
+    return answer;
+  }
+
   renderAutoCompleter(champions) {
     var options = [];
     var prompt = this.props.curChamp ? "choose a different champion"
       : "choose a champion"
     if (champions) {
       champions.forEach((champion, index) => {
-        // add the id to the name for when you have multiples
-        // of the same champ
-        options.push({ 'value': champion.name + ' (' + champion.id + ')', 'key': champion.id, 'index': index });
+        // show the marker, if there is one:
+        var markerSpec = this.markerFromKey(champion.marker);
+        // and add the id to disambiguate if no markers:
+        var extra = markerSpec ? markerSpec.label : champion.id;
+        options.push({ 'value': champion.name + ' (' + extra + ')', 'key': champion.id, 'index': index });
       });
       return (
         <div>
@@ -87,13 +104,19 @@ class ChampionDetailPage extends React.Component {
   /**
    * Computes all the info about which artifact bonuses this champ
    * @param {array} artifacts the array of worn artifact ids.
+   * @param {hash} masteryNamesById set of masteries champ has.
    * 
-   * returns a hash table, keyed by attribute ('hp', 'atk', etc.).
+   * returns two hash tables as an array.
+   * 0 - the artifact bonuses,
+   * keyed by attribute ('hp', 'atk', etc.).
    * Each entry in the hash table is an array of tuples.
    * First entry is the Bonus to apply.
-   * Second entry, if requested, is a string describing the bonus
+   * Second entry is a string describing the bonus
+   * 
+   * 1 - the 'amplification' bonuses from a mastery bonus on an artifact set.
+   * format is that same as entry 0.
    */
-  computeArtifactBonusInfo(artifacts) {
+  computeArtifactBonusInfo(artifacts, masteryNamesById) {
     // make a hash table whose key is the armor kind (toxic, cruel, etc.)
     // and whose value is how many of that type have been seen.
     // anything missing has a count of 0.
@@ -101,9 +124,10 @@ class ChampionDetailPage extends React.Component {
     //
     // and an array of the artifact objects.
     var artifactObjects = [];
+    var amplificationBonuses = {};
     var bonuses = {};
     if (!artifacts || artifacts.length === 0) {
-      return bonuses;
+      return [bonuses, amplificationBonuses];
     }
     artifacts.forEach((artifactId) => {
       var obj = this.props.artifactsById[artifactId];
@@ -115,6 +139,11 @@ class ChampionDetailPage extends React.Component {
         }
       }
     });
+    //console.log('set type counts = ' + JSON.stringify(setTypeCounts));
+    // see if I have any mastery bonuses that amplify a set....
+    // hash table, maps from set name to an amplification.
+    // each amplification is [amplifying mastery id, bonus]
+    var amplifyBonusesBySetName = this.computeAmplificationBonuses(masteryNamesById);
     // go through the armor sets, see if I get their bonuses....
     artifactSetConfig.sets.some((setConfig) => {
       var key1 = setConfig.jsonKey;
@@ -123,25 +152,44 @@ class ChampionDetailPage extends React.Component {
         return false; // keep looking
       }
       var count = (key1 in setTypeCounts) ? setTypeCounts[key1] : setTypeCounts[key2];
+      //console.log('key1 = ' + key1 + ', key2 = ' + key2 + ', count = ' + count);
       var times = Math.floor(setConfig.set_size / count);
       for (var i = 0; i < times; i++) {
+        //console.log('checking set bonuses for set ' + setConfig.label + ', times = ' + times);
         setConfig.bonuses.forEach((bonus) => {
           var attr = bonus.kind;
           var entry = [bonus, setConfig.label + " set bonus"];
           if (!(attr in bonuses)) {
             bonuses[attr] = [];
           }
-          // TODO: add support for 'lore of steel' here.
+          if (key1 in amplifyBonusesBySetName) {
+            //console.log('bonus applies to ' + key1 + ':' + JSON.stringify(amplifyBonusesBySetName[key1]));
+            var amplification = amplifyBonusesBySetName[key1][1].value * bonus.value;
+            // console.log('ampl = ' + amplification + ', isAbs = ' + bonus.isAbsolute);
+            var amplBonus =
+            {
+              "kind": "amplify",
+              "isAbsolute": bonus.isAbsolute,
+              "value": amplification
+            }
+            var masteryName = masteryNamesById[amplifyBonusesBySetName[key1][0]];
+            var amplEntry = [amplBonus, masteryName + " bonus to " + setConfig.label + " set"];
+            if (!(attr in amplificationBonuses)) {
+              amplificationBonuses[attr] = [];
+              amplificationBonuses[attr].push(amplEntry);
+            }
+          }
           bonuses[attr].push(entry);
+
         });
       }
-      return true;
+      return false;
     });
     // and then the bonuses from the pieces themselves.
     artifactObjects.forEach((artifact) => {
       if (('primaryBonus' in artifact) && ('kind' in artifact.primaryBonus)) {
         var attr = this.attributesByJsonKey[artifact.primaryBonus.kind.toLowerCase()].key;
-        var entry = [artifact.primaryBonus, artifact.kind + ' primary bonus'];
+        var entry = [artifact.primaryBonus, artifact.kind + ' main stat'];
         if (!(attr in bonuses)) {
           bonuses[attr] = [];
         }
@@ -151,7 +199,7 @@ class ChampionDetailPage extends React.Component {
       if (('secondaryBonuses' in artifact) && (artifact.secondaryBonuses.length > 0)) {
         artifact.secondaryBonuses.forEach((secondary) => {
           attr = this.attributesByJsonKey[secondary.kind.toLowerCase()].key;
-          entry = [secondary, this.artifactTypesByKey[artifact.kind.toLowerCase()].label + ' secondary bonus'];
+          entry = [secondary, this.artifactTypesByKey[artifact.kind.toLowerCase()].label + ' substat'];
           if (!(attr in bonuses)) {
             bonuses[attr] = [];
           }
@@ -160,29 +208,54 @@ class ChampionDetailPage extends React.Component {
         });
       }
     });
-    return bonuses;
+    return [bonuses, amplificationBonuses];
   }
 
 
+  computeAmplificationBonuses(masteryNamesById) {
+    var amplifyBonuses = {}
+    masteriesConfig.masteries.some((masterySpec) => {
+      if (!masteryNamesById)
+        return false; // just in case
+      if (!(masterySpec.key in masteryNamesById))
+        return false;
+      // I have this mastery. Does it have an amplification bonus?
+      if (!masterySpec.setBonusFor || !masterySpec.bonuses)
+        return false;
+      // find the amplification bonus.
+      var theBonus = null;
+      masterySpec.bonuses.some((bonus) => {
+        if (bonus && bonus.kind === "amplify") {
+          theBonus = bonus;
+          return true;
+        }
+        return false;
+      });
+      if (!theBonus)
+        return false;
+      // yay, finally:
+      masterySpec.setBonusFor.forEach((setName) => {
+        var tuple = [masterySpec.key, theBonus];
+        amplifyBonuses[setName] = tuple;
+      });
+      return false;
+    });
+    return amplifyBonuses;
+  }
+
   /**
    * Computes all the info about which mastery bonuses this champ
-   * @param {array} artifacts the array of mastery ids.
+   * @param {hash} masteryNamesById. Hash table, keys are ids.
+   * @param {hash} bonuses the bonuses we have going in:
    * 
-   * returns a hash table, keyed by attribute ('hp', 'atk', etc.).
+   * a hash table, keyed by attribute ('hp', 'atk', etc.).
    * Each entry in the hash table is an array of tuples.
    * First entry is the Bonus to apply.
    * Second entry is a string describing the bonus
    */
-  computeMasteryBonusInfo(masteryIds) {
-    // make a set of all the masteries. faster...
-    var masteriesHave = {};
-    masteryIds.forEach((masteryId) => {
-      masteriesHave[masteryId] = true;
-    })
-    // go through the masteries, see which ones I have...
-    var bonuses = {};
+  computeMasteryBonusInfo(masteryNamesById, bonuses) {
     masteriesConfig.masteries.some((masterySpec) => {
-      if (!(masterySpec.key in masteriesHave)) {
+      if (!(masterySpec.key in masteryNamesById)) {
         return false;
       }
       if (!masterySpec.bonuses || masterySpec.bonuses.length === 0) {
@@ -190,7 +263,7 @@ class ChampionDetailPage extends React.Component {
       }
       masterySpec.bonuses.forEach((bonus) => {
         var attr = bonus.kind;
-        var entry = [bonus, attr + ' mastery bonus from ' + masterySpec.label];
+        var entry = [bonus, masterySpec.label + ' mastery bonus'];
         if (!(attr in bonuses)) {
           bonuses[attr] = [];
         }
@@ -201,7 +274,22 @@ class ChampionDetailPage extends React.Component {
     return bonuses;
   }
 
+  masteryNamesById(masteryIds) {
+    var all = {};
+    masteriesConfig.masteries.forEach((masterySpec) => {
+      all[masterySpec.key] = masterySpec.label;
+
+    });
+    var masteriesSet = {};
+    if (masteryIds) {
+      masteryIds.forEach((masteryId) => {
+        masteriesSet[masteryId] = all[masteryId];
+      })
+    }
+    return masteriesSet;
+  }
   renderTotalStats() {
+    var arenaLabel = this.props.arenaLevel ? (" (" + this.props.arenaLevel.label + ")") : "";
 
     const columns = [
       {
@@ -220,7 +308,7 @@ class ChampionDetailPage extends React.Component {
         key: 'great_hall'
       },
       {
-        title: 'Classic Arena',
+        title: 'Classic Arena' + arenaLabel,
         dataIndex: 'arena',
         key: 'arena'
       },
@@ -258,8 +346,11 @@ class ChampionDetailPage extends React.Component {
       });
     }
 
-    var artBonusInfo = this.computeArtifactBonusInfo(curChamp.artifacts);
-    var masteryBonusInfo = this.computeMasteryBonusInfo(curChamp.masteries);
+    var masteryIdsAsSet = this.masteryNamesById(curChamp.masteries);
+    var artifactAndAmplificationBonuses = this.computeArtifactBonusInfo(curChamp.artifacts, masteryIdsAsSet);
+    var artBonusInfo = artifactAndAmplificationBonuses[0];
+    var masteryBonusInfo = artifactAndAmplificationBonuses[1];
+    this.computeMasteryBonusInfo(masteryIdsAsSet, masteryBonusInfo);
 
     attributesConfig.attributes.forEach((attrSpec) => {
 
@@ -283,9 +374,9 @@ class ChampionDetailPage extends React.Component {
         });
       }
       total += artAmount;
-      var content = (bonusExplanations.length > 0) ? (<ul>{bonusExplanations}</ul>) : null;
+      var content = (bonusExplanations.length > 0) ? (<ul className="bonus_popover">{bonusExplanations}</ul>) : null;
       rowData['artifacts'] = (bonusExplanations.length > 0) ?
-        <Popover content={content} focus="hover">{artAmount}</Popover>
+        <Popover content={content} focus="hover"><span className="has_popover">{artAmount}</span></Popover>
         : artAmount;
 
       bonusExplanations = [];
@@ -299,10 +390,11 @@ class ChampionDetailPage extends React.Component {
           bonusExplanations.push(<li>{amt} from {tuple[1]}</li>)
         });
       }
+      // do the above again for amplifications.
       total += artAmount;
       content = (bonusExplanations.length > 0) ? (<ul>{bonusExplanations}</ul>) : null;
       rowData['masteries'] = (bonusExplanations.length > 0) ?
-        <Popover content={content} focus="hover">{artAmount}</Popover>
+        <Popover content={content} focus="hover"><span className="has_popover">{artAmount}</span></Popover>
         : '';
 
       // arena bonus
@@ -391,25 +483,60 @@ class ChampionDetailPage extends React.Component {
     return <div>{parts}</div>;
   }
 
+  renderMastery(mastery) {
+    var parts = [];
+    if (mastery.img) {
+      parts.push(<img className="mastery_icon" alt={mastery.label} src={process.env.PUBLIC_URL + mastery.img} />);
+    }
+    if (mastery.label) {
+      parts.push(mastery.label);
+    }
+    return (<span>{parts}</span>);
+  }
+
   renderMasteries(masteries) {
     if (!masteries || masteries.length === 0) {
       return <span>(no masteries)</span>;
     }
-    var elements = [];
-    masteries.forEach((masteryId) => {
-      var content = masteryId;
-      masteriesConfig.masteries.some((masterySpec) => {
-        if (masteryId === masterySpec.key) {
-          content = <span>{masterySpec.label}</span>
-          return true;
-
-        }
-        return false;
-
-      });
-      elements.push(<li>{content}</li>)
+    // display by branch, within that by tier, within that random.
+    var masterySpecs = [];
+    masteriesConfig.masteries.some((masterySpec) => {
+      if (!masterySpec || !masterySpec.key) return false;
+      if (masteries.indexOf(masterySpec.key) === -1) return false;
+      masterySpecs.push(masterySpec);
+      return false;
     });
-    return (<div><p><b>Masteries:</b></p><ul>{elements}</ul></div >);
+    masterySpecs.sort((m1, m2) => {
+      var delta = m1.branch.localeCompare(m2.branch);
+      if (delta !== 0) return delta;
+      delta = m1.tier - m2.tier;
+      if (delta !== 0) return delta;
+      return m1.label.localeCompare(m2.label);
+    });
+
+    var elements = [];
+    var inBranch = [];
+    var prevBranchName = "";
+    masterySpecs.forEach((spec, index) => {
+      if (spec.branch !== prevBranchName) {
+        if (prevBranchName !== "") {
+          elements.push(<li key={index}>
+            <b>{prevBranchName}:</b>
+            {inBranch}
+          </li>);
+        }
+        inBranch = [];
+      }
+      prevBranchName = spec.branch;
+      inBranch.push(<img className="mastery_icon" title={spec.label} alt={spec.label} src={process.env.PUBLIC_URL + spec.img} />);
+    });
+    if (inBranch.length > 0) {
+      elements.push(<li key={masterySpecs.length}>
+        <b>{prevBranchName}:</b>
+        {inBranch}
+      </li>);
+    }
+    return (<div><p><b>Known Masteries:</b></p><ul className="mastery_list">{elements}</ul></div >);
   }
 
   renderChamp(champ) {
@@ -427,6 +554,12 @@ class ChampionDetailPage extends React.Component {
     parts.push(<span>, level {champ.level}</span>);
     if (champ.inStorage) {
       parts.push(<span> (Vault)</span>);
+    }
+    if (champ.marker && champ.marker !== "None") {
+      var spec = this.markerFromKey(champ.marker);
+      if (spec) {
+        parts.push(<span>. Marker: <img className="marker_icon" src={process.env.PUBLIC_URL + spec.icon} alt={spec.label} title={spec.label} /></span>);
+      }
     }
 
     parts.push(<hr />);

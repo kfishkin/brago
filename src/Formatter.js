@@ -111,7 +111,7 @@ class Formatter {
         subStats.forEach(subStat => {
             entries.push(<li>{this.Stat(subStat)}</li>);
         });
-        return <ul>{entries}</ul>;
+        return <ul className="substats">{entries}</ul>;
     }
 
     // an artifact in short form, for champions page
