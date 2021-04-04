@@ -39,22 +39,19 @@ class HelpPage extends React.Component {
 
             </ul>
             </p>
-            <a id="view_champions"/>
-            <h2>The 'View Champions' screen</h2>
+            <h2 id="view_champions">The 'View Champions' screen</h2>
             <p>
                 This screen isn't really very useful, it just dumps out
                 all the info on your champions that was in the JSON. At this point
                 it's more just for debugging.
         </p>
-        <a id="view_artifacts"/>
-            <h2>The 'View Artifacts' screen</h2>
+            <h2 id="view_artifacts">The 'View Artifacts' screen</h2>
             <p>
                 This screen isn't really very useful either, it just dumps out
                 all the info on your artifacts that was in the JSON. At this point
                 it's more just for debugging.
         </p>
-        <a id="to_bump"/>
-            <h2>The 'Check for artifacts to bu...' screen</h2>
+            <h2 id="to_bump">The 'Check for artifacts to bu...' screen</h2>
             <p>
                 The 'bu...' is the word 'bumped', clipped.
                 When you're in an artifact enhancement event, you only
@@ -84,8 +81,7 @@ class HelpPage extends React.Component {
                 arrows by it. So for example you could group them by what 'Set'
                 they're from, or what Artifact slot they take.
             </p>
-            <a id="to_sell"/>
-            <h2>The 'Check for artifacts to sell' screen</h2>
+            <h2 id="to_sell">The 'Check for artifacts to sell' screen</h2>
             <p>
                 If you're like me, you're always running out of room for your Artifacts.
                 This screen helps you with that. It shows a bunch of heuristics that I've collected
@@ -131,8 +127,7 @@ class HelpPage extends React.Component {
                 the first two pieces are worn by 'Hurler' and 'Grinner':
                 <img src="pix/help/sell_worn.png" alt="include worn gear" />
             </p>
-            <a id="champion_detail"/>
-            <h2>The 'Champion Detail' screen</h2>
+            <h2 id="champion_detail">The 'Champion Detail' screen</h2>
             <p>
                 The visuals on this page are very rough, so be kind :).
                 It lets you view all the information about a champion, including, most importantly,
@@ -198,8 +193,7 @@ class HelpPage extends React.Component {
                     I can see this broken down. I find this helpful.
                 </p>
                 <img src="pix/help/detail_breakdown.png" alt="stat breakdown" />
-                <a id="arena"/>
-            <h2>The 'Arena Tier' screen</h2>
+            <h2 id="arena">The 'Arena Tier' screen</h2>
             <p>
                 This page lets you enter what Arena Tier you're in (it's not stored in the JSON file).
                 If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
@@ -208,9 +202,7 @@ class HelpPage extends React.Component {
                 The information is stored in a cookie, so you don't have to re-type it every time
                 you come to the site.
             </p>
-            <a id="great_hall" href="#">
-            <h2>The 'Great Hall' screen</h2>
-            </a>
+            <h2  id="great_hall">The 'Great Hall' screen</h2>
             <p>
                 This page lets you enter your Great Hall levels (it's not stored in the JSON file).
                 If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
