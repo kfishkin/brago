@@ -398,22 +398,26 @@ class ChampionDetailPage extends React.Component {
         : '';
 
       // arena bonus
-      arenaBonuses.some((bonus) => {
-        if (bonus.kind === key) {
-          var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-          rowData['arena'] = amt;
-          total += amt;
-          return true;
-        }
-        return false;
-      });
+      if (arenaBonuses) {
+        arenaBonuses.some((bonus) => {
+          if (bonus.kind === key) {
+            var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
+            rowData['arena'] = amt;
+            total += amt;
+            return true;
+          }
+          return false;
+        });
+      }
       // great hall bonus.
-      var hallLevel = hallBonuses[key];
-      var bonus = this.arenaBonusMap[key + ":" + hallLevel];
-      if (bonus) {
-        var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-        rowData['great_hall'] = JSON.stringify(amt);
-        total += amt;
+      if (hallBonuses) {
+        var hallLevel = hallBonuses[key];
+        var bonus = this.arenaBonusMap[key + ":" + hallLevel];
+        if (bonus) {
+          var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
+          rowData['great_hall'] = JSON.stringify(amt);
+          total += amt;
+        }
       }
 
       rowData['total'] = Math.round(total);
