@@ -125,6 +125,19 @@ class Formatter {
             + "," + artifact.level;
     }
 
+    // makes it a litle easier to make an image.
+    // you give it:
+    // (a) the src attribute - required. Local
+    // (b) the alt/label attribute - uses same for both
+    // (c) any additional attributes in a hash
+    Image(src, label, additional) {
+        if (!additional) {
+            additional = {};
+        }
+        return (
+            <img src={process.env.PUBLIC_URL + src} title={label} alt={label} {...additional} />
+        );
+    }
 }
 
 export default Formatter;

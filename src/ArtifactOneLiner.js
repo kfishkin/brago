@@ -26,9 +26,9 @@ class ArtifactOneLiner extends React.Component {
     var parts = [];
     // the type and the rarity can go together in the image:
     var msg = artifact.rarity + " " + typeSpec.label;
+    var img = this.formatter.Image(typeSpec.icon, msg, { "className": "artifact_icon", "rarity": artifact.rarity });
     parts.push(<span key="1">
-      <img src={process.env.PUBLIC_URL + typeSpec.icon} alt={msg} title={msg}
-        className="artifact_icon" rarity={artifact.rarity} />
+      {img}
     </span>);
     // rank
     parts.push(<span key="2">{this.numberer.Rank(artifact.rank)}*</span>);

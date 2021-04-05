@@ -487,17 +487,6 @@ class ChampionDetailPage extends React.Component {
     return <div>{parts}</div>;
   }
 
-  renderMastery(mastery) {
-    var parts = [];
-    if (mastery.img) {
-      parts.push(<img className="mastery_icon" alt={mastery.label} src={process.env.PUBLIC_URL + mastery.img} />);
-    }
-    if (mastery.label) {
-      parts.push(mastery.label);
-    }
-    return (<span>{parts}</span>);
-  }
-
   renderMasteries(masteries) {
     if (!masteries || masteries.length === 0) {
       return <span>(no masteries)</span>;
@@ -521,6 +510,7 @@ class ChampionDetailPage extends React.Component {
     var elements = [];
     var inBranch = [];
     var prevBranchName = "";
+    var formatter = this.formatter;
     masterySpecs.forEach((spec, index) => {
       if (spec.branch !== prevBranchName) {
         if (prevBranchName !== "") {
@@ -532,7 +522,7 @@ class ChampionDetailPage extends React.Component {
         inBranch = [];
       }
       prevBranchName = spec.branch;
-      inBranch.push(<img className="mastery_icon" title={spec.label} alt={spec.label} src={process.env.PUBLIC_URL + spec.img} />);
+      inBranch.push(formatter.Image(spec.img, spec.label, { "className": "mastery_icon" }));
     });
     if (inBranch.length > 0) {
       elements.push(<li key={masterySpecs.length}>
@@ -562,7 +552,7 @@ class ChampionDetailPage extends React.Component {
     if (champ.marker && champ.marker !== "None") {
       var spec = this.markerFromKey(champ.marker);
       if (spec) {
-        parts.push(<span>. Marker: <img className="marker_icon" src={process.env.PUBLIC_URL + spec.icon} alt={spec.label} title={spec.label} /></span>);
+        parts.push(<span>. Marker: {formatter.Image(spec.icon, spec.label, { "className": "marker_icon" })}</span>);
       }
     }
 

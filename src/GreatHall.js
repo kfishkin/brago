@@ -21,13 +21,14 @@ class GreatHall extends React.Component {
         // title: the header text
         // dataIndex: field in (dataByRows) to reference
         // render: knows how to render that column for that data.
+        var formatter = new Formatter();
         const columns = [
             {
                 title: 'Affinity',
                 dataIndex: 'icon',
                 key: 'icon',
-                render: (imgName, record, index) => (
-                    <img alt={record.label} src={process.env.PUBLIC_URL + imgName} />
+                render: (imgName, record) => (
+                    formatter.Image(imgName, record.label)
                 )
             }
         ];

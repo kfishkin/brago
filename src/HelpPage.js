@@ -4,7 +4,7 @@ class HelpPage extends React.Component {
     render() {
         return (<div className="help_page" style={{ textAlign: 'left' }}>
 
-            <p>Welcome! This program can take a JSON file containing
+            <p>Welcome! This program, 'Brago', can take a JSON file containing
         the state of your <i>Raid Shadow Legends</i> champions and artifacts,
         and perform a few simple analyses on them.
     </p>
@@ -13,11 +13,11 @@ class HelpPage extends React.Component {
             Jake Croteau's great <a href="https://github.com/LukeCroteau/RaidExtractor">RaidExtractor</a>.
             Go to that site and read about how the tool and how to use it.
             Once you have a JSON file you created with it, then you can use
-            this program.
+            Brago.
         </p>
 
             <p>
-                The program shows you a list of things you can do, on the left nav-menu: "Load JSON", "View Champions", etc.
+                Brago shows you a list of things you can do, on the left nav-menu: "Load JSON", "View Champions", etc.
                 You can't really do anything interesting until you've loaded your JSON file,
                 so start by doing that. click on the "Load JSON" selection, then on the "Choose File" button,
                 and open the JSON file you want analyzed.
@@ -171,16 +171,16 @@ class HelpPage extends React.Component {
                 </p>
                 <img src="pix/help/detail_artifacts.png" alt="the top 3 lines" />
                 <p>
-                    Below that, you'll see the 'Known Masteries'. My program only knows about some of the masteries in the game - I'm 
+                    Below that, you'll see the 'Known Masteries'. Brago only knows about some of the masteries in the game - I'm 
                     adding to the list as I uncover the meaning of the IDs the game assigns to masteries.
-                    In this case, you'll see the program knows about 7 of Kael's masteries, including
+                    In this case, you'll see Brago knows about 7 of Kael's masteries, including
                     'Lore of Steel' (you get this by hovering over an icon).
                 </p>
                 <img src="pix/help/detail_masteries.png" alt="the masteries" />
                 <p>
                     The best comes last: the 'total stats'. This is the same as the 'total stats' you see in the game, or at least
-                    tries to be. It includes your Greath Hall bonuses (if you entered those in), and your Arena level (if you entered thos in),
-                    and your masteries (for masteries the program knows about). The results should be within 1 of
+                    tries to be. It includes your Great Hall bonuses (if you entered those in), and your Arena level (if you entered thos in),
+                    and your masteries (for masteries Brago knows about). The results should be within 1 of
                     what you see in the game - there can be rounding differences. If you see a difference of more than 1,
                     it means there's a mastery I don't know about yet. If you see this, if you could send me your JSON file, with a description of the
                     champion and the mastery that's missing, that would help.
