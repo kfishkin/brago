@@ -481,7 +481,7 @@
         {
             "key": "bite",
             "label": "Frostbite",
-            "icon": "frost.png",
+            "icon": "frostbite.png",
             "set_size": 2,
             "bonuses": []
         },

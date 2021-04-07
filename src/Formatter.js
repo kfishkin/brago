@@ -44,7 +44,7 @@ class Formatter {
         if (!factionDict) {
             return factionKey;
         }
-        return <img src={process.env.PUBLIC_URL + factionDict.icon}
+        return <img key={factionKey} src={process.env.PUBLIC_URL + factionDict.icon}
             alt={factionDict.label}
             title={factionDict.label} />;
     }
