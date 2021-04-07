@@ -484,6 +484,26 @@
             "icon": "frost.png",
             "set_size": 2,
             "bonuses": []
+        },
+        {
+            "key": "bloodthirst",
+            "label": "Bloodthirst",
+            "icon": "bloodthirst.png",
+            "set_size": 4,
+            "bonuses": [
+                {
+                    "kind": "cr",
+                    "isAbsolute": false,
+                    "value": 0.12
+                }
+            ]
+        },
+        {
+            "key": "guardian",
+            "label": "Guardian",
+            "icon": "guardian.png",
+            "set_size": 4,
+            "bonuses": []
         }
     ]
 }

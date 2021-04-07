@@ -8,7 +8,7 @@ import attributesConfig from './config/attributes.json';
 import greatHallConfig from './config/great_hall.json';
 import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
-import ArtifactOneLiner from './ArtifactOneLiner';
+import ArtifactRune from './ArtifactRune';
 import { Row, Col } from 'antd';
 
 // props:
@@ -437,7 +437,7 @@ class ChampionDetailPage extends React.Component {
       return;
     }
     var parts = [];
-    parts.push(<ArtifactOneLiner artifact={artifact} />);
+    parts.push(<ArtifactRune artifact={artifact} />);
     if (artifact.secondaryBonuses && artifact.secondaryBonuses.length > 0) {
       parts.push(this.formatter.Substats(artifact.secondaryBonuses));
     }

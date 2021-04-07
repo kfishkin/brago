@@ -2,7 +2,7 @@ import React from 'react';
 import Formatter from './Formatter';
 import PossibilityCount from './PossibilityCount';
 import artifactTypeConfig from './config/artifact_types.json';
-import ArtifactOneLiner from './ArtifactOneLiner';
+import ArtifactRune from './ArtifactRune';
 
 /**
  * Shows the number of possiblities, summarized.
@@ -43,7 +43,7 @@ class LockComponent extends React.Component {
       var key = typeSpec.key.toLowerCase();
       var artifact = ownedByKind[key];
       var isLocked = this.props.lockedSlots && (key in this.props.lockedSlots);
-      var body = artifact ? <ArtifactOneLiner artifact={artifact} /> : <span>{typeSpec.label}:  -----</span>
+      var body = artifact ? <ArtifactRune artifact={artifact} /> : <span>{typeSpec.label}:  -----</span>
       list.push(<div status={isLocked ? "locked" : "unlocked"} onClick={(e) => this.onClick(key)} key={key}>{body}</div>);
     });
     return <div className="lock_list">{list}</div>

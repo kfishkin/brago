@@ -261,6 +261,7 @@
             "branch": "defense",
             "tier": 3,
             "label": "Bloodthirst",
+            "key": 500233,
             "img": "pix/masteries/defense/Bloodthirst.png",
             "bonuses": []
         },
@@ -511,6 +512,7 @@
             "branch": "support",
             "tier": 4,
             "label": "Evil Eye",
+            "key": 500344,
             "img": "pix/masteries/support/Evil_Eye.png",
             "bonuses": []
         },

@@ -80,14 +80,20 @@ img.marker_icon {
 }
 
 img.artifact_icon {
-  height: 32px;
+  height: 70px;
+  width: 70px;
   border-width: thick;
-  border-style: outset;
-  background-color: #448;
+  border-style: solid;
+  background-color: #444;
+  object-fit: contain;
 }
 
 img.artifact_icon[rarity="Common"] {
   border-color: #AEAEAE;
+}
+
+img.artifact_icon[rarity="Uncommon"] {
+  border-color: #19D041;
 }
 
 img.artifact_icon[rarity="Rare"] {
@@ -122,6 +128,67 @@ div.help_page img {
   border-style: solid;
   border-width: thin;
   border-color: gray;
+}
+
+div.artifact_rune {
+  display: inline-block;
+}
+
+div.artifact_rune div.primary {
+  display: inline;
+  font-weight: bold;
+}
+
+div.artifact_rune div.container {
+  width: 70px;
+  height: 70px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.artifact_card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1.0;
+}
+
+div.stars_overlay {
+  z-index: 3;
+  top: 0px;
+  opacity: 1.0;
+  height:20px;
+  text-align: left;
+  color: gold;
+  background-image: none;
+  font-size:18px;
+  left: 5px;
+  cursor:default;
+}
+
+div.level_overlay {
+  z-index: 4;
+  top: 40px;
+  opacity: 1.0;
+  height:24px;
+  text-align: right;
+  color: white;
+  background-image: none;
+  font-size:20px;
+  left:-6px;
+  cursor:default;
+}
+
+img.meatball {
+  z-index: 8;
+  opacity: 1.0;
+  height:20px;
+  width:20px;
+  top:44px;
+  left: 5px;
 }
 
 @keyframes App-logo-spin {
