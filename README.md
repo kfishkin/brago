@@ -20,6 +20,9 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+### 1.03 (7 April)
+  Champion detail page looks a little nicer.
+
 ### 1.02 (4 April)
   Added champion detail page, total stat computation, and supporting pages.
 
