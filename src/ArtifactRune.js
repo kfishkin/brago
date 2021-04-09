@@ -2,6 +2,7 @@ import React from 'react';
 import Formatter from './Formatter';
 import artifactSetsConfig from './config/artifact_sets.json';
 import artifactTypeConfig from './config/artifact_types.json';
+import factionConfig from './config/factions.json';
 import Numberer from './Numberer';
 
 /**
@@ -24,6 +25,11 @@ class ArtifactRune extends React.Component {
     artifactSetsConfig.sets.forEach((setSpec) => {
       if (setSpec.jsonKey) this.setSpecMap[setSpec.jsonKey] = setSpec;
       if (setSpec.key) this.setSpecMap[setSpec.key] = setSpec;
+    });
+    // and from faction key to faction spec
+    this.factionSpecMap = {};
+    factionConfig.factions.forEach((factionSpec) => {
+      this.factionSpecMap[factionSpec.key] = factionSpec;
     });
 
   }
@@ -51,6 +57,17 @@ class ArtifactRune extends React.Component {
           meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
             { "className": "artifact_card meatball" });
         }
+      }
+    }
+    // if it's an accessory, perhaps over-ride:
+    if (artifact.setKind === "None" && artifact.requiredFraction) {
+      // we need a prefix and a suffix.
+      var factionSpec = this.factionSpecMap[artifact.requiredFraction];
+      var prefix = factionSpec ? factionSpec.accessory_prefix : null;
+      var suffix = typeSpec ? typeSpec.faction_icon_suffix : null;
+      if (prefix && suffix) {
+        baseImg = <img src={prefix + suffix + ".png"}
+          alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
       }
     }
     var levelText = artifact.level ? ("+" + artifact.level) : "";

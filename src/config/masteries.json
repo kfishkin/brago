@@ -171,6 +171,7 @@
             "branch": "offense",
             "tier": 6,
             "label": "Giant Slayer",
+            "key": 500163,
             "img": "pix/masteries/offense/Giant_Slayer.png",
             "bonuses": []
         },

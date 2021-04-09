@@ -4,79 +4,92 @@
             "key": "BannerLords",
             "ordinality": 0,
             "label": "BannerLords",
-            "icon": "pix/factions/banner_lords.png"
+            "icon": "pix/factions/banner_lords.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/BannerLords"
         },
         {
             "key": "HighElves",
             "ordinality": 1,
             "label": "High Elves",
-            "icon": "pix/factions/high_elves.png"
+            "icon": "pix/factions/high_elves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/HighElves"
         },
         {
             "key": "SacredOrder",
             "ordinality": 2,
             "label": "The Sacred Order",
-            "icon": "pix/factions/sacred_order.png"
+            "icon": "pix/factions/sacred_order.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/SacredOrder"
         },
         {
             "key": "Barbarians",
             "ordinality": 3,
             "label": "Barbarians",
-            "icon": "pix/factions/barbarians.png"
+            "icon": "pix/factions/barbarians.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Barbarians"
         },
         {
             "key": "OgrynTribes",
             "ordinality": 4,
             "label": "Ogryn Tribes",
-            "icon": "pix/factions/ogryn_tribes.png"
+            "icon": "pix/factions/ogryn_tribes.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/OgrynTribes"
         },
         {
             "key": "LizardMen",
             "ordinality": 5,
             "label": "Lizardmen",
-            "icon": "pix/factions/lizardmen.png"
+            "icon": "pix/factions/lizardmen.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/LizardMen"
         },
         {
             "key": "Skinwalkers",
             "ordinality": 6,
             "label": "Skinwalkers",
-            "icon": "pix/factions/skinwalkers.png"
+            "icon": "pix/factions/skinwalkers.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Skinwalkers"
         },
         {
             "key": "Orcs",
             "ordinality": 7,
             "label": "Orcs",
-            "icon": "pix/factions/orcs.png"
+            "icon": "pix/factions/orcs.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Orcs"
         },
         {
             "key": "Demonspawn",
             "ordinality": 8,
             "label": "Demonspawn",
-            "icon": "pix/factions/demonspawn.png"
+            "icon": "pix/factions/demonspawn.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Demonspawn"
         },
         {
             "key": "UndeadHordes",
             "ordinality": 9,
             "label": "Undead Hordes",
-            "icon": "pix/factions/undead_hordes.png"
+            "icon": "pix/factions/undead_hordes.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/UndeadHordes"
         },
         {
             "key": "DarkElves",
             "ordinality": 10,
             "label": "Dark Elves",
-            "icon": "pix/factions/dark_elves.png"
+            "icon": "pix/factions/dark_elves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/DarkElves"
         },
         {
             "key": "KnightsRevenant",
             "ordinality": 11,
             "label": "Knight Revenant",
-            "icon": "pix/factions/knights_revenant.png"
+            "icon": "pix/factions/knights_revenant.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/KnightsRevenant"
         },
         {
             "key": "Dwarves",
             "ordinality": 12,
             "label": "Dwarves",
-            "icon": "pix/factions/dwarves.png"
+            "icon": "pix/factions/dwarves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Dwarves"
         },
         {
             "key": "Shadowkin",

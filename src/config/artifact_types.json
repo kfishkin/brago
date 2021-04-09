@@ -54,6 +54,7 @@
             "label": "Ring",
             "plural": "Rings",
             "icon": "pix/artifacts/ring.png",
+            "faction_icon_suffix": "_Ring",
             "isAccessory": true
         },
         {
@@ -62,6 +63,7 @@
             "label": "Amulet",
             "plural": "Amulets",
             "icon": "pix/artifacts/amulet.png",
+            "faction_icon_suffix": "_Pendant",
             "isAccessory": true
         },
         {
@@ -70,6 +72,7 @@
             "label": "Banner",
             "plural": "Banners",
             "icon": "pix/artifacts/banner.png",
+            "faction_icon_suffix": "_Banner",
             "isAccessory": true
         }
     ]
