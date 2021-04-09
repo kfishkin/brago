@@ -5,6 +5,7 @@
             "jsonKey": "Hp",
             "label": "Life",
             "icon": "life.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Life_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -19,6 +20,7 @@
             "jsonKey": "AttackPower",
             "label": "Offense",
             "icon": "off.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Offense_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -33,6 +35,7 @@
             "jsonKey": "Defense",
             "label": "Defense",
             "icon": "def.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Defense_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -47,6 +50,7 @@
             "jsonKey": "CriticalChance",
             "label": "Critical Rate",
             "icon": "cr.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Critical_Rate_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -61,6 +65,7 @@
             "jsonKey": "CriticalDamage",
             "label": "Crit Damage",
             "icon": "cd.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Berserker_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -75,6 +80,7 @@
             "jsonKey": "Accuracy",
             "label": "Accuracy",
             "icon": "acc.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Accuracy_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -89,6 +95,7 @@
             "jsonKey": "AttackSpeed",
             "label": "Speed",
             "icon": "spd.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Speed_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -103,6 +110,7 @@
             "jsonKey": "Resistance",
             "label": "Resistance",
             "icon": "res.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Resistance_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -117,6 +125,7 @@
             "jsonKey": "LifeDrain",
             "label": "Lifesteal",
             "icon": "steal.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Lifesteal_",
             "set_size": 4,
             "bonuses": []
         },
@@ -125,6 +134,7 @@
             "jsonKey": "DamageIncreaseOnHpDecrease",
             "label": "Fury",
             "icon": "fury.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Fury_",
             "set_size": 4,
             "bonuses": []
         },
@@ -133,6 +143,7 @@
             "jsonKey": "SleepChance",
             "label": "Daze",
             "icon": "daze.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Daze_",
             "set_size": 4,
             "bonuses": []
         },
@@ -141,6 +152,7 @@
             "jsonKey": "BlockHealChance",
             "label": "Cursed",
             "icon": "cursed.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Cursed_",
             "set_size": 4,
             "bonuses": []
         },
@@ -149,6 +161,7 @@
             "jsonKey": "FreezeRateOnDamageReceived",
             "label": "Frost",
             "icon": "frost.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Frost_",
             "set_size": 4,
             "bonuses": []
         },
@@ -157,6 +170,7 @@
             "jsonKey": "Stamina",
             "label": "Frenzy",
             "icon": "frenzy.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Frenzy_",
             "set_size": 4,
             "bonuses": []
         },
@@ -164,6 +178,7 @@
             "key": "regen",
             "jsonKey": "Heal",
             "label": "Regeneration",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Healing_",
             "icon": "regen.png",
             "set_size": 4,
             "bonuses": []
@@ -173,6 +188,7 @@
             "jsonKey": "BlockDebuff",
             "label": "Immunity",
             "icon": "immunity.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Immunity_",
             "set_size": 4,
             "bonuses": []
         },
@@ -181,6 +197,7 @@
             "jsonKey": "Shield",
             "label": "Shield",
             "icon": "shield.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Shield_",
             "set_size": 4,
             "bonuses": []
         },
@@ -189,6 +206,7 @@
             "jsonKey": "GetExtraTurn",
             "label": "Relentless",
             "icon": "relentless.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Relentless_",
             "set_size": 4,
             "bonuses": []
         },
@@ -197,6 +215,7 @@
             "jsonKey": "IgnoreDefense",
             "label": "Savage",
             "icon": "savage.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Savage_",
             "set_size": 4,
             "bonuses": []
         },
@@ -205,6 +224,7 @@
             "jsonKey": "DecreaseMaxHp",
             "label": "Destroy",
             "icon": "destroy.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Destroy_",
             "set_size": 4,
             "bonuses": []
         },
@@ -213,6 +233,7 @@
             "jsonKey": "StunChance",
             "label": "Stun",
             "icon": "stun.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Stun_",
             "set_size": 4,
             "bonuses": []
         },
@@ -221,6 +242,7 @@
             "jsonKey": "DotRate",
             "label": "Toxic",
             "icon": "toxic.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Toxic_",
             "set_size": 4,
             "bonuses": []
         },
@@ -229,6 +251,7 @@
             "jsonKey": "ProvokeChance",
             "label": "Taunting",
             "icon": "taunt.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Taunting_",
             "set_size": 4,
             "bonuses": []
         },
@@ -237,6 +260,7 @@
             "jsonKey": "Counterattack",
             "label": "Retaliation",
             "icon": "retal.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Retaliation_",
             "set_size": 4,
             "bonuses": []
         },
@@ -245,6 +269,7 @@
             "jsonKey": "CounterattackOnCrit",
             "label": "Avenging",
             "icon": "avenging.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Avenging_",
             "set_size": 4,
             "bonuses": []
         },
@@ -253,6 +278,7 @@
             "jsonKey": "AoeDamageDecrease",
             "label": "Stalwart",
             "icon": "stalwart.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Stalwart_",
             "set_size": 4,
             "bonuses": []
         },
@@ -261,6 +287,7 @@
             "jsonKey": "CooldownReductionChance",
             "label": "Reflex",
             "icon": "reflex.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Reflex_",
             "set_size": 4,
             "bonuses": []
         },
@@ -269,6 +296,7 @@
             "jsonKey": "CriticalHealMultiplier",
             "label": "Curing",
             "icon": "cure.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Curing_",
             "set_size": 4,
             "bonuses": []
         },
@@ -277,6 +305,7 @@
             "label": "Cruel",
             "jsonKey": "AttackPowerAndIgnoreDefense",
             "icon": "cruel.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Warrior_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -291,6 +320,7 @@
             "jsonKey": "HpAndHeal",
             "label": "Immortal",
             "icon": "imm.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Immortal_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -304,6 +334,7 @@
             "key": "divoff",
             "jsonKey": "ShieldAndAttackPower",
             "label": "Divine Offense",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndAttackPower_",
             "icon": "divoff.png",
             "set_size": 2,
             "bonuses": [
@@ -319,6 +350,7 @@
             "jsonKey": "ShieldAndCriticalChance",
             "label": "Divine Crit Rate",
             "icon": "divcr.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndCriticalChance_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -333,6 +365,7 @@
             "jsonKey": "ShieldAndHp",
             "label": "Divine Life",
             "icon": "divlife.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndHp_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -347,6 +380,7 @@
             "jsonKey": "ShieldAndSpeed",
             "label": "Divine Speed",
             "icon": "divspd.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndSpeed_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -361,6 +395,7 @@
             "jsonKey": "UnkillableAndSpdAndCrDmg",
             "label": "Swift Parry",
             "icon": "parry.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/UnkillableAndSpdAndCrDmg_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -380,6 +415,7 @@
             "jsonKey": "BlockReflectDebuffAndHpAndDef",
             "label": "Deflection",
             "icon": "deflect.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/BlockReflectDebuffAndHpAndDef_",
             "set_size": 4,
             "bonuses": [
                 {

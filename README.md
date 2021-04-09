@@ -20,6 +20,9 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+## 1.04 (9 April)
+Thanks to [PatPat1567's RaidShadow Legends Resources](https://github.com/PatPat1567/RaidShadowLegendsData), many champions now have avatar images, and most armor sets have better pictures on the 'Champions Detail' page.
+
 ### 1.03 (7 April)
   Champion detail page looks a little nicer.
 

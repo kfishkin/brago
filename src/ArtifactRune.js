@@ -43,8 +43,14 @@ class ArtifactRune extends React.Component {
     if (artifact.setKind && artifact.setKind !== "None") {
       var spec = this.setSpecMap[artifact.setKind];
       if (spec != null) {
-        meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
-          { "className": "artifact_card meatball" });
+        if (spec.piece_icon_base) { // there is an icon for this piece, including the 'meatball' (the armor set)
+          msg = msg + " of " + spec.label;
+          baseImg = <img src={spec.piece_icon_base + typeSpec.label + ".png"}
+            alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
+        } else {
+          meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
+            { "className": "artifact_card meatball" });
+        }
       }
     }
     var levelText = artifact.level ? ("+" + artifact.level) : "";

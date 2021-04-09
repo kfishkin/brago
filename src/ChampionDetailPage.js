@@ -533,6 +533,21 @@ class ChampionDetailPage extends React.Component {
     return (<div><p><b>Known Masteries:</b></p><ul className="mastery_list">{elements}</ul></div >);
   }
 
+  onError(evt, tryNum, imgUrl) {
+    console.log("tryNum = " + tryNum);
+    // don't infinite loop.
+    // 0 --> 1 replace https with http
+    // after 1, stop
+    if (tryNum >= 1) {
+      return tryNum;
+    }
+    var newUrl = imgUrl.replace("https", "http");
+    if (newUrl !== imgUrl) {
+      evt.target.src = newUrl;
+    }
+    return tryNum + 1;
+  }
+
   renderChamp(champ) {
     var formatter = this.formatter;
     var numberer = this.numberer;
@@ -540,6 +555,12 @@ class ChampionDetailPage extends React.Component {
       return null;
     }
     var parts = [];
+    var imgName = champ.name.replace(/ /g, "_");
+    //var imgUrl = "https://ayumilove.net/files/games/raid_shadow_legends/avatar/" + imgName + ".png";
+    var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
+    var tryNum = 0;
+
+    parts.push(<img className="champion_avatar" alt="avatar" title={champ.name + " avatar (from PatPat1567 on github)"} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
     parts.push(<span>{champ.rarity}</span>);
     parts.push(<span> {champ.element}</span>);
     parts.push(<span> {numberer.RankFromStars(champ.grade)} *</span>);
@@ -549,6 +570,7 @@ class ChampionDetailPage extends React.Component {
     if (champ.inStorage) {
       parts.push(<span> (Vault)</span>);
     }
+
     if (champ.marker && champ.marker !== "None") {
       var spec = this.markerFromKey(champ.marker);
       if (spec) {

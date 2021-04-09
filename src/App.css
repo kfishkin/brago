@@ -191,6 +191,10 @@ img.meatball {
   left: 5px;
 }
 
+img.champion_avatar {
+  margin-right: 1em;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
