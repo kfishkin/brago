@@ -157,6 +157,7 @@
             "branch": "offense",
             "tier": 6,
             "label": "Warmaster",
+            "key": 500161,
             "img": "pix/masteries/offense/Warmaster.png",
             "bonuses": []
         },

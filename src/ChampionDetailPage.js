@@ -327,7 +327,7 @@ class ChampionDetailPage extends React.Component {
     var affinity = curChamp['element'].toLowerCase();
     const dataByRows = [
     ];
-    var arenaBonuses = {};
+    var arenaBonuses = [];
     if (this.props.arenaLevel && this.props.arenaLevel.bonuses
       && this.props.arenaLevel.bonuses.length > 0) {
       arenaBonuses = this.props.arenaLevel.bonuses;
@@ -398,7 +398,7 @@ class ChampionDetailPage extends React.Component {
         : '';
 
       // arena bonus
-      if (arenaBonuses) {
+      if (arenaBonuses && arenaBonuses.some) {
         arenaBonuses.some((bonus) => {
           if (bonus.kind === key) {
             var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));

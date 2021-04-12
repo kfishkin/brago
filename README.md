@@ -20,6 +20,10 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+## 1.05 (12 April)
+Fixed bug where Champion detail page would crash if you'd never defined
+Great Hall bonuses. Thanks to @cmarabate for the report!
+
 ## 1.04 (9 April)
 Thanks to [PatPat1567's RaidShadow Legends Resources](https://github.com/PatPat1567/RaidShadowLegendsData), many champions now have avatar images, and most armor sets have better pictures on the 'Champions Detail' page.
 
