@@ -19,7 +19,7 @@ class NavMenu extends React.Component {
     if (!champions || champions.length === 0) {
       return <div>View Champions</div>
     }
-    return <div status="gtg">View {champions.length} Champions</div>
+    return <div status="gtg">View some Champions</div>
   }
   artifactsText(artifacts) {
     var numSeen = 0;

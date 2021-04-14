@@ -1,7 +1,6 @@
 
 import Numberer from './Numberer';
 import {
-    DIMENSION_NONE,
     DIMENSION_RANK,
     DIMENSION_RARITY,
     DIMENSION_LEVEL,
@@ -97,6 +96,14 @@ class Comparer {
         var aName = (c1 && c1.name) ? c1.name : "";
         var bName = (c2 && c2.name) ? c2.name : "";
         return aName.localeCompare(bName);
+    }
+
+    Marker(m1, m2) {
+        if (!m1 && !m2) return 0;
+        if (!m1 || m1 === "None") return 1;
+        if (!m2 || m2 === "None") return -1;
+        return m1.toLowerCase().localeCompare(m2.toLowerCase());
+
     }
 
 

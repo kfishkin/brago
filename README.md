@@ -20,6 +20,14 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+## 1.06 (14 April)
+Revamped the 'Champions' screen, now you can filter your champions
+in various ways, e.g. to find ones with a missing artifact, or
+with markers, etc.
+
+Also a lot of cosmetic improvements, especially on displaying
+artifacts.
+
 ## 1.05 (12 April)
 Fixed bug where Champion detail page would crash if you'd never defined
 Great Hall bonuses. Thanks to @cmarabate for the report!

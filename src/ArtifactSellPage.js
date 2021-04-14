@@ -323,7 +323,7 @@ class ArtifactSellPage extends React.Component {
 
     const divStyle = { "textAlign": "left" };
     return (<div style={divStyle}>
-      <p><b>Checks to Run:</b></p>
+      <p><b>Show Artifacts that pass <i>any</i> of these checks:</b></p>
       <hr />
       { rows}
       <hr />

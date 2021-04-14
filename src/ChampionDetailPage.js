@@ -9,6 +9,7 @@ import greatHallConfig from './config/great_hall.json';
 import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
 import ArtifactRune from './ArtifactRune';
+import MarkerRune from './MarkerRune';
 import { Row, Col } from 'antd';
 
 // props:
@@ -572,7 +573,8 @@ class ChampionDetailPage extends React.Component {
     if (champ.marker && champ.marker !== "None") {
       var spec = this.markerFromKey(champ.marker);
       if (spec) {
-        parts.push(<span>. Marker: {formatter.Image(spec.icon, spec.label, { "className": "marker_icon" })}</span>);
+        parts.push(<span>. Marker:</span>);
+        parts.push(<MarkerRune marker={champ.marker} />);
       }
     }
 

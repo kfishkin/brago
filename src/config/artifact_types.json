@@ -55,6 +55,8 @@
             "plural": "Rings",
             "icon": "pix/artifacts/ring.png",
             "faction_icon_suffix": "_Ring",
+            "rankNeeded": 4,
+            "ascensionsNeeded": 0,
             "isAccessory": true
         },
         {
@@ -64,6 +66,8 @@
             "plural": "Amulets",
             "icon": "pix/artifacts/amulet.png",
             "faction_icon_suffix": "_Pendant",
+            "rankNeeded": 5,
+            "ascensionsNeeded": 5,
             "isAccessory": true
         },
         {
@@ -73,7 +77,9 @@
             "plural": "Banners",
             "icon": "pix/artifacts/banner.png",
             "faction_icon_suffix": "_Banner",
-            "isAccessory": true
+            "isAccessory": true,
+            "rankNeeded": 6,
+            "ascensionsNeeded": 6
         }
     ]
 }

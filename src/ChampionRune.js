@@ -1,17 +1,13 @@
 import React from 'react';
-import Formatter from './Formatter';
-import artifactTypeConfig from './config/artifact_types.json';
 
 /**
  * Shows the 'rune' for a champion (image + title)
+ * In the future, can be 'decorated' with affinity, stars, level, etc.
  * 
  * props:
  * champion
  */
 class ChampionRune extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     var champion = this.props.champion;
     if (!champion || !champion.name) return null;

@@ -39,11 +39,28 @@ class HelpPage extends React.Component {
 
 
             </ul>
-            <h2 id="view_champions">The 'View Champions' screen</h2>
+            <h2 id="view_champions">The 'View (some) Champions' screen</h2>
             <p>
-                This screen isn't really very useful, it just dumps out
-                all the info on your champions that was in the JSON. At this point
-                it's more just for debugging.
+                This screen lets you view some champions - those who pass
+                some filters, where you indicate which filters you are interested in.
+        </p>
+            <p>
+                The default filter is to only show champions who aren't in the vault. So for example, you'll see initially
+                something like this:
+        </p>
+            <img src="pix/help/champions_start.png" alt="champions who aren't in the vault" />
+            <p>
+                The filters are hopefully self-explanatory, and some have tooltips that explain what they do in
+                more detail if you hover over them. For example, the 'under-ascended' hover says
+                'fewer ascensions than rank, rank &ge; 5'. If I turn that filter on,
+                it shows that in my case 'Longbeard' is a 5 star champion who I've only
+                ascended to level 3.
+        </p>
+            <img src="pix/help/champions_under_ascended.png" alt="champions who are under-ascended" />
+            <p>
+                Note the 'why' column, which can give more detail from the filter.
+                By the way, if you have more than one filter on, presently it will only
+            give you extra detail from the <i>last</i> filter in the list at the top.
         </p>
             <h2 id="view_artifacts">The 'View Artifacts' screen</h2>
             <p>
