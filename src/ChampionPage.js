@@ -15,31 +15,31 @@ class ChampionPage extends React.Component {
     // and returns a string indicating why to display it - null if not.
     var checkers = [];
     var id = 0;
-    checkers.push({ id: id++, label: "In the vault", fn: this.DisplayInVault });
-    checkers.push({ id: id++, label: "NOT in the vault", fn: this.DisplayNotInVault });
-    checkers.push({ id: id++, label: "has a marker", fn: this.DisplayHasMarker });
-    checkers.push({ id: id++, label: "has a dupe", fn: this.DisplayHasDupe });
+    checkers.push({ id: id++, label: "In the vault", fn: this.CheckInVault });
+    checkers.push({ id: id++, label: "NOT in the vault", fn: this.CheckNotInVault });
+    checkers.push({ id: id++, label: "has a marker", fn: this.CheckHasMarker });
+    checkers.push({ id: id++, label: "has a dupe", fn: this.CheckHasDupe });
     checkers.push({
       id: id++, label: "under-ascended",
-      ttip: "fewer ascensions than rank, rank >= 5", fn: this.DisplayUnderAscended
+      ttip: "fewer ascensions than rank, rank >= 5", fn: this.CheckUnderAscended
     });
     checkers.push({
       id: id++, label: "missing armor",
-      ttip: "empty armor slot, rank >= 4", fn: this.DisplayMissingArmor
+      ttip: "empty armor slot, rank >= 4", fn: this.CheckMissingArmor
     });
     checkers.push({
       id: id++, label: "inferior gear",
-      ttip: "gear 2 or more stars below the champion", fn: this.DisplayInferiorGear
+      ttip: "gear 2 or more stars below the champion", fn: this.CheckInferiorGear
     });
     checkers.push({
       id: id++, label: "missing accessory",
-      ttip: "fillable accessory slot", fn: this.DisplayMissingAccessory
+      ttip: "fillable accessory slot", fn: this.CheckMissingAccessory
     });
 
 
     var checkedByCheckerId = {};
     checkers.forEach((checker) => {
-      var v = (checker.fn === this.DisplayNotInVault);
+      var v = (checker.fn === this.CheckNotInVault);
       checkedByCheckerId[checker.id] = v;
     });
     this.state = {
@@ -49,23 +49,23 @@ class ChampionPage extends React.Component {
   }
   // these guys can't refer to 'this', so extra state is passed
   // in 2nd param.
-  DisplayInVault(champion) {
+  CheckInVault(champion) {
     return (champion && champion.inStorage) ? "in the vault" : null;
   }
-  DisplayNotInVault(champion) {
+  CheckNotInVault(champion) {
     return (champion && !champion.inStorage) ? "NOT in the vault" : null;
   }
-  DisplayHasMarker(champion) {
+  CheckHasMarker(champion) {
     return (champion && champion.marker && champion.marker.toLowerCase() !== "none") ? ("marker: " + champion.marker) : null;
   }
-  DisplayHasDupe(champion, extra) {
+  CheckHasDupe(champion, extra) {
     if (!champion || !champion.name) return null;
     var key = champion.name.toLowerCase();
     var championCounts = extra.championCounts;
     var count = (key in championCounts) ? championCounts[key] : 0;
     return (count > 1) ? ("one of " + count) : null;
   }
-  DisplayUnderAscended(champion) {
+  CheckUnderAscended(champion) {
     if (!champion || !champion.grade) return null;
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
@@ -73,7 +73,7 @@ class ChampionPage extends React.Component {
     return (rank >= 5) && (rank > ascensions) ?
       ("Rank " + rank + ", but only " + ascensions + " ascensions") : null;
   }
-  DisplayMissingArmor(champion, extra) {
+  CheckMissingArmor(champion, extra) {
     if (!champion || !champion.grade) return null;
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
@@ -94,7 +94,7 @@ class ChampionPage extends React.Component {
     }
     return null;
   }
-  DisplayMissingAccessory(champion, extra) {
+  CheckMissingAccessory(champion, extra) {
     if (!champion || !champion.grade || !champion.awakenLevel) return null;
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
@@ -131,7 +131,7 @@ class ChampionPage extends React.Component {
     return why;
   }
 
-  DisplayInferiorGear(champion, extra) {
+  CheckInferiorGear(champion, extra) {
     if (!champion || !champion.grade) return null;
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
@@ -343,7 +343,8 @@ class ChampionPage extends React.Component {
         var rowData = {
           key: champion.id,
           id: champion.id,
-          // sometimes we get champions with no name, odd
+          // sometimes we get champions with no name, odd.
+          // I think is for new champions.
           champion: champion,
           faction: champion.fraction,
           grade: numberer.RankFromStars(champion.grade),
