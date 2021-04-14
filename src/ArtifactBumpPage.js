@@ -1,7 +1,15 @@
 import React from 'react';
 import { Table } from 'antd';
+import Comparer from './Comparer';
 import Numberer from './Numberer';
 import Formatter from './Formatter';
+import ArtifactDimensionChooser from './ArtifactDimensionChooser';
+import ArtifactRune from './ArtifactRune';
+import ChampionRune from './ChampionRune';
+
+import {
+  DIMENSION_NONE,
+} from './ArtifactDimensionChooser';
 
 class ArtifactBumpPage extends React.Component {
   constructor(props) {
@@ -17,9 +25,24 @@ class ArtifactBumpPage extends React.Component {
       [2, 5, 40, 270], // 5 star
       [3, 10, 65, 340] // 6 star
     ];
+    var comparer = new Comparer();
+    var artifactSorters = comparer.makeArtifactSorters();
+
     this.state = {
-      'vpGains': vpGains
+      'vpGains': vpGains,
+      artifactDimension: DIMENSION_NONE,
+      artifactSorters: artifactSorters,
+      'numberer': new Numberer(),
+      'comparer': comparer
     }
+
+  }
+
+  onDimensionChange(newDimension) {
+    if (newDimension === this.state.artifactDimension) {
+      return;
+    }
+    this.setState({ artifactDimension: newDimension });
   }
 
   victoryPointsFor(rank, level) {
@@ -29,6 +52,16 @@ class ArtifactBumpPage extends React.Component {
     var vp = row[nextLevel - 1];
     return vp;
   }
+  compareArtifacts(art1, art2) {
+    if (!art1 && !art2) return 0;
+    if (!art1) return 1;
+    if (!art2) return -1;
+    var dimension = this.state.artifactDimension;
+    if (!(dimension in this.state.artifactSorters)) {
+      return 0;
+    }
+    return this.state.artifactSorters[dimension](art1, art2)
+  }
 
   render() {
     if (!this.props.artifacts || this.props.artifacts.length === 0) {
@@ -36,76 +69,35 @@ class ArtifactBumpPage extends React.Component {
     }
     var numberer = new Numberer();
     var formatter = new Formatter();
+    var runeHeader = <ArtifactDimensionChooser initialValue={this.state.artifactDimension}
+      reporter={(value) => this.onDimensionChange(value)} />;
     const columns = [
       {
-        title: 'Rank',
-        dataIndex: 'rank',
-        key: 'rank',
-        sorter: (a, b) => a.rank - b.rank,
-      },
-      {
-        title: 'Rarity',
-        dataIndex: 'rarity',
-        key: 'rarity',
-        sorter: (a, b) => numberer.Rarity(a.rarity) - numberer.Rarity(b.rarity),
-      },
-      {
-        title: 'Kind',
-        dataIndex: 'kind',
-        key: 'kind',
-        sorter: (a, b) => numberer.ArtifactKind(a.kind) - numberer.ArtifactKind(b.kind)
-      },
-      {
-        title: 'Set',
-        dataIndex: 'setKind',
-        key: 'setKind',
-        sorter: (a, b) => a.setKind.localeCompare(b.setKind)
-      },
-      {
-        title: 'Level',
-        dataIndex: 'level',
-        key: 'level',
-        sorter: (a, b) => a.level - b.level
-      },
-      {
-        title: 'Main Stat',
-        dataIndex: 'primary',
-        key: 'primary',
-        render: (stats, record, index) => (
-          <div>{formatter.Stat(stats)}</div>
-        )
+        title: runeHeader,
+        dataIndex: 'artifact',
+        key: 'artifact',
+        sorter: (a, b) => this.compareArtifacts(a.artifact, b.artifact),
+        render: (artifact) => {
+          return <ArtifactRune artifact={artifact} />;
+        },
       },
       {
         title: 'SubStats',
         dataIndex: 'subStats',
         key: 'subStats',
-        render: (subStats, record, index) => (
+        render: (subStats) => (
           <div>{formatter.Substats(subStats)}</div>
         )
-      },
-      {
-        title: 'Faction',
-        dataIndex: 'requiredFraction',
-        key: 'faction',
-        render: (factionKey) => formatter.Faction(factionKey),
-        sorter: (a, b) => {
-          var aFaction = a.requiredFraction ? a.requiredFraction : "";
-          var bFaction = b.requiredFraction ? b.requiredFraction : "";
-          return aFaction.localeCompare(bFaction);
-        }
       },
       {
         title: 'Wearer',
         dataIndex: 'wearer',
         key: 'wearer',
-        render: (champion) => (champion && champion.name) ? champion.name : '',
+        render: (champion) => {
+          return <ChampionRune champion={champion} />
+        },
         sorter: (a, b) => {
-          if (!a.wearer && !b.wearer) return 0;
-          // sorting on id works, but is non-intuitive.
-          // instead use name.
-          var aName = (a && a.wearer && a.wearer.name) ? a.wearer.name : "";
-          var bName = (b && b.wearer && b.wearer.name) ? b.wearer.name : "";
-          return aName.localeCompare(bName);
+          return this.state.comparer.Champions(a.wearer, b.wearer);
         }
       }
 
@@ -119,18 +111,11 @@ class ArtifactBumpPage extends React.Component {
         if ((artifact.level % 4) !== 0) {
           var rowData = {
             key: artifact.id,
-            rank: numberer.Rank(artifact.rank),
-            rarity: artifact.rarity,
-            kind: artifact.kind,
-            setKind: formatter.SetName(artifact.setKind),
-            level: artifact.level,
-            requiredFraction: artifact.requiredFraction,
-            primary: artifact.primaryBonus,
             subStats: artifact.secondaryBonuses,
-            wearer: artifact.wearer
-
+            wearer: artifact.wearer,
+            artifact: artifact
           };
-          vpGain += this.victoryPointsFor(rowData.rank, rowData.level);
+          vpGain += this.victoryPointsFor(numberer.Rank(artifact.rank), artifact.level);
           dataByRows.push(rowData);
         }
       }

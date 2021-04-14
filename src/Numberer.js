@@ -11,6 +11,9 @@ class Numberer {
         });
     }
     Rank(rank) {
+        if (typeof (rank) === "number") {
+            return rank;
+        }
         var map = {
             'zero': 0,
             'one': 1,

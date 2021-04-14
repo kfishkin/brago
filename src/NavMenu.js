@@ -7,6 +7,7 @@ import greatHallConfig from './config/great_hall.json';
 // greatHallData - array of great hall data, empty if none.
 // lockedSlots - which types of armor are locked
 // eligibleRanks - which ranks are eligible
+// fileName - last loaded fileName
 class NavMenu extends React.Component {
   arenaText(arenaLevel) {
     if (!arenaLevel) {
@@ -56,7 +57,7 @@ class NavMenu extends React.Component {
   render() {
     return (
       <Menu theme="light" mode="inline">
-        <Menu.Item onClick={() => this.props.handleShowPage('load json')}>Load JSON</Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('load json')}><span>Load JSON</span></Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champions')}>
           {this.championsText(this.props.champions)}
         </Menu.Item>
@@ -64,10 +65,10 @@ class NavMenu extends React.Component {
           {this.artifactsText(this.props.artifacts)}
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('bump artifacts')}>
-          Check for artifacts to bump
+          Artifacts to bump
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('sell artifacts')}>
-          Check for artifacts to sell
+          Artifacts to sell
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('arena')}>Arena Tier</Menu.Item>

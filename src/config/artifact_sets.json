@@ -435,6 +435,7 @@
             "jsonKey": "HpAndDefence",
             "label": "Resilience",
             "icon": "resil.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/kfishkin/RaidShadowLegendsData/images/images/ItemSets/Resilience_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -454,6 +455,7 @@
             "jsonKey": "AccuracyAndSpeed",
             "label": "Perception",
             "icon": "percep.png",
+            "piece_icon_base": "https://raw.githubusercontent.com/kfishkin/RaidShadowLegendsData/images/images/ItemSets/Perception_",
             "set_size": 2,
             "bonuses": [
                 {

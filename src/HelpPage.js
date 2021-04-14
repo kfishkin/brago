@@ -51,9 +51,8 @@ class HelpPage extends React.Component {
                 all the info on your artifacts that was in the JSON. At this point
                 it's more just for debugging.
         </p>
-            <h2 id="to_bump">The 'Check for artifacts to bu...' screen</h2>
+            <h2 id="to_bump">The 'Artifacts to bump' screen</h2>
             <p>
-                The 'bu...' is the word 'bumped', clipped.
                 When you're in an artifact enhancement event, you only
                 get points when an artifact is enhanced to a level that's
                 a multiple of 4 (4,8,12,16).
@@ -74,14 +73,14 @@ class HelpPage extends React.Component {
             </p>
             <p>
                 Then it shows you the candidates. For example, in this case, the first candidate
-                is a 5* Rare Destroy helmet, that's at level 11.
+                is a 5* Rare Demonspawn ring, that's at level 11.
             </p>
             <p>
-                You can sort by every column that has the little up-and-down
-                arrows by it. So for example you could group them by what 'Set'
-                they're from, or what Artifact slot they take.
+                The dropdown 'Sort on' lets you specify which attribute of the artifacts you want to
+                sort on (assuming you do). You can sort by rank, level, faction, rarity, etc.
+                Specify that with the drop-down and then click on the little arrows to sort.
             </p>
-            <h2 id="to_sell">The 'Check for artifacts to sell' screen</h2>
+            <h2 id="to_sell">The 'Artifacts to sell' screen</h2>
             <p>
                 If you're like me, you're always running out of room for your Artifacts.
                 This screen helps you with that. It shows a bunch of heuristics that I've collected
@@ -109,8 +108,8 @@ class HelpPage extends React.Component {
                 <img src="pix/help/sell_1.png" alt="1 check on" />
             </p>
             <p>
-                This one check found 344 possible artifacts to sell for me. The first two
-                are a 6* Epic 'Divine Speed' Gloves, and a 5* Epic Immortal Gloves.
+                This one check found 332 possible artifacts to sell for me. The first two
+                are a 6* Epic 'Divine Speed' Weapon, and a 5* Epic Immortal Gloves.
             </p>
             <p>
                 You can sort this output on any column - for example, you may want this grouped by

@@ -97,7 +97,7 @@ class ArtifactFilterer {
             if (!secondaryIsShadowed) return false;
 
         });
-        console.log(JSON.stringify(a1) + ' is shadowed by ' + JSON.stringify(a2));
+        //console.log(JSON.stringify(a1) + ' is shadowed by ' + JSON.stringify(a2));
         return true;
     }
 

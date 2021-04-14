@@ -39,6 +39,8 @@ class ArtifactRune extends React.Component {
     // the type and the rarity can go together in the image:
     var msg = artifact.rarity + " " + typeSpec.label;
     var starsText = this.numberer.Rank(artifact.rank) + "*";
+    const STAR_IMAGE_SRC = "https://github.com/PatPat1567/RaidShadowLegendsData/blob/master/images/Misc/regular_star.png?raw=true";
+    var starsImg = [<span key="0">{this.numberer.Rank(artifact.rank)}</span>, <img key="1" className="artifact_star" src={STAR_IMAGE_SRC} alt={starsText} title={starsText} />];
     msg = starsText + " " + msg;
     // then a container div wrapping the image and stuff atop it
     var containerDiv;
@@ -48,12 +50,16 @@ class ArtifactRune extends React.Component {
     var meatball = null;
     if (artifact.setKind && artifact.setKind !== "None") {
       var spec = this.setSpecMap[artifact.setKind];
+      if (spec === null) {
+        console.log('no spec for kind ' + artifact.setKind);
+      }
       if (spec != null) {
+        msg = msg + " of " + spec.label;
         if (spec.piece_icon_base) { // there is an icon for this piece, including the 'meatball' (the armor set)
-          msg = msg + " of " + spec.label;
           baseImg = <img src={spec.piece_icon_base + typeSpec.label + ".png"}
             alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
         } else {
+          baseImg = this.formatter.Image(typeSpec.icon, msg, { "className": "artifact_icon", "rarity": artifact.rarity });
           meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
             { "className": "artifact_card meatball" });
         }
@@ -65,6 +71,9 @@ class ArtifactRune extends React.Component {
       var factionSpec = this.factionSpecMap[artifact.requiredFraction];
       var prefix = factionSpec ? factionSpec.accessory_prefix : null;
       var suffix = typeSpec ? typeSpec.faction_icon_suffix : null;
+      if (factionSpec.label) {
+        msg = msg + " (" + factionSpec.label + ")";
+      }
       if (prefix && suffix) {
         baseImg = <img src={prefix + suffix + ".png"}
           alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
@@ -72,7 +81,7 @@ class ArtifactRune extends React.Component {
     }
     var levelText = artifact.level ? ("+" + artifact.level) : "";
     var level = <div className="artifact_card level_overlay">{levelText}</div>
-    var stars = <div className="artifact_card stars_overlay">{starsText}</div>
+    var stars = <div className="artifact_card stars_overlay">{starsImg}</div>
     containerDiv = <div className="container">
       {baseImg}
       {stars}
@@ -85,12 +94,6 @@ class ArtifactRune extends React.Component {
       {containerDiv}
       {toRight}
     </div>
-    /*
-  if (artifact.primaryBonus) {
-    parts.push(<span key="5"> {this.formatter.Bonus(artifact.primaryBonus)}</span>)
-  }
-  return <span>{parts}</span>
-  */
   }
 }
 

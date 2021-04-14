@@ -30,7 +30,7 @@ class WhichSetsComponent extends React.Component {
 
     artifactSetsConfig.sets.some((setConfig) => {
       if (!('jsonKey' in setConfig)) {
-        console.log('no json key for set ' + setConfig.label);
+        //console.log('no json key for set ' + setConfig.label);
         return false;
       }
       var key = setConfig.jsonKey;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'antd';
+import Comparer from './Comparer';
 import Numberer from './Numberer';
 import Formatter from './Formatter';
 
@@ -10,30 +11,31 @@ class ArtifactPage extends React.Component {
     }
     var numberer = new Numberer();
     var formatter = new Formatter();
+    var comparer = new Comparer();
     const columns = [
       {
         title: 'Rank',
         dataIndex: 'rank',
         key: 'rank',
-        sorter: (a, b) => a.rank - b.rank,
+        sorter: (a, b) => comparer.ArtifactByRank(a, b),
       },
       {
         title: 'Rarity',
         dataIndex: 'rarity',
         key: 'rarity',
-        sorter: (a, b) => numberer.Rarity(a.rarity) - numberer.Rarity(b.rarity),
+        sorter: (a, b) => comparer.ArtifactByRarity(a, b),
       },
       {
         title: 'Kind',
         dataIndex: 'kind',
         key: 'kind',
-        sorter: (a, b) => numberer.ArtifactKind(a.kind) - numberer.ArtifactKind(b.kind)
+        sorter: (a, b) => comparer.ArtifactByKind(a, b)
       },
       {
         title: 'Set',
         dataIndex: 'setKind',
         key: 'setKind',
-        sorter: (a, b) => a.setKind.localeCompare(b.setKind)
+        sorter: (a, b) => comparer.ArtifactBySetKind(a, b)
       },
       {
         title: 'Level',
@@ -73,12 +75,7 @@ class ArtifactPage extends React.Component {
         key: 'wearer',
         render: (champion) => (champion && champion.name) ? champion.name : '',
         sorter: (a, b) => {
-          if (!a.wearer && !b.wearer) return 0;
-          // sorting on id works, but is non-intuitive.
-          // instead use name.
-          var aName = (a && a.wearer && a.wearer.name) ? a.wearer.name : "";
-          var bName = (b && b.wearer && b.wearer.name) ? b.wearer.name : "";
-          return aName.localeCompare(bName);
+          return comparer.Champions(a.wearer, b.wearer);
         }
       }
 

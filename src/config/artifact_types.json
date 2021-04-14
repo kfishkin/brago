@@ -67,7 +67,7 @@
             "isAccessory": true
         },
         {
-            "ordinality": 6,
+            "ordinality": 8,
             "key": "banner",
             "label": "Banner",
             "plural": "Banners",

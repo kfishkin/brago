@@ -353,7 +353,6 @@ class ChampionDetailPage extends React.Component {
     this.computeMasteryBonusInfo(masteryIdsAsSet, masteryBonusInfo);
 
     attributesConfig.attributes.forEach((attrSpec) => {
-
       var key = attrSpec.key;
       var rowData = { key: key };
       // base stats.
@@ -366,11 +365,11 @@ class ChampionDetailPage extends React.Component {
       var bonusExplanations = [];
       if (key in artBonusInfo) {
         var bonusTuples = artBonusInfo[key];
-        bonusTuples.forEach((tuple) => {
+        bonusTuples.forEach((tuple, index) => {
           var bonus = tuple[0];
           var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
           artAmount += amt;
-          bonusExplanations.push(<li>{amt} from {tuple[1]}</li>)
+          bonusExplanations.push(<li key={index}>{amt} from {tuple[1]}</li>)
         });
       }
       total += artAmount;
@@ -383,11 +382,11 @@ class ChampionDetailPage extends React.Component {
       artAmount = 0;
       if (key in masteryBonusInfo) {
         bonusTuples = masteryBonusInfo[key];
-        bonusTuples.forEach((tuple) => {
+        bonusTuples.forEach((tuple, index) => {
           var bonus = tuple[0];
           var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
           artAmount += amt;
-          bonusExplanations.push(<li>{amt} from {tuple[1]}</li>)
+          bonusExplanations.push(<li key={index}>{amt} from {tuple[1]}</li>)
         });
       }
       // do the above again for amplifications.
@@ -534,7 +533,7 @@ class ChampionDetailPage extends React.Component {
   }
 
   onError(evt, tryNum, imgUrl) {
-    console.log("tryNum = " + tryNum);
+    //console.log("tryNum = " + tryNum);
     // don't infinite loop.
     // 0 --> 1 replace https with http
     // after 1, stop
@@ -556,11 +555,10 @@ class ChampionDetailPage extends React.Component {
     }
     var parts = [];
     var imgName = champ.name.replace(/ /g, "_");
-    //var imgUrl = "https://ayumilove.net/files/games/raid_shadow_legends/avatar/" + imgName + ".png";
     var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
     var tryNum = 0;
 
-    parts.push(<img className="champion_avatar" alt="avatar" title={champ.name + " avatar (from PatPat1567 on github)"} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
+    parts.push(<img className="champion_avatar" alt="avatar" title={champ.name} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
     parts.push(<span>{champ.rarity}</span>);
     parts.push(<span> {champ.element}</span>);
     parts.push(<span> {numberer.RankFromStars(champ.grade)} *</span>);

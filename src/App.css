@@ -158,15 +158,20 @@ div.artifact_rune div.container {
 
 div.stars_overlay {
   z-index: 3;
-  top: 0px;
+  top: 1px;
   opacity: 1.0;
   height:20px;
   text-align: left;
   color: gold;
   background-image: none;
   font-size:18px;
-  left: 5px;
+  left: 8px;
   cursor:default;
+}
+
+img.artifact_star {
+  height:16px;
+  vertical-align: baseline;
 }
 
 div.level_overlay {
@@ -193,6 +198,11 @@ img.meatball {
 
 img.champion_avatar {
   margin-right: 1em;
+}
+
+img.champion_avatar_small {
+  height: 64px;
+  object-fit: contain;
 }
 
 @keyframes App-logo-spin {

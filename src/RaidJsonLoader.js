@@ -10,7 +10,7 @@ class RaidJsonLoader extends React.Component {
     }
   }
 
-  handleFileRead(e) {
+  handleFileRead(e, fileName) {
     var content = this.state.fileReader.result;
     this.setState({ fileReader: null, statusMessage: "done loading" });
     var obj = null;
@@ -21,7 +21,7 @@ class RaidJsonLoader extends React.Component {
       return;
     }
     this.setState({ fileReader: null, errorMessage: null });
-    this.props.reporter(obj.artifacts, obj.heroes);
+    this.props.reporter(obj.artifacts, obj.heroes, fileName);
     var msg = "data loaded";
     this.setState({ statusMessage: msg });
   }
@@ -31,12 +31,12 @@ class RaidJsonLoader extends React.Component {
   }
 
   handleFileChosen(fileObj) {
-    //console.log('fileName = ' + fileObj);
     var fileReader = new FileReader();
-    fileReader.onloadend = (e) => this.handleFileRead(e);
+    fileReader.onloadend = (e) => this.handleFileRead(e, fileObj.name);
     fileReader.onloadstart = (e) => this.handleLoadStart(e);
     this.setState({ 'fileReader': fileReader });
     fileReader.readAsText(fileObj);
+
   }
   render() {
     return (

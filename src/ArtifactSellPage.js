@@ -1,7 +1,15 @@
 import React from 'react';
 import { Col, Row, Switch, Table, Tooltip } from 'antd';
+import Comparer from './Comparer';
 import Numberer from './Numberer';
 import Formatter from './Formatter';
+import ArtifactDimensionChooser from './ArtifactDimensionChooser';
+import ArtifactRune from './ArtifactRune';
+import ChampionRune from './ChampionRune';
+
+import {
+  DIMENSION_NONE,
+} from './ArtifactDimensionChooser';
 
 class ArtifactSellPage extends React.Component {
   constructor(props) {
@@ -44,11 +52,16 @@ class ArtifactSellPage extends React.Component {
     checkers.forEach((checker) => {
       checkedByCheckerId[checker.id] = false;
     });
+    var comparer = new Comparer();
+    var artifactSorters = comparer.makeArtifactSorters();
     this.state = {
       'checkWornGear': false, // doesn't count against the limit
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
-      'numberer': new Numberer()
+      'numberer': new Numberer(),
+      'artifactSorters': artifactSorters,
+      'artifactDimension': DIMENSION_NONE,
+      'comparer': comparer
     }
   }
 
@@ -308,7 +321,7 @@ class ArtifactSellPage extends React.Component {
       rows.push(<Row>{curCols}</Row>);
     }
 
-    const divStyle = { "text-align": "left" };
+    const divStyle = { "textAlign": "left" };
     return (<div style={divStyle}>
       <p><b>Checks to Run:</b></p>
       <hr />
@@ -329,50 +342,41 @@ class ArtifactSellPage extends React.Component {
     );
   }
 
+  onDimensionChange(newDimension) {
+    if (newDimension === this.state.artifactDimension) {
+      return;
+    }
+    this.setState({ artifactDimension: newDimension });
+  }
+
+  compareArtifacts(art1, art2) {
+    if (!art1 && !art2) return 0;
+    if (!art1) return 1;
+    if (!art2) return -1;
+    var dimension = this.state.artifactDimension;
+    if (!(dimension in this.state.artifactSorters)) {
+      return 0;
+    }
+    return this.state.artifactSorters[dimension](art1, art2)
+  }
+
   render() {
     if (!this.props.artifacts || this.props.artifacts.length === 0) {
       return (<div><span>No artifacts to show</span></div>);
     }
     var numberer = this.state.numberer;
     var formatter = new Formatter();
+    var runeHeader = <ArtifactDimensionChooser initialValue={this.state.artifactDimension}
+      reporter={(value) => this.onDimensionChange(value)} />;
     const columns = [
       {
-        title: 'Rank',
-        dataIndex: 'rank',
-        key: 'rank',
-        sorter: (a, b) => a.rank - b.rank,
-      },
-      {
-        title: 'Rarity',
-        dataIndex: 'rarity',
-        key: 'rarity',
-        sorter: (a, b) => numberer.Rarity(a.rarity) - numberer.Rarity(b.rarity),
-      },
-      {
-        title: 'Kind',
-        dataIndex: 'kind',
-        key: 'kind',
-        sorter: (a, b) => numberer.ArtifactKind(a.kind) - numberer.ArtifactKind(b.kind)
-      },
-      {
-        title: 'Set',
-        dataIndex: 'setKind',
-        key: 'setKind',
-        sorter: (a, b) => a.setKind.localeCompare(b.setKind)
-      },
-      {
-        title: 'Level',
-        dataIndex: 'level',
-        key: 'level',
-        sorter: (a, b) => a.level - b.level
-      },
-      {
-        title: 'Main Stat',
-        dataIndex: 'primary',
-        key: 'primary',
-        render: (stats, record, index) => (
-          <div>{formatter.Stat(stats)}</div>
-        )
+        title: runeHeader,
+        dataIndex: 'artifact',
+        key: 'artifact',
+        sorter: (a, b) => this.compareArtifacts(a.artifact, b.artifact),
+        render: (artifact) => {
+          return <ArtifactRune artifact={artifact} />;
+        },
       },
       {
         title: 'SubStats',
@@ -383,28 +387,12 @@ class ArtifactSellPage extends React.Component {
         )
       },
       {
-        title: 'Faction',
-        dataIndex: 'requiredFraction',
-        key: 'faction',
-        render: (factionKey) => formatter.Faction(factionKey),
-        sorter: (a, b) => {
-          var aFaction = a.requiredFraction ? a.requiredFraction : "";
-          var bFaction = b.requiredFraction ? b.requiredFraction : "";
-          return aFaction.localeCompare(bFaction);
-        }
-      },
-      {
         title: 'Wearer',
         dataIndex: 'wearer',
         key: 'wearer',
-        render: (champion) => (champion && champion.name) ? champion.name : '',
+        render: (champion) => <ChampionRune champion={champion} />,
         sorter: (a, b) => {
-          if (!a.wearer && !b.wearer) return 0;
-          // sorting on id works, but is non-intuitive.
-          // instead use name.
-          var aName = (a && a.wearer && a.wearer.name) ? a.wearer.name : "";
-          var bName = (b && b.wearer && b.wearer.name) ? b.wearer.name : "";
-          return aName.localeCompare(bName);
+          return this.state.comparer.Champions(a.wearer, b.wearer)
         }
       },
       {
@@ -412,7 +400,7 @@ class ArtifactSellPage extends React.Component {
         dataIndex: 'why',
         key: 'why',
         sorter: (a, b) => {
-          console.log(a.why + "..." + b.why)
+          //console.log(a.why + "..." + b.why)
           return a.why.toLowerCase().localeCompare(b.why.toLowerCase());
         }
       },
@@ -432,13 +420,7 @@ class ArtifactSellPage extends React.Component {
             if (why) {
               var rowData = {
                 key: artifact.id + why, // an art. can fail > 1 check
-                rank: numberer.Rank(artifact.rank),
-                rarity: artifact.rarity,
-                kind: artifact.kind,
-                setKind: formatter.SetName(artifact.setKind),
-                level: artifact.level,
-                requiredFraction: artifact.requiredFraction,
-                primary: artifact.primaryBonus,
+                artifact: artifact,
                 subStats: artifact.secondaryBonuses,
                 wearer: artifact.wearer,
                 why: why

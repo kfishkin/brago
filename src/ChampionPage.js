@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'antd';
+import Comparer from './Comparer';
 import Formatter from './Formatter';
 import Numberer from './Numberer';
 
@@ -19,6 +20,7 @@ class ChampionPage extends React.Component {
   render() {
     var formatter = new Formatter();
     var numberer = new Numberer();
+    var comparer = new Comparer();
     if (!this.props.champions || this.props.champions.length === 0) {
       return (<div><span>No champions to show</span></div>);
     }
@@ -28,7 +30,7 @@ class ChampionPage extends React.Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        sorter: (a, b) => a.name.localeCompare(b.name),
+        sorter: (a, b) => comparer.Champions(a, b),
       },
       {
         title: 'Faction',
