@@ -28,6 +28,10 @@ class ChampionPage extends React.Component {
       ttip: "empty armor slot, rank >= 4", fn: this.DisplayMissingArmor
     });
     checkers.push({
+      id: id++, label: "inferior gear",
+      ttip: "gear 2 or more stars below the champion", fn: this.DisplayInferiorGear
+    });
+    checkers.push({
       id: id++, label: "missing accessory",
       ttip: "fillable accessory slot", fn: this.DisplayMissingAccessory
     });
@@ -124,6 +128,26 @@ class ChampionPage extends React.Component {
         break;
       }
     };
+    return why;
+  }
+
+  DisplayInferiorGear(champion, extra) {
+    if (!champion || !champion.grade) return null;
+    var numberer = new Numberer();
+    var rank = numberer.RankFromStars(champion.grade);
+    var artifacts = extra.artifacts;
+    if (!artifacts) return null;
+    var why = null;
+    artifacts.some((artifact) => {
+      var artRank = numberer.Rank(artifact.rank);
+      if (rank - artRank >= 2) {
+        var artifactTypeMap = extra.artifactTypeMap;
+        var label = artifactTypeMap[artifact.kind.toLowerCase()].label;
+        why = "rank " + rank + ", but wearing a rank " + artRank + " " + label;
+        return true;
+      }
+      return false;
+    });
     return why;
   }
 
