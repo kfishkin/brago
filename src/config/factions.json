@@ -92,7 +92,7 @@
             "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Dwarves"
         },
         {
-            "key": "Shadowkin",
+            "key": "AssassinsGuild",
             "ordinality": 13,
             "label": "Shadowkin",
             "icon": "pix/factions/shadowkin.png"
