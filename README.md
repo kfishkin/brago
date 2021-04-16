@@ -20,6 +20,9 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+## 1.07 (16 April)
+Changed the 'Champions' filter from OR to AND, added a filter on Rank. Also added pictures of more armor sets.
+
 ## 1.06 (14 April)
 Revamped the 'Champions' screen, now you can filter your champions
 in various ways, e.g. to find ones with a missing artifact, or

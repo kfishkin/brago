@@ -503,6 +503,7 @@
             "jsonKey": "AttackAndCritRate",
             "label": "Fatal",
             "icon": "fatal.png",
+            "piece_icon_base": "pix/item_sets/Fatal_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -521,6 +522,7 @@
             "key": "bite",
             "label": "Frostbite",
             "icon": "frostbite.png",
+            "piece_icon_base": "pix/item_sets/Frostbite_",
             "set_size": 2,
             "bonuses": []
         },
