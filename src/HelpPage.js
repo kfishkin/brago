@@ -52,11 +52,30 @@ class HelpPage extends React.Component {
             <p>
                 The filters are hopefully self-explanatory, and some have tooltips that explain what they do in
                 more detail if you hover over them. For example, the 'under-ascended' hover says
-                'fewer ascensions than rank, rank &ge; 5'. If I turn that filter on,
-                it shows that in my case 'Longbeard' is a 5 star champion who I've only
-                ascended to level 3.
+                'fewer ascensions than rank'. If I turn that filter on,
+                it shows that in my I have 169 champions that fit that description, however many of them are 'food'
+                or in the vault.
         </p>
             <img src="pix/help/champions_under_ascended.png" alt="champions who are under-ascended" />
+            <p>
+                To cut that down further, I can add more filters. For example,
+                the 'Rank' filter lets you only include champions at a certain
+                level or above, or a certain level or below (indicate which by
+                clicking on the &le;/&ge; symbol).
+            </p>
+            <p>
+                In my case, if I indicate that I only want champions of rank 5
+                or more, now we're down to 7:
+            </p>
+            <img src="pix/help/champions_under_ascended_2.png" alt="champions who are under-ascended" />
+            <p>
+                The second champion has no name - this happens when a new champion has been added
+                to the game and the 'extractor' doesn't know about them yet.
+</p>
+            <p>
+                Lastly, let's add another filter, and only count champions who aren't in the vault:
+</p>
+            <img src="pix/help/champions_under_ascended_3.png" alt="champions who are under-ascended" />
             <p>
                 Note the 'why' column, which can give more detail from the filter.
                 By the way, if you have more than one filter on, presently it will only

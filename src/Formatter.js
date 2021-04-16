@@ -54,8 +54,10 @@ class Formatter {
             'hp': 'HP',
             'atk': 'ATK',
             'def': 'DEF',
+            'CriticalDamage': 'Crit Damage',
             'cd': 'C.DMG',
             'cr': 'C.RATE',
+            'CriticalChance': 'Crit Rate',
             'res': 'RES',
             'acc': 'ACC',
             'glyph': ''
@@ -83,6 +85,14 @@ class Formatter {
             + this.BonusAmount(bonus.isAbsolute, bonus.value);
     }
 
+    Rank(rank) {
+        if (!rank || (typeof (rank) === "string")) {
+            return rank;
+        }
+        var labels = ["One", "Two", "Three", "Four", "Five", "Six"];
+        return (rank > 0 && rank <= labels.length) ? labels[rank - 1] : rank;
+    }
+
     // a Main stat
     Stat(stat) {
         //console.log("stat = " + JSON.stringify(stat));
@@ -108,8 +118,8 @@ class Formatter {
             return this.Stat(subStats[0]);
         }
         var entries = [];
-        subStats.forEach(subStat => {
-            entries.push(<li>{this.Stat(subStat)}</li>);
+        subStats.forEach((subStat, index) => {
+            entries.push(<li key={index}>{this.Stat(subStat)}</li>);
         });
         return <ul className="substats">{entries}</ul>;
     }

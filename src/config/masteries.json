@@ -537,6 +537,7 @@
             "branch": "support",
             "tier": 5,
             "label": "Sniper",
+            "key": 500353,
             "img": "pix/masteries/support/Sniper.png",
             "bonuses": []
         },
@@ -544,6 +545,7 @@
             "branch": "support",
             "tier": 5,
             "label": "Master Hexer",
+            "key": 500354,
             "img": "pix/masteries/support/Master_Hexer.png",
             "bonuses": []
         },

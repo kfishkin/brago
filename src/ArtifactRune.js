@@ -51,7 +51,7 @@ class ArtifactRune extends React.Component {
     if (artifact.setKind && artifact.setKind !== "None") {
       var spec = this.setSpecMap[artifact.setKind];
       if (spec === null) {
-        console.log('no spec for kind ' + artifact.setKind);
+        //console.log('no spec for kind ' + artifact.setKind);
       }
       if (spec != null) {
         msg = msg + " of " + spec.label;

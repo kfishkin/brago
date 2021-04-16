@@ -5,31 +5,39 @@ import Numberer from './Numberer';
 import { Col, Row, Switch, Table, Tooltip } from 'antd';
 import ChampionRune from './ChampionRune';
 import MarkerRune from './MarkerRune';
+import RankSpecifier from './RankSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
 
 class ChampionPage extends React.Component {
   constructor(props) {
     super(props);
+    const MIN_RANK = 4;
+    const STARTING_IS_LOWER_BOUND = true;
     // all the checkers for what to display.
     // a checker is a function that takes a champion JSON blob,
     // and returns a string indicating why to display it - null if not.
     var checkers = [];
     var id = 0;
+    checkers.push({ id: id++, label: <RankSpecifier initial={MIN_RANK} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} />, fn: this.CheckRank });
     checkers.push({ id: id++, label: "In the vault", fn: this.CheckInVault });
     checkers.push({ id: id++, label: "NOT in the vault", fn: this.CheckNotInVault });
     checkers.push({ id: id++, label: "has a marker", fn: this.CheckHasMarker });
     checkers.push({ id: id++, label: "has a dupe", fn: this.CheckHasDupe });
     checkers.push({
       id: id++, label: "under-ascended",
-      ttip: "fewer ascensions than rank, rank >= 5", fn: this.CheckUnderAscended
+      ttip: "fewer ascensions than rank", fn: this.CheckUnderAscended
     });
     checkers.push({
       id: id++, label: "missing armor",
-      ttip: "empty armor slot, rank >= 4", fn: this.CheckMissingArmor
+      ttip: "empty armor slot", fn: this.CheckMissingArmor
     });
     checkers.push({
-      id: id++, label: "inferior gear",
+      id: id++, label: "inferior gear rank",
       ttip: "gear 2 or more stars below the champion", fn: this.CheckInferiorGear
+    });
+    checkers.push({
+      id: id++, label: "inferior gear rarity",
+      ttip: "gear < Rare", fn: this.CheckInferiorRarity
     });
     checkers.push({
       id: id++, label: "missing accessory",
@@ -44,11 +52,34 @@ class ChampionPage extends React.Component {
     });
     this.state = {
       'checkers': checkers,
-      'checkedByCheckerId': checkedByCheckerId
+      'checkedByCheckerId': checkedByCheckerId,
+      'minRank': MIN_RANK,
+      'is_lower_bound': STARTING_IS_LOWER_BOUND
     }
+  }
+
+  onMinRankChange(v, is_lower_bound) {
+    console.log('onMinRankChange: v = ' + v + ', is_lower = ' + is_lower_bound);
+    var checkers = this.state.checkers;
+    checkers[0] = { id: 0, label: <RankSpecifier initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} />, fn: this.CheckRank };
+    this.setState({
+      minRank: v, is_lower_bound: is_lower_bound,
+      checkers: checkers
+    });
+
   }
   // these guys can't refer to 'this', so extra state is passed
   // in 2nd param.
+  CheckRank(champion, extra) {
+    if (!champion || !champion.grade) return null;
+    var numberer = new Numberer();
+    var rank = numberer.RankFromStars(champion.grade);
+    var rankBar = extra.minRank;
+    console.log('CheckRank: is_lower = ' + extra.is_lower_bound + ', champ = ' + champion.name);
+    var passes = (extra.is_lower_bound) ? (rank >= rankBar) : (rank <= rankBar);
+    return passes ? "rank" : null;
+  }
+
   CheckInVault(champion) {
     return (champion && champion.inStorage) ? "in the vault" : null;
   }
@@ -70,14 +101,11 @@ class ChampionPage extends React.Component {
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
     var ascensions = champion.awakenLevel;
-    return (rank >= 5) && (rank > ascensions) ?
+    return (rank > ascensions) ?
       ("Rank " + rank + ", but only " + ascensions + " ascensions") : null;
   }
   CheckMissingArmor(champion, extra) {
-    if (!champion || !champion.grade) return null;
-    var numberer = new Numberer();
-    var rank = numberer.RankFromStars(champion.grade);
-    if (rank <= 4) return null;
+    if (!champion) return null;
     var numWorn = 0;
     var artifacts = extra.artifacts;
     if (artifacts) {
@@ -144,6 +172,24 @@ class ChampionPage extends React.Component {
         var artifactTypeMap = extra.artifactTypeMap;
         var label = artifactTypeMap[artifact.kind.toLowerCase()].label;
         why = "rank " + rank + ", but wearing a rank " + artRank + " " + label;
+        return true;
+      }
+      return false;
+    });
+    return why;
+  }
+
+  CheckInferiorRarity(champion, extra) {
+    var numberer = new Numberer();
+    var artifacts = extra.artifacts;
+    if (!artifacts) return null;
+    var why = null;
+    artifacts.some((artifact) => {
+      var artRarity = numberer.Rarity(artifact.rarity);
+      if (artRarity < 2) {
+        var artifactTypeMap = extra.artifactTypeMap;
+        var label = artifactTypeMap[artifact.kind.toLowerCase()].label;
+        why = label + " is only rarity '" + artifact.rarity + "'";
         return true;
       }
       return false;
@@ -326,6 +372,8 @@ class ChampionPage extends React.Component {
       extra.artifacts = artifacts;
       extra.championCounts = championCounts;
       extra.artifactTypeMap = artifactTypeMap;
+      extra.minRank = this.state.minRank;
+      extra.is_lower_bound = this.state.is_lower_bound;
       var lastWhy = null;
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {

@@ -475,6 +475,7 @@
             "jsonKey": "CritDmgAndTransformWeekIntoCritHit",
             "label": "Affinity Breaker",
             "icon": "breaker.png",
+            "piece_icon_base": "pix/item_sets/Affinity_Breaker_",
             "set_size": 4,
             "bonuses": [
                 {

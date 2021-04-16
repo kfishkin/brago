@@ -205,6 +205,20 @@ img.champion_avatar_small {
   object-fit: contain;
 }
 
+div.rank_specifier div.ant-select-selector {
+  width: 80px;
+}
+
+button.is_lower_bound {
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+}
+
+button.is_lower_bound span {
+  background-color: white;
+
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
