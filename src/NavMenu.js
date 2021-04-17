@@ -21,20 +21,6 @@ class NavMenu extends React.Component {
     }
     return <div status="gtg">View some Champions</div>
   }
-  artifactsText(artifacts) {
-    var numSeen = 0;
-    if (artifacts && artifacts.length > 0) {
-      artifacts.forEach((artifact) => {
-        if (artifact.isSeen) {
-          numSeen++;
-        }
-      });
-    }
-    if (numSeen === 0) {
-      return <div>View Artifacts</div>;
-    }
-    return <div status="gtg">View {numSeen} artifacts</div >
-  }
   greatHallText(greatHallData) {
     if (!greatHallData || greatHallData.length === 0) {
       return <div>Great Hall</div>
@@ -61,14 +47,11 @@ class NavMenu extends React.Component {
         <Menu.Item onClick={() => this.props.handleShowPage('champions')}>
           {this.championsText(this.props.champions)}
         </Menu.Item>
-        <Menu.Item onClick={() => this.props.handleShowPage('artifacts')}>
-          {this.artifactsText(this.props.artifacts)}
+        <Menu.Item onClick={() => this.props.handleShowPage('sell artifacts')}>
+          View some artifacts
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('bump artifacts')}>
           Artifacts to bump
-        </Menu.Item>
-        <Menu.Item onClick={() => this.props.handleShowPage('sell artifacts')}>
-          Artifacts to sell
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('arena')}>Arena Tier</Menu.Item>

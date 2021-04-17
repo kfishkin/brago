@@ -489,6 +489,7 @@
             "key": "untouch",
             "label": "Untouchable",
             "icon": "untouch.png",
+            "piece_icon_base": "pix/item_sets/Untouchable_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -530,6 +531,7 @@
             "key": "bloodthirst",
             "label": "Bloodthirst",
             "icon": "bloodthirst.png",
+            "piece_icon_base": "pix/item_sets/Bloodthirst_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -543,6 +545,7 @@
             "key": "guardian",
             "label": "Guardian",
             "icon": "guardian.png",
+            "piece_icon_base": "pix/item_sets/Guardian_",
             "set_size": 4,
             "bonuses": []
         }

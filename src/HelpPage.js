@@ -32,7 +32,6 @@ class HelpPage extends React.Component {
                 <li><a href="#view_champions">The 'View Champions' page</a></li>
                 <li><a href="#view_artifacts">The 'View Artifacts' page</a></li>
                 <li><a href="#to_bump">The 'Artifacts to bump' page</a></li>
-                <li><a href="#to_sell">The 'Artifacts to Sell' page</a></li>
                 <li><a href="#champion_detail">The 'Champion Detail' page</a></li>
                 <li><a href="#arena">The 'Arena Tier' screen</a></li>
                 <li><a href="#great_hall">The 'Great Hall' page</a></li>
@@ -83,10 +82,51 @@ class HelpPage extends React.Component {
         </p>
             <h2 id="view_artifacts">The 'View Artifacts' screen</h2>
             <p>
-                This screen isn't really very useful either, it just dumps out
-                all the info on your artifacts that was in the JSON. At this point
-                it's more just for debugging.
-        </p>
+                If you're like me, you're always running out of room for your Artifacts.
+                This screen helps you with that. It lets you filter your artifacts in a bunch of ways.
+                Most notably, it shows a bunch of heuristics that I've collected
+                from youtubers like 'Ash', 'HellHades', and 'MurderInc' about what to sell.
+                You can turn them on/off individually.
+            </p>
+            <p>
+                When you first come to the page, it'll look something like this:
+                <img src="pix/help/sell_top.png" alt="checks to run" />
+            </p>
+            <p>You can see 13 different filters that you can turn on and off. Artifacts that
+                pass <i>every</i> filter are displayed. The default is to have one filter on:
+                only show unworn gear.
+            <p>
+                    You can see that this doesn't narrow down the field enough - "at least 500"
+                    artifacts pass this filter. Let's add another one - one of the
+                    heuristics on artifacts to sell is to sell gloves of Atk% (the theory being that
+                    if it's an attack champ, you'd rather have Crit Rate/Damage gloves anyways).
+                Turn that filter on, and now you'll see far fewer results:</p>)
+            </p>
+            <p>
+                <img src="pix/help/sell_1.png" alt="1 check on" />
+            </p>
+            <p>
+                Let's take another example. The most aggressive heuristic is one
+                from youtuber 'Murder Inc', and it's to sell anything with 2 or more
+                substats, if neither is speed. If I turn that on, it shows me
+                a whopping 337 to sell.
+            </p>
+            <img src="pix/help/sell_2.png" alt="sell aggressive" />
+            <p>
+                That's awfully aggressive. Let's say that I want to keep
+                anything that's 6 stars. So set the 'Rank' filter to &le; 5,
+                and turn the filter on, and now I see 272. Still a lot, but
+                not as many. I can verify that the filter is working by
+                sorting on 'Rank' descending, see that the max value is '5'
+            </p>
+            <img src="pix/help/sell_3.png" alt="sell sorted" />
+            <p>
+                I could instead sort by 'Rarity' ascending, and now I'll
+                some Rare items, of Rank &le; 5, unworn, with at least 2 substats,
+                    with no speed substat. <i>These</i> I can start selling.
+                </p>
+            <img src="pix/help/sell_4.png" alt="sell sorted Rares" />
+
             <h2 id="to_bump">The 'Artifacts to bump' screen</h2>
             <p>
                 When you're in an artifact enhancement event, you only
@@ -116,52 +156,7 @@ class HelpPage extends React.Component {
                 sort on (assuming you do). You can sort by rank, level, faction, rarity, etc.
                 Specify that with the drop-down and then click on the little arrows to sort.
             </p>
-            <h2 id="to_sell">The 'Artifacts to sell' screen</h2>
-            <p>
-                If you're like me, you're always running out of room for your Artifacts.
-                This screen helps you with that. It shows a bunch of heuristics that I've collected
-                from youtubers like 'Ash', 'HellHades', and 'MurderInc' about what to sell.
-                You can turn them on/off individually.
-            </p>
-            <p>
-                When you first come to the page, it'll look something like this:
-                <img src="pix/help/sell_top.png" alt="checks to run" />
-            </p>
-            <p>The 'Check worn gear?' toggle lets you tell it whether or not to check for gear that's worn. That gear
-            doesn't count against your limit, so often you don't want that checked.
-            </p>
-            <p>
-                Then, you see the list of all the checks that can be run: <b>12</b>
-                at present.
-            </p>
-            <p>
-                Each one is individually selectable, and by default they all start 'off'.
-                That's why you don't see anything recommended at the start.
-            </p>
-            <p>
-                The most aggressive one is probably '&gt; 2 substats, none SPD'. Turn that
-                toggle on, and you'll see the display change to something like this:
-                <img src="pix/help/sell_1.png" alt="1 check on" />
-            </p>
-            <p>
-                This one check found 332 possible artifacts to sell for me. The first two
-                are a 6* Epic 'Divine Speed' Weapon, and a 5* Epic Immortal Gloves.
-            </p>
-            <p>
-                You can sort this output on any column - for example, you may want this grouped by
-                which set it belongs to.
-            </p>
-            <p>
-                Note the last column, 'why'. This shows you why this piece was recommended
-                for selling. This is useful if you turn on multiple checks and yuou want to see
-                which one was responsible for a particular row. Note that an artifact may show up
-                more than once, if more than one check flags it.
-            </p>
-            <p>
-                Now, turn on the 'Check worn gear' toggle and you'll see the total go up. For example, in the output below,
-                the first two pieces are worn by 'Hurler' and 'Grinner':
-                <img src="pix/help/sell_worn.png" alt="include worn gear" />
-            </p>
+
             <h2 id="champion_detail">The 'Champion Detail' screen</h2>
             <p>
                 The visuals on this page are very rough, so be kind :).

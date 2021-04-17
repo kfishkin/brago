@@ -6,32 +6,36 @@ import Formatter from './Formatter';
 import ArtifactDimensionChooser from './ArtifactDimensionChooser';
 import ArtifactRune from './ArtifactRune';
 import ChampionRune from './ChampionRune';
+import BarSpecifier from './BarSpecifier';
 
 import {
   DIMENSION_NONE,
 } from './ArtifactDimensionChooser';
 
+const DONT_DISPLAY = "Uninteresting";
+const MAX_TO_SHOW = 500;
+const RANK_INTRO = "Rank"
+const RANK_KEYS = [1, 2, 3, 4, 5, 6];
+
 class ArtifactSellPage extends React.Component {
   constructor(props) {
     super(props);
+    const INITIAL_RANK_BAR = 4;
+    const STARTING_IS_LOWER_BOUND = false;
+    var rankLabels = {};
+    var formatter = new Formatter();
+    RANK_KEYS.forEach((key) => {
+      rankLabels[key] = formatter.Rank(key);
+    });
     // all the checkers for what to sell.
     // a checker is a function that takes an artifact JSON blob,
     // and returns null/empty string if the artifact isn't recommended for sale by this checker,
     // a 'why' string if it is.
     var checkers = [];
     var id = 0;
-    checkers.push({ id: id++, label: "Atk% Gloves", fn: this.SellAtkPercentGloves });
-    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.SellThreeSubstatsNoSpeed });
-    checkers.push({
-      id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats,
-      ttip: "A 'bad' substat is flat ATK,DEF,RES, or HP"
-    });
-    checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.SellEpicNonSpeedBoots });
-    checkers.push({
-      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.SellMostCDGloves,
-      ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
-    });
-    checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.SellDefensiveBootsWithoutSpeed });
+    var barSpecifierId = id;
+    checkers.push({ id: id++, label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.SellByRank });
+    checkers.push({ id: id++, label: " unworn gear", fn: this.SellUnwornGear })
     checkers.push({ id: id++, label: "Attack Amulets", fn: this.SellAttackAmulets });
     checkers.push({
       id: id++, label: "Defense Rings w/o 2 good substats", fn: this.SellDefenseRingWithoutTwoGoodSubstats,
@@ -45,24 +49,62 @@ class ArtifactSellPage extends React.Component {
       id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.SellNonLegoRingWith2BadSubstats,
       ttip: "Non-Legendary ring with 2 substats that are flat and not Speed"
     });
-    checkers.push({ id: id++, label: "Under 5 stars", fn: this.SellUnder5Stars });
+    checkers.push({
+      id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats,
+      ttip: "A 'bad' substat is flat ATK,DEF,RES, or HP"
+    });
+
+    checkers.push({ id: id++, label: "Atk% Gloves", fn: this.SellAtkPercentGloves });
+    checkers.push({
+      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.SellMostCDGloves,
+      ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
+    });
+    checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.SellEpicNonSpeedBoots });
+    checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.SellDefensiveBootsWithoutSpeed });
+    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.SellThreeSubstatsNoSpeed });
+
+
     checkers.push({ id: id++, label: "bottom row flat HP/ATK/DEF", fn: this.SellBottomRowFlatMainStat });
     // map from checkerid to whether enabled. Not an array to be fancy:
     var checkedByCheckerId = {};
-    checkers.forEach((checker) => {
-      checkedByCheckerId[checker.id] = false;
+    checkers.forEach((checker, index) => {
+      checkedByCheckerId[checker.id] = // (index === barSpecifierId) || (checker.fn === this.SellUnwornGear);
+        (checker.fn === this.SellUnwornGear);
     });
     var comparer = new Comparer();
     var artifactSorters = comparer.makeArtifactSorters();
     this.state = {
-      'checkWornGear': false, // doesn't count against the limit
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
       'numberer': new Numberer(),
       'artifactSorters': artifactSorters,
       'artifactDimension': DIMENSION_NONE,
-      'comparer': comparer
+      'comparer': comparer,
+      'rankBar': INITIAL_RANK_BAR,
+      'is_lower_bound': STARTING_IS_LOWER_BOUND,
+      barSpecifierId: barSpecifierId,
+      rankLabels: rankLabels
     }
+  }
+  onMinRankChange(v, is_lower_bound) {
+    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
+    var checkers = this.state.checkers;
+    // because 'checkers' was set in the constructor, before 'this.state' was set,
+    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
+    var barSpecifierId = this.state.barSpecifierId;
+    checkers[barSpecifierId] = {
+      id: barSpecifierId,
+      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.SellByRank
+    };
+    this.setState({
+      rankBar: v,
+      is_lower_bound: is_lower_bound,
+      checkers: checkers
+    });
+  }
+
+  SellUnwornGear(artifact) {
+    return (artifact && !artifact.wearer) ? DONT_DISPLAY : null;
   }
 
   SellAtkPercentGloves(artifact) {
@@ -155,7 +197,7 @@ class ArtifactSellPage extends React.Component {
 
     }
     if (numGood < goodNeeded) {
-      return "Defense Ring Without " + goodNeeded + " good substats";
+      return DONT_DISPLAY;
     }
     return null;
   }
@@ -183,7 +225,7 @@ class ArtifactSellPage extends React.Component {
       });
     }
     if (numGood < goodNeeded) {
-      return "Defensive Ring Without " + goodNeeded + " good defensive substats";
+      return DONT_DISPLAY;
     }
     return null;
   }
@@ -206,7 +248,7 @@ class ArtifactSellPage extends React.Component {
       });
     }
     if (numBad >= badNeeded) {
-      return "Non-Legendary ring with " + numBad + " bad substats";
+      return DONT_DISPLAY;
     }
   }
 
@@ -215,7 +257,8 @@ class ArtifactSellPage extends React.Component {
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
     var topKinds = ["weapon", "helmet", "shield"];
-    if (topKinds.indexOf(artifact.kind.toLowerCase()) === -1) return null;
+    var index = topKinds.indexOf(artifact.kind.toLowerCase());
+    if (index === -1) return null;
     var badNeeded = 2;
     var badSubs = ["attack", "defense", "resistance", "health"];
     var secondaries = artifact.secondaryBonuses;
@@ -230,7 +273,7 @@ class ArtifactSellPage extends React.Component {
       });
     }
     if (bads.length >= badNeeded) {
-      return "Top-row, " + bads.length + " bad substats"
+      return topKinds[index] + " has " + bads.length + " bad substats"
         + ": " + bads.join(", ");
     }
   }
@@ -256,14 +299,16 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  SellUnder5Stars(artifact, numberer) {
+  SellByRank(artifact, extra) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.rank) return null;
-    var asNum = numberer.Rank(artifact.rank);
-    if (asNum < 5) {
-      var prefix = artifact.wearer ? "Only" : "Unworn, and only";
-      return prefix + " has " + asNum + " stars";
+    var bar = extra.rankBar;
+    var is_lower_bound = extra.is_lower_bound;
+    var asNum = extra.numberer.Rank(artifact.rank);
+    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
+    if (passed) {
+      return DONT_DISPLAY;
     }
     return null;
   }
@@ -323,23 +368,11 @@ class ArtifactSellPage extends React.Component {
 
     const divStyle = { "textAlign": "left" };
     return (<div style={divStyle}>
-      <p><b>Show Artifacts that pass <i>any</i> of these checks:</b></p>
+      <p><b>Show Artifacts that pass <i>all</i> of these checks:</b></p>
       <hr />
       { rows}
       <hr />
     </div >);
-  }
-
-  onWornChange(val) {
-    this.setState({ checkWornGear: val });
-  }
-
-  renderModePart() {
-    return (
-      <div>
-        <Switch checked={this.state.checkWornGear} onChange={(checked, e) => { this.onWornChange(checked) }}></Switch>&nbsp;Check worn gear?
-      </div >
-    );
   }
 
   onDimensionChange(newDimension) {
@@ -409,30 +442,49 @@ class ArtifactSellPage extends React.Component {
     const dataByRows = [
     ];
 
-    this.props.artifacts.forEach((artifact) => {
+    var extra = {
+      numberer: numberer,
+      rankBar: this.state.rankBar,
+      is_lower_bound: this.state.is_lower_bound
+    };
+    var shown = 0;
+    this.props.artifacts.some((artifact) => {
       var toCheck = artifact.isSeen;
-      if (!this.state.checkWornGear && artifact.wearer) toCheck = false;
+      //if (!this.state.checkWornGear && artifact.wearer) toCheck = false;
 
       if (toCheck) {
-        this.state.checkers.forEach((checker) => {
+        var passesAll = true;
+        var whys = [];
+        this.state.checkers.some((checker) => {
           if (this.state.checkedByCheckerId[checker.id]) {
-            var why = checker.fn(artifact, numberer);
+            var why = checker.fn(artifact, extra);
             if (why) {
-              var rowData = {
-                key: artifact.id + why, // an art. can fail > 1 check
-                artifact: artifact,
-                subStats: artifact.secondaryBonuses,
-                wearer: artifact.wearer,
-                why: why
-
-              };
-              dataByRows.push(rowData);
+              if (DONT_DISPLAY !== why) {
+                whys.push(why);
+              }
+              return false; // keep checking
+            } else {
+              passesAll = false;
+              return true; // stop checking
             }
           }
         });
-      }
+        if (passesAll) {
+          var rowData = {
+            key: artifact.id,
+            artifact: artifact,
+            subStats: artifact.secondaryBonuses,
+            wearer: artifact.wearer,
+            why: whys.join(',')
 
+          };
+          dataByRows.push(rowData);
+          shown++;
+        }
+      }
+      return (shown >= MAX_TO_SHOW);
     });
+
     /*
     const paginationConfig = {
       defaultPageSize: 50,
@@ -443,11 +495,10 @@ class ArtifactSellPage extends React.Component {
     const paginationConfig = false;
     return (
       <div>
-        {this.renderModePart()}
-        {this.renderSelectorPart()}
-        <h3>There are {dataByRows.length} artifacts to possibly sell.</h3>
+        { this.renderSelectorPart()}
+        <h3>{shown >= MAX_TO_SHOW ? "at least " : ""} {dataByRows.length} artifacts pass the checks.</h3>
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
-      </div>
+      </div >
     );
   }
 }

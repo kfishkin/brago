@@ -1,20 +1,21 @@
 import React from 'react';
-import Formatter from './Formatter';
 import { Button, Select } from 'antd';
 
 const { Option } = Select;
 
 /**
- * Lets the user specify a rank.
+ * Lets the user specify a 'bar' that things should be <= or >= to.
  * 
  * props:
+ * intro - text to put to the left of the widget.
  * initial - initial value.
  * is_lower_bound - is this a lower bound?
+ * labels - maps from key to label to show
  * reporter - F(new value, new is_lower), called when value changes.
  */
 
 
-class RankSpecifier extends React.Component {
+class BarSpecifier extends React.Component {
     onSelect(value) {
         if (this.props.reporter) {
             this.props.reporter(value, this.props.is_lower_bound);
@@ -28,19 +29,18 @@ class RankSpecifier extends React.Component {
     }
 
     render() {
-        var formatter = new Formatter();
         var options = [];
-        for (let rank = 1; rank <= 6; rank++) {
-            options.push(<Option key={rank} value={rank}>{formatter.Rank(rank)}</Option>);
-        }
+        this.props.keys.forEach((key) => {
+            options.push(<Option key={key} value={key}>{this.props.labels[key]}</Option>);
+        })
         // stop propagation to keep clicking from changing the sort order.
         var initialAsNum = parseInt(this.props.initial);
         // >= and <=, respectively
         var ch = String.fromCharCode(this.props.is_lower_bound ? 8805 : 8804);
         return (
-            <div style={{ display: 'inline-block' }}>
+            <div style={{ display: 'inline-block', height: '1.75em' }}>
                 <span>
-                    Rank
+                    {this.props.intro}
                 </span>
 
                 <Button className="is_lower_bound" type="text"
@@ -52,7 +52,7 @@ class RankSpecifier extends React.Component {
                 </Button>
                 <Select className="rank_specifier" onClick={(e) => {
                     e.stopPropagation();
-                }} defaultValue={initialAsNum} onSelect={(value) => this.onSelect(value)}>
+                }} value={initialAsNum} onSelect={(value) => this.onSelect(value)}>
                     {options}
                 </Select>
             </div>
@@ -60,4 +60,4 @@ class RankSpecifier extends React.Component {
     }
 }
 
-export default RankSpecifier;
+export default BarSpecifier;

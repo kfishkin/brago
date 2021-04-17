@@ -5,20 +5,32 @@ import Numberer from './Numberer';
 import { Col, Row, Switch, Table, Tooltip } from 'antd';
 import ChampionRune from './ChampionRune';
 import MarkerRune from './MarkerRune';
-import RankSpecifier from './RankSpecifier';
+import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
+
+const RANK_INTRO = "Rank";
+const RANK_KEYS = [1, 2, 3, 4, 5, 6];
 
 class ChampionPage extends React.Component {
   constructor(props) {
     super(props);
-    const MIN_RANK = 4;
+    const INITIAL_RANK_BAR = 4;
     const STARTING_IS_LOWER_BOUND = true;
     // all the checkers for what to display.
     // a checker is a function that takes a champion JSON blob,
     // and returns a string indicating why to display it - null if not.
     var checkers = [];
     var id = 0;
-    checkers.push({ id: id++, label: <RankSpecifier initial={MIN_RANK} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} />, fn: this.CheckRank });
+    var rankLabels = {};
+    var formatter = new Formatter();
+    RANK_KEYS.forEach((rank) => {
+      rankLabels[rank] = formatter.Rank(rank);
+    });
+    var barSpecifierId = id;
+    checkers.push({
+      id: id++,
+      label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onRankBarChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.CheckRank
+    });
     checkers.push({ id: id++, label: "In the vault", fn: this.CheckInVault });
     checkers.push({ id: id++, label: "NOT in the vault", fn: this.CheckNotInVault });
     checkers.push({ id: id++, label: "has a marker", fn: this.CheckHasMarker });
@@ -53,17 +65,26 @@ class ChampionPage extends React.Component {
     this.state = {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
-      'minRank': MIN_RANK,
-      'is_lower_bound': STARTING_IS_LOWER_BOUND
+      'rankBar': INITIAL_RANK_BAR,
+      'is_lower_bound': STARTING_IS_LOWER_BOUND,
+      barSpecifierId: barSpecifierId,
+      rankLabels: rankLabels
     }
   }
 
-  onMinRankChange(v, is_lower_bound) {
-    console.log('onMinRankChange: v = ' + v + ', is_lower = ' + is_lower_bound);
+  onRankBarChange(v, is_lower_bound) {
+    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
     var checkers = this.state.checkers;
-    checkers[0] = { id: 0, label: <RankSpecifier initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} />, fn: this.CheckRank };
+    // because 'checkers' was set in the constructor, before 'this.state' was set,
+    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
+    var barSpecifierId = this.state.barSpecifierId;
+    checkers[barSpecifierId] = {
+      id: barSpecifierId,
+      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onRankBarChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.CheckRank
+    };
     this.setState({
-      minRank: v, is_lower_bound: is_lower_bound,
+      rankBar: v,
+      is_lower_bound: is_lower_bound,
       checkers: checkers
     });
 
@@ -74,8 +95,7 @@ class ChampionPage extends React.Component {
     if (!champion || !champion.grade) return null;
     var numberer = new Numberer();
     var rank = numberer.RankFromStars(champion.grade);
-    var rankBar = extra.minRank;
-    console.log('CheckRank: is_lower = ' + extra.is_lower_bound + ', champ = ' + champion.name);
+    var rankBar = extra.rankBar;
     var passes = (extra.is_lower_bound) ? (rank >= rankBar) : (rank <= rankBar);
     return passes ? "rank" : null;
   }
@@ -372,7 +392,7 @@ class ChampionPage extends React.Component {
       extra.artifacts = artifacts;
       extra.championCounts = championCounts;
       extra.artifactTypeMap = artifactTypeMap;
-      extra.minRank = this.state.minRank;
+      extra.rankBar = this.state.rankBar;
       extra.is_lower_bound = this.state.is_lower_bound;
       var lastWhy = null;
       this.state.checkers.some((checker) => {

@@ -20,6 +20,9 @@ the groundwork for optimizing is still there.
 
 ## Version log
 
+## 1.08 (16 April)
+Artifacts filter is now an AND as well.
+
 ## 1.07 (16 April)
 Changed the 'Champions' filter from OR to AND, added a filter on Rank. Also added pictures of more armor sets.
 

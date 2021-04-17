@@ -42,14 +42,6 @@ span.arena_label {
   font-weight: bold;
 }
 
-div[status="gtg"] {
-  background-color: gold;
-}
-
-li[status="gtg"] {
-  background-color: gold;
-}
-
 div.lock_list {
   cursor: pointer;
 }

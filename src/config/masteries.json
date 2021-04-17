@@ -453,6 +453,7 @@
             "branch": "support",
             "tier": 2,
             "label": "Swarm Smiter",
+            "key": 500333,
             "img": "pix/masteries/support/Swarm_Smiter.png",
             "bonuses": []
         },
@@ -460,6 +461,7 @@
             "branch": "support",
             "tier": 3,
             "label": "Arcane Celerity",
+            "key": 500334,
             "img": "pix/masteries/support/Arcane_Celerity.png",
             "bonuses": []
         },
