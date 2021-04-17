@@ -468,6 +468,7 @@ class ArtifactSellPage extends React.Component {
               return true; // stop checking
             }
           }
+          return false;
         });
         if (passesAll) {
           var rowData = {
