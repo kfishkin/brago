@@ -12,12 +12,6 @@ for more details.
 This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
-There's a lot of 'dead code' in there at present. My original
-goal was to write a gear optimizer; when the Hell Hades one
-came out I dropped the project. I then resumed it to add the
-tips on 'bumping' and selling artifacts. But the stuff laying
-the groundwork for optimizing is still there.
-
 ## Version log
 
 ## 1.08 (16 April)
