@@ -5,6 +5,7 @@ import Numberer from './Numberer';
 import Formatter from './Formatter';
 import ArtifactDimensionChooser from './ArtifactDimensionChooser';
 import ArtifactRune from './ArtifactRune';
+import artifactTypesConfig from './config/artifact_types.json';
 import ChampionRune from './ChampionRune';
 import BarSpecifier from './BarSpecifier';
 
@@ -16,16 +17,31 @@ const DONT_DISPLAY = "Uninteresting";
 const MAX_TO_SHOW = 500;
 const RANK_INTRO = "Rank"
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
+const RARITY_INTRO = "Rarity"
+const RARITY_KEYS = ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+const SLOT_INTRO = "Slot"
 
 class ArtifactSellPage extends React.Component {
   constructor(props) {
     super(props);
     const INITIAL_RANK_BAR = 4;
-    const STARTING_IS_LOWER_BOUND = false;
+    const STARTING_RANK_IS_LOWER_BOUND = false;
+    const INITIAL_RARITY_BAR = "Epic";
+    const STARTING_RARITY_IS_LOWER_BOUND = false;
     var rankLabels = {};
     var formatter = new Formatter();
     RANK_KEYS.forEach((key) => {
       rankLabels[key] = formatter.Rank(key);
+    });
+    var rarityLabels = {};
+    RARITY_KEYS.forEach((key) => {
+      rarityLabels[key] = key;
+    });
+    var slotLabels = {};
+    var slotKeys = [];
+    artifactTypesConfig.artifact_types.forEach((typeConfig) => {
+      slotKeys.push(typeConfig.key.toLowerCase());
+      slotLabels[typeConfig.key] = typeConfig.label;
     });
     // all the checkers for what to sell.
     // a checker is a function that takes an artifact JSON blob,
@@ -34,42 +50,52 @@ class ArtifactSellPage extends React.Component {
     var checkers = [];
     var id = 0;
     var barSpecifierId = id;
-    checkers.push({ id: id++, label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.SellByRank });
-    checkers.push({ id: id++, label: " unworn gear", fn: this.SellUnwornGear })
-    checkers.push({ id: id++, label: "Attack Amulets", fn: this.SellAttackAmulets });
+    checkers.push({ id: id++, label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_RANK_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.CheckByRank });
+    var rarityBarSpecifierId = id;
     checkers.push({
-      id: id++, label: "Defense Rings w/o 2 good substats", fn: this.SellDefenseRingWithoutTwoGoodSubstats,
+      id: id++, label: <BarSpecifier intro={RARITY_INTRO}
+        initial={INITIAL_RARITY_BAR} is_lower_bound={STARTING_RARITY_IS_LOWER_BOUND} reporter={(v, b) => this.onRarityBarChange(v, b)} labels={rarityLabels} keys={RARITY_KEYS} />, fn: this.CheckByRarity
+    });
+    var slotBarSpecifierId = id;
+    checkers.push({
+      id: id++, label: <BarSpecifier intro={SLOT_INTRO}
+        initial="boots" is_exact={true} reporter={(v, b) => this.onSlotBarChange(v, b)} labels={slotLabels} keys={slotKeys} />, fn: this.CheckBySlot
+    });
+
+    checkers.push({ id: id++, label: " unworn gear", fn: this.CheckUnwornGear })
+    checkers.push({ id: id++, label: "Attack Amulets", fn: this.CheckAttackAmulets });
+    checkers.push({
+      id: id++, label: "Defense Rings w/o 2 good substats", fn: this.CheckDefenseRingWithoutTwoGoodSubstats,
       ttip: "Ring of Defense without 2 substats that are either % boost, or Spd"
     });
     checkers.push({
-      id: id++, label: "Defensive Rings w/o Defensive substat", fn: this.SellDefensiveRingWithoutDefensiveSubstats,
+      id: id++, label: "Defensive Rings w/o Defensive substat", fn: this.CheckDefensiveRingWithoutDefensiveSubstats,
       ttip: "Ring of DEF or HP with no substat of HP%, DEF%, or Speed"
     });
     checkers.push({
-      id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.SellNonLegoRingWith2BadSubstats,
+      id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.CheckNonLegoRingWith2BadSubstats,
       ttip: "Non-Legendary ring with 2 substats that are flat and not Speed"
     });
     checkers.push({
-      id: id++, label: "top row w/2 bad substats", fn: this.SellTopRowWith2BadSubstats,
+      id: id++, label: "top row w/2 bad substats", fn: this.CheckTopRowWith2BadSubstats,
       ttip: "A 'bad' substat is flat ATK,DEF,RES, or HP"
     });
 
-    checkers.push({ id: id++, label: "Atk% Gloves", fn: this.SellAtkPercentGloves });
+    checkers.push({ id: id++, label: "Atk% Gloves", fn: this.CheckAtkPercentGloves });
     checkers.push({
-      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.SellMostCDGloves,
+      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.CheckMostCDGloves,
       ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
     });
-    checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.SellEpicNonSpeedBoots });
-    checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.SellDefensiveBootsWithoutSpeed });
-    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.SellThreeSubstatsNoSpeed });
+    checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.CheckEpicNonSpeedBoots });
+    checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.CheckDefensiveBootsWithoutSpeed });
+    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.CheckThreeSubstatsNoSpeed });
 
 
-    checkers.push({ id: id++, label: "bottom row flat HP/ATK/DEF", fn: this.SellBottomRowFlatMainStat });
-    // map from checkerid to whether enabled. Not an array to be fancy:
+    checkers.push({ id: id++, label: "bottom row flat HP/ATK/DEF", fn: this.CheckBottomRowFlatMainStat });
+    // map from checkerid to whether enabled. Not an array, to be fancy:
     var checkedByCheckerId = {};
     checkers.forEach((checker, index) => {
-      checkedByCheckerId[checker.id] = // (index === barSpecifierId) || (checker.fn === this.SellUnwornGear);
-        (checker.fn === this.SellUnwornGear);
+      checkedByCheckerId[checker.id] = (checker.fn === this.CheckUnwornGear);
     });
     var comparer = new Comparer();
     var artifactSorters = comparer.makeArtifactSorters();
@@ -81,9 +107,17 @@ class ArtifactSellPage extends React.Component {
       'artifactDimension': DIMENSION_NONE,
       'comparer': comparer,
       'rankBar': INITIAL_RANK_BAR,
-      'is_lower_bound': STARTING_IS_LOWER_BOUND,
+      'is_lower_bound': STARTING_RANK_IS_LOWER_BOUND,
       barSpecifierId: barSpecifierId,
-      rankLabels: rankLabels
+      rankLabels: rankLabels,
+      rarityBar: INITIAL_RARITY_BAR,
+      rarity_is_lower_bound: STARTING_RARITY_IS_LOWER_BOUND,
+      rarityBarSpecifierId: rarityBarSpecifierId,
+      rarityLabels: rarityLabels,
+      slotBar: "boots",
+      slotBarSpecifierId: slotBarSpecifierId,
+      slotLabels: slotLabels,
+      slotKeys: slotKeys
     }
   }
   onMinRankChange(v, is_lower_bound) {
@@ -94,7 +128,7 @@ class ArtifactSellPage extends React.Component {
     var barSpecifierId = this.state.barSpecifierId;
     checkers[barSpecifierId] = {
       id: barSpecifierId,
-      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.SellByRank
+      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.CheckByRank
     };
     this.setState({
       rankBar: v,
@@ -103,11 +137,44 @@ class ArtifactSellPage extends React.Component {
     });
   }
 
-  SellUnwornGear(artifact) {
+  onRarityBarChange(v, is_lower_bound) {
+    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
+    var checkers = this.state.checkers;
+    // because 'checkers' was set in the constructor, before 'this.state' was set,
+    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
+    var barSpecifierId = this.state.rarityBarSpecifierId;
+    checkers[barSpecifierId] = {
+      id: barSpecifierId,
+      label: <BarSpecifier intro={RARITY_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onRarityBarChange(v, b)} labels={this.state.rarityLabels} keys={RARITY_KEYS} />,
+      fn: this.CheckByRarity
+    };
+    this.setState({
+      rarityBar: v,
+      rarity_is_lower_bound: is_lower_bound,
+      checkers: checkers
+    });
+  }
+
+  onSlotBarChange(v, is_lower_bound) {
+    //console.log('onSlotBarChange: v from ' + this.state.slotBar + " to " + v);
+    var checkers = this.state.checkers;
+    var slotSpecifierId = this.state.slotBarSpecifierId;
+    checkers[slotSpecifierId] = {
+      id: slotSpecifierId,
+      label: <BarSpecifier intro={SLOT_INTRO} initial={v} is_exact={true} reporter={(v, b) => this.onSlotBarChange(v, b)} labels={this.state.slotLabels} keys={this.state.slotKeys} />,
+      fn: this.CheckBySlot
+    };
+    this.setState({
+      slotBar: v,
+      checkers: checkers
+    });
+  }
+
+  CheckUnwornGear(artifact) {
     return (artifact && !artifact.wearer) ? DONT_DISPLAY : null;
   }
 
-  SellAtkPercentGloves(artifact) {
+  CheckAtkPercentGloves(artifact) {
     if (!artifact) return null;
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "gloves")) return null;
@@ -116,7 +183,7 @@ class ArtifactSellPage extends React.Component {
     return "Atk% gloves";
   }
 
-  SellThreeSubstatsNoSpeed(artifact) {
+  CheckThreeSubstatsNoSpeed(artifact) {
     if (!artifact) return null;
     if (!artifact.rarity) return null;
     if (artifact.requiredFraction) return null; // accessory
@@ -132,7 +199,7 @@ class ArtifactSellPage extends React.Component {
     }
   }
 
-  SellEpicNonSpeedBoots(artifact) {
+  CheckEpicNonSpeedBoots(artifact) {
     if (!artifact) return null;
     if (!artifact.rarity) return null;
     if (artifact.requiredFraction) return null; // accessory
@@ -145,7 +212,7 @@ class ArtifactSellPage extends React.Component {
     return "Epic non-SPD boots";
   }
 
-  SellDefensiveBootsWithoutSpeed(artifact) {
+  CheckDefensiveBootsWithoutSpeed(artifact) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -167,7 +234,7 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  SellAttackAmulets(artifact) {
+  CheckAttackAmulets(artifact) {
     if (!artifact) return null;
     if (!artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -177,7 +244,7 @@ class ArtifactSellPage extends React.Component {
     return "Attack Amulet";
   }
 
-  SellDefenseRingWithoutTwoGoodSubstats(artifact) {
+  CheckDefenseRingWithoutTwoGoodSubstats(artifact) {
     // a 'good' substat is a % stat, or SPD
     if (!artifact) return null;
     if (!artifact.requiredFraction) return null; // accessory
@@ -202,7 +269,7 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  SellDefensiveRingWithoutDefensiveSubstats(artifact) {
+  CheckDefensiveRingWithoutDefensiveSubstats(artifact) {
     if (!artifact) return null;
     if (!artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -230,7 +297,7 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  SellNonLegoRingWith2BadSubstats(artifact) {
+  CheckNonLegoRingWith2BadSubstats(artifact) {
     if (!artifact) return null;
     if (!artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -252,7 +319,7 @@ class ArtifactSellPage extends React.Component {
     }
   }
 
-  SellTopRowWith2BadSubstats(artifact) {
+  CheckTopRowWith2BadSubstats(artifact) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -278,7 +345,7 @@ class ArtifactSellPage extends React.Component {
     }
   }
 
-  SellMostCDGloves(artifact) {
+  CheckMostCDGloves(artifact) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.kind) return null;
@@ -299,7 +366,7 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  SellByRank(artifact, extra) {
+  CheckByRank(artifact, extra) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     if (!artifact.rank) return null;
@@ -312,7 +379,25 @@ class ArtifactSellPage extends React.Component {
     }
     return null;
   }
-  SellBottomRowFlatMainStat(artifact) {
+
+  CheckBySlot(artifact, extra) {
+    var bar = extra.slotBar;
+    return (bar === artifact.kind.toLowerCase()) ? DONT_DISPLAY : null;
+  }
+
+  CheckByRarity(artifact, extra) {
+    if (!artifact || !artifact.rarity) return null;
+    var bar = extra.numberer.Rarity(extra.rarityBar);
+    var is_lower_bound = extra.rarity_is_lower_bound;
+    var asNum = extra.numberer.Rarity(artifact.rarity);
+    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
+    if (passed) {
+      return DONT_DISPLAY;
+    }
+    return null;
+  }
+
+  CheckBottomRowFlatMainStat(artifact) {
     if (!artifact) return null;
     if (artifact.requiredFraction) return null; // accessory
     var kind = artifact.kind;
@@ -445,7 +530,10 @@ class ArtifactSellPage extends React.Component {
     var extra = {
       numberer: numberer,
       rankBar: this.state.rankBar,
-      is_lower_bound: this.state.is_lower_bound
+      is_lower_bound: this.state.is_lower_bound,
+      rarityBar: this.state.rarityBar,
+      rarity_is_lower_bound: this.state.rarity_is_lower_bound,
+      slotBar: this.state.slotBar
     };
     var shown = 0;
     this.props.artifacts.some((artifact) => {

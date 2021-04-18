@@ -10,6 +10,7 @@ const { Option } = Select;
  * intro - text to put to the left of the widget.
  * initial - initial value.
  * is_lower_bound - is this a lower bound?
+ * is_exact. if true, then the <=/>= isn't shown.
  * labels - maps from key to label to show
  * reporter - F(new value, new is_lower), called when value changes.
  */
@@ -28,31 +29,42 @@ class BarSpecifier extends React.Component {
         }
     }
 
+    renderComparator() {
+        //console.log('is_exact = ' + this.props.is_exact);
+        if (this.props.is_exact) {
+            return ": ";
+        } else {
+            var ch = String.fromCharCode(this.props.is_lower_bound ? 8805 : 8804);
+            // >= and <=, respectively
+            return (<Button className="is_lower_bound" type="text"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    this.onChangeBound();
+                }}>
+                {ch}
+            </Button>)
+        }
+    }
     render() {
         var options = [];
         this.props.keys.forEach((key) => {
             options.push(<Option key={key} value={key}>{this.props.labels[key]}</Option>);
         })
+
         // stop propagation to keep clicking from changing the sort order.
-        var initialAsNum = parseInt(this.props.initial);
-        // >= and <=, respectively
-        var ch = String.fromCharCode(this.props.is_lower_bound ? 8805 : 8804);
+        //var initialAsNum = parseInt(this.props.initial);
+        var initial = this.props.initial;
+
+
         return (
             <div style={{ display: 'inline-block', height: '1.75em' }}>
                 <span>
                     {this.props.intro}
                 </span>
-
-                <Button className="is_lower_bound" type="text"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        this.onChangeBound();
-                    }}>
-                    {ch}
-                </Button>
+                {this.renderComparator()}
                 <Select className="rank_specifier" onClick={(e) => {
                     e.stopPropagation();
-                }} value={initialAsNum} onSelect={(value) => this.onSelect(value)}>
+                }} value={initial} onSelect={(value) => this.onSelect(value)}>
                     {options}
                 </Select>
             </div>

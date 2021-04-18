@@ -9,12 +9,29 @@ import {
     DIMENSION_SETKIND,
     DIMENSION_MAIN_STAT
 } from './ArtifactDimensionChooser';
+import artifactSetsConfig from './config/artifact_sets.json';
 
 // collects the various comparison methods. DRY.
 // these methods are all 'static', they are exported
 // and pointed to directly and hence there is no class 'this'.
 
+// hence need the below as a package variable:
+var setOrdinalities = {};
+
 class Comparer {
+    constructor() {
+        setOrdinalities = {};
+        var count = 0;
+        artifactSetsConfig.sets.forEach((setConfig) => {
+            if (setConfig.key)
+                setOrdinalities[setConfig.key.toLowerCase()] = setConfig.ordinality;
+            if (setConfig.jsonKey)
+                setOrdinalities[setConfig.jsonKey.toLowerCase()] = setConfig.ordinality;
+            count++;
+        });
+        // handle 'None' specially:
+        setOrdinalities["none"] = count + 1;
+    }
     makeArtifactSorters() {
         var artifactSorters = {};
         artifactSorters[DIMENSION_RANK] = this.ArtifactByRank;
@@ -61,12 +78,16 @@ class Comparer {
     }
 
     ArtifactBySetKind(art1, art2) {
-        var v1 = art1.setKind;
-        var v2 = art2.setKind;
+        var v1 = (art1 && art1.setKind) ? art1.setKind.toLowerCase() : null;
+        var v2 = (art2 && art2.setKind) ? art2.setKind.toLowerCase() : null;
         if (!v1 && !v2) return 0;
         if (!v1) return 1;
         if (!v2) return -1;
-        return v1.toLowerCase().localeCompare(v2.toLowerCase());
+        // can't refer to 'this' here :(
+        v1 = setOrdinalities[v1];
+        v2 = setOrdinalities[v2];
+
+        return v1 - v2;
     }
 
     ArtifactByMainStat(art1, art2) {

@@ -10,6 +10,7 @@ import artifactTypeConfig from './config/artifact_types.json';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
+const DONT_DISPLAY = "Uninteresting";
 
 class ChampionPage extends React.Component {
   constructor(props) {
@@ -97,14 +98,14 @@ class ChampionPage extends React.Component {
     var rank = numberer.RankFromStars(champion.grade);
     var rankBar = extra.rankBar;
     var passes = (extra.is_lower_bound) ? (rank >= rankBar) : (rank <= rankBar);
-    return passes ? "rank" : null;
+    return passes ? DONT_DISPLAY : null;
   }
 
   CheckInVault(champion) {
-    return (champion && champion.inStorage) ? "in the vault" : null;
+    return (champion && champion.inStorage) ? DONT_DISPLAY : null;
   }
   CheckNotInVault(champion) {
-    return (champion && !champion.inStorage) ? "NOT in the vault" : null;
+    return (champion && !champion.inStorage) ? DONT_DISPLAY : null;
   }
   CheckHasMarker(champion) {
     return (champion && champion.marker && champion.marker.toLowerCase() !== "none") ? ("marker: " + champion.marker) : null;
@@ -394,7 +395,7 @@ class ChampionPage extends React.Component {
       extra.artifactTypeMap = artifactTypeMap;
       extra.rankBar = this.state.rankBar;
       extra.is_lower_bound = this.state.is_lower_bound;
-      var lastWhy = null;
+      var whys = [];
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {
           var why = checker.fn(champion, extra);
@@ -402,7 +403,9 @@ class ChampionPage extends React.Component {
             passesAll = false;
             return true; // end the loop
           } else {
-            lastWhy = why;
+            if (DONT_DISPLAY !== why) {
+              whys.push(why);
+            }
           }
         }
         return false; // keep going
@@ -422,7 +425,7 @@ class ChampionPage extends React.Component {
           artifacts: artifacts,
           marker: champion.marker,
           awakenLevel: champion.awakenLevel,
-          why: lastWhy
+          why: whys.join(',')
         };
         dataByRows.push(rowData);
       }
