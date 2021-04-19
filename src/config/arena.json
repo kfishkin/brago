@@ -2,6 +2,7 @@
     "levels": [
         {
             "key": "b_1",
+            "jsonKey": "bronzei",
             "label": "Bronze I",
             "bonuses": [
                 {
@@ -24,6 +25,7 @@
         },
         {
             "key": "b_2",
+            "jsonKey": "bronzeii",
             "label": "Bronze II",
             "bonuses": [
                 {
@@ -47,6 +49,7 @@
         {
             "key": "b_3",
             "label": "Bronze III",
+            "jsonKey": "bronzeiii",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -69,6 +72,7 @@
         {
             "key": "b_4",
             "label": "Bronze IV",
+            "jsonKey": "bronzeiv",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -91,6 +95,7 @@
         {
             "key": "s_1",
             "label": "Silver I",
+            "jsonKey": "silveri",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -113,6 +118,7 @@
         {
             "key": "s_2",
             "label": "Silver II",
+            "jsonKey": "silverii",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -135,6 +141,7 @@
         {
             "key": "s_3",
             "label": "Silver III",
+            "jsonKey": "silveriii",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -157,6 +164,7 @@
         {
             "key": "s_4",
             "label": "Silver IV",
+            "jsonKey": "silveriv",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -178,6 +186,7 @@
         },
         {
             "key": "g_1",
+            "jsonKey": "goldi",
             "label": "Gold I",
             "bonuses": [
                 {
@@ -201,6 +210,7 @@
         {
             "key": "g_2",
             "label": "Gold II",
+            "jsonKey": "goldii",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -223,6 +233,7 @@
         {
             "key": "g_3",
             "label": "Gold III",
+            "jsonKey": "goldiii",
             "bonuses": [
                 {
                     "kind": "hp",
@@ -244,6 +255,7 @@
         },
         {
             "key": "g_4",
+            "jsonKey": "goldiv",
             "label": "Gold IV",
             "bonuses": [
                 {

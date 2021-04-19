@@ -1,5 +1,6 @@
 import React from 'react';
 import { AutoComplete, Popover, Table } from 'antd'
+import arenaConfig from './config/arena.json';
 import Formatter from './Formatter';
 import Numberer from './Numberer';
 import artifactSetConfig from './config/artifact_sets.json';
@@ -17,7 +18,7 @@ import { Row, Col } from 'antd';
 // artifactsById - hash of artifacts indexed by id
 // reporter - f(champion), call when chosen
 // curChamp - current champion, if any
-// arenaLevel - dict with data on current arena level.
+// arenaKey - key into arena data.
 // greatHallData - values from great hall
 class ChampionDetailPage extends React.Component {
   constructor(props) {
@@ -49,7 +50,14 @@ class ChampionDetailPage extends React.Component {
     artifactTypeConfig.artifact_types.forEach((typeSpec) => {
       this.artifactTypesByKey[typeSpec.key.toLowerCase()] = typeSpec;
     });
-
+    this.arenaData = {};
+    arenaConfig.levels.some((arenaLevel) => {
+      if (arenaLevel.jsonKey === this.props.arenaKey) {
+        this.arenaData = arenaLevel;
+        return true;
+      }
+      return false;
+    });
   }
 
   onSelect(value, option) {
@@ -290,7 +298,7 @@ class ChampionDetailPage extends React.Component {
     return masteriesSet;
   }
   renderTotalStats() {
-    var arenaLabel = this.props.arenaLevel ? (" (" + this.props.arenaLevel.label + ")") : "";
+    var arenaLabel = this.arenaData ? (" (" + this.arenaData.label + ")") : "";
 
     const columns = [
       {
@@ -329,9 +337,8 @@ class ChampionDetailPage extends React.Component {
     const dataByRows = [
     ];
     var arenaBonuses = [];
-    if (this.props.arenaLevel && this.props.arenaLevel.bonuses
-      && this.props.arenaLevel.bonuses.length > 0) {
-      arenaBonuses = this.props.arenaLevel.bonuses;
+    if (this.arenaData && this.arenaData.bonuses) {
+      arenaBonuses = this.arenaData.bonuses;
     }
     var hallBonuses = {};
     if (this.props.greatHallData) {

@@ -136,6 +136,7 @@
             "branch": "offense",
             "tier": 5,
             "label": "Kill Streak",
+            "key": 500152,
             "img": "pix/masteries/offense/Kill_Streak.png",
             "bonuses": []
         },

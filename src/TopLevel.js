@@ -85,13 +85,15 @@ class TopLevel extends React.Component {
             var fileName = localStorage.getItem("file_name");
             var artifacts = null;
             var champions = null;
+            var arenaKey = null;
             try {
                 artifacts = JSON.parse(localStorage.getItem("file_artifacts"));
                 champions = JSON.parse(localStorage.getItem("file_champions"));
+                arenaKey = localStorage.getItem("arena_key");
             } catch (err) {
             }
 
-            this.onLoadJson(artifacts, champions, fileName);
+            this.onLoadJson(artifacts, champions, fileName, arenaKey);
         }
     };
 
@@ -115,13 +117,11 @@ class TopLevel extends React.Component {
         const cookies = new Cookies();
         cookies.set('greatHallData', JSON.stringify(newRows), { path: '/' });
     }
-    onArenaSetLevel(arenaData) {
-        this.setState({ arenaLevel: arenaData });
-        const cookies = new Cookies();
-        cookies.set('arenaLevel', JSON.stringify(arenaData), { path: '/' });
 
-    }
-    onLoadJson(artifacts, champions, fileName) {
+    onLoadJson(artifacts, champions, fileName, arenaKey) {
+        if (arenaKey) {
+            arenaKey = arenaKey.toLowerCase();
+        }
         var artifactsById = {}
         if (artifacts) {
             artifacts.forEach((artifact) => {
@@ -144,6 +144,7 @@ class TopLevel extends React.Component {
                 localStorage.setItem("file_name", fileName);
                 localStorage.setItem("file_artifacts", JSON.stringify(artifacts));
                 localStorage.setItem("file_champions", JSON.stringify(champions));
+                localStorage.setItem("arena_key", arenaKey);
             } else {
                 localStorage.removeItem("file_name");
                 localStorage.removeItem("file_artifacts");
@@ -155,7 +156,8 @@ class TopLevel extends React.Component {
             artifacts: artifacts,
             artifactsById: artifactsById,
             champions: champions,
-            fileName: fileName
+            fileName: fileName,
+            arenaKey: arenaKey
         });
     }
 
@@ -306,14 +308,13 @@ class TopLevel extends React.Component {
                 return <AboutPage />;
             case 'arena':
                 return <Arena
-                    arenaLevel={this.state.arenaLevel}
-                    reporter={(arenaData) => this.onArenaSetLevel(arenaData)} />
+                    arenaKey={this.state.arenaKey} />
             case 'artifacts':
                 if ('artifacts' in this.state) {
                     return (<ArtifactPage artifacts={this.state.artifacts} />);
                 } else {
                     return (
-                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                     )
                 }
             case 'bump artifacts':
@@ -321,7 +322,7 @@ class TopLevel extends React.Component {
                     return (<ArtifactBumpPage artifacts={this.state.artifacts} />);
                 } else {
                     return (
-                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                     )
                 }
             case 'sell artifacts':
@@ -329,7 +330,7 @@ class TopLevel extends React.Component {
                     return (<ArtifactSellPage artifacts={this.state.artifacts} />);
                 } else {
                     return (
-                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                     )
                 }
             case 'champion chooser':
@@ -338,12 +339,12 @@ class TopLevel extends React.Component {
                         champions={this.state.champions}
                         artifactsById={this.state.artifactsById}
                         curChamp={this.state.curChamp}
-                        arenaLevel={this.state.arenaLevel}
+                        arenaKey={this.state.arenaKey}
                         greatHallData={this.state.greatHallData}
                         reporter={(champion) => this.onChooseChampion(champion)} />);
                 } else {
                     return (
-                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                     )
                 }
             case 'champions':
@@ -351,7 +352,7 @@ class TopLevel extends React.Component {
                     return (<ChampionPage fileName={this.state.fileName} champions={this.state.champions} artifactsById={this.state.artifactsById} />);
                 } else {
                     return (
-                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                        <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                     )
                 }
             case 'gear to lock':
@@ -370,7 +371,7 @@ class TopLevel extends React.Component {
                 return <HelpPage />;
             case 'load json':
                 return (
-                    <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName) => this.onLoadJson(artifacts, champions, fileName)} />
+                    <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey) => this.onLoadJson(artifacts, champions, fileName, arenaKey)} />
                 );
             case 'other champions':
                 return (<OtherChampionsComponent
@@ -407,7 +408,7 @@ class TopLevel extends React.Component {
                         artifacts={this.state.artifacts}
                         champions={this.state.champions}
                         curChamp={this.state.curChamp}
-                        arenaLevel={this.state.arenaLevel}
+                        arenaKey={this.state.arenaKey}
                         greatHallData={this.state.greatHallData}
                         lockedSlots={this.state.lockedSlots}
                         otherChampionGearMode={this.state.otherChampionGearMode}

@@ -1,19 +1,28 @@
 import React from 'react';
 import { Menu } from 'antd';
 import greatHallConfig from './config/great_hall.json';
+import arenaConfig from './config/arena.json';
 
 // props:
-// arenaLevel - object with current arena level
+// arenaKey - key into current arena level
 // greatHallData - array of great hall data, empty if none.
 // lockedSlots - which types of armor are locked
 // eligibleRanks - which ranks are eligible
 // fileName - last loaded fileName
 class NavMenu extends React.Component {
-  arenaText(arenaLevel) {
-    if (!arenaLevel) {
+  arenaText(arenaKey) {
+    if (!arenaKey) {
       return <div>Arena</div>
     }
-    return <div status="gtg">Arena: {arenaLevel.label}</div>
+    var label = null;
+    arenaConfig.levels.some((arenaLevel) => {
+      if (arenaLevel.jsonKey === arenaKey) {
+        label = arenaLevel.label;
+        return true;
+      }
+      return false;
+    });
+    return <div status="gtg">Arena: {label}</div>
   }
   championsText(champions) {
     if (!champions || champions.length === 0) {
@@ -54,7 +63,7 @@ class NavMenu extends React.Component {
           Artifacts to bump
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
-        <Menu.Item onClick={() => this.props.handleShowPage('arena')}>Arena Tier</Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('arena')}>{this.arenaText(this.props.arenaKey)}</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('great hall')}>Great Hall</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('about')}>About</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('help')}>Help</Menu.Item>

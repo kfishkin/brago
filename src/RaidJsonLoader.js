@@ -21,7 +21,8 @@ class RaidJsonLoader extends React.Component {
       return;
     }
     this.setState({ fileReader: null, errorMessage: null });
-    this.props.reporter(obj.artifacts, obj.heroes, fileName);
+    console.log('arena league = ' + obj.arenaLeague);
+    this.props.reporter(obj.artifacts, obj.heroes, fileName, obj.arenaLeague);
     var msg = "data loaded";
     this.setState({ statusMessage: msg });
   }
