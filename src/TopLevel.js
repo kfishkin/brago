@@ -21,6 +21,7 @@ import HeaderDetail from './HeaderDetail';
 import HelpPage from './HelpPage';
 import LockComponent from './LockComponent';
 import OtherChampionsComponent from './OtherChampionsComponent';
+import ReactGA from 'react-ga';
 import WhichRanksComponent from './WhichRanksComponent';
 import WhichSetsComponent from './WhichSetsComponent';
 
@@ -48,39 +49,8 @@ class TopLevel extends React.Component {
         this.setState({ currentPage: which });
     }
     componentDidMount() {
-
-        /*
-        var newStates = {};
-        // is the arena state in a cookie?
-        const cookies = new Cookies();
-        var arenaCookie = cookies.get('arenaLevel');
-        if (arenaCookie) {
-            newStates.arenaLevel = arenaCookie;
-        }
-        // what about great hall state?
-        var newRows = [];
-        var hallCookie = cookies.get('greatHallData');
-
-        if (hallCookie) {
-            newRows = hallCookie;
-        } else {
-            // make the initial values for great hall data
-            greatHallConfig.rows.forEach((rowData) => {
-                var newRow = {
-                    key: rowData.key
-                };
-                greatHallConfig.columns.forEach((columnData) => {
-                    var attr = columnData.key;
-                    newRow[attr] = 0;
-                });
-                newRows.push(newRow);
-            });
-        }
-        if (newRows.length > 0) {
-            newStates.greatHallData = newRows;
-        }
-        this.setState(newStates);
-        */
+        ReactGA.initialize('UA-195025167-1');
+        ReactGA.pageview(window.location.pathname + window.location.search);
         if (localStorage) {
             var fileName = localStorage.getItem("file_name");
             var artifacts = null;
