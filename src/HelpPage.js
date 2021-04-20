@@ -223,10 +223,10 @@ class HelpPage extends React.Component {
                     I can see this broken down. I find this helpful.
                 </p>
             <img src="pix/help/detail_breakdown.png" alt="stat breakdown" />
-            <h2 id="arena">The 'Arena Tier' screen</h2>
+            <h2 id="arena">The 'Arena' screen</h2>
             <p>
-                This page lets you enter what Arena Tier you're in (it's not stored in the JSON file).
-                If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
+                This page lets you see what Arena Tier you're in.
+                This will be used on the 'Champion Detail' page when computing your total stats.
             </p>
             <p>
                 The information is stored in a cookie, so you don't have to re-type it every time
@@ -234,12 +234,8 @@ class HelpPage extends React.Component {
             </p>
             <h2 id="great_hall">The 'Great Hall' screen</h2>
             <p>
-                This page lets you enter your Great Hall levels (it's not stored in the JSON file).
-                If you enter it, this will be used on the 'Champion Detail' page when computing your total stats.
-            </p>
-            <p>
-                The information is stored in a cookie, so you don't have to re-type it every time
-                you come to the site.
+                This page lets you see your Great Hall levels.
+                This will be used on the 'Champion Detail' page when computing your total stats.
             </p>
         </div >
         );

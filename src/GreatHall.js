@@ -12,7 +12,21 @@ class GreatHall extends React.Component {
         super(props);
         this.state = {
             columns: [],
-            formatter: new Formatter()
+            formatter: new Formatter(),
+            // transform the color scheme depending on level:
+            levelFilters: [
+                "hue-rotate(177deg) saturate(1.00) brightness(0.55)", // black
+                "none", // keep brown brown
+                "none",
+                "none",
+                "hue-rotate(183deg) saturate(2.57) brightness(0.78)", // blue
+                "hue-rotate(183deg) saturate(2.57) brightness(0.78)",
+                "hue-rotate(183deg) saturate(2.57) brightness(0.78)",
+                "hue-rotate(39deg) saturate(2.93) brightness(1.37)", // gold
+                "hue-rotate(39deg) saturate(2.93) brightness(1.37)",
+                "hue-rotate(39deg) saturate(2.93) brightness(1.37)",
+                "hue-rotate(39deg) saturate(2.93) brightness(1.37)"
+            ]
         }
 
     }
@@ -47,12 +61,14 @@ class GreatHall extends React.Component {
     }
 
     renderHallRune(columnSpec, value) {
-        var bonus = columnSpec.bonuses ? columnSpec.bonuses[value - 1] : null;
+        var bonus = (columnSpec.bonuses && value >= 1) ? columnSpec.bonuses[value - 1] : null;
         var bonusMsg = bonus ? this.state.formatter.BonusAmount(bonus.isAbsolute, bonus.value) : null;
+        var filterText = this.state.levelFilters[value];
         return (
             <div className="great_hall_rune">
                 <div className="container">
-                    {this.state.formatter.Image(columnSpec.icon, value, { className: "great_hall_icon" })}
+                    {this.state.formatter.Image(columnSpec.icon, value,
+                        { className: "great_hall_icon", style: { "filter": filterText } })}
                     <div className="floats_above hall_level_overlay">{value}/10</div>
                     <div className="floats_above hall_bonus_overlay">{bonusMsg}</div>
                 </div>
