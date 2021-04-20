@@ -21,8 +21,8 @@ class RaidJsonLoader extends React.Component {
       return;
     }
     this.setState({ fileReader: null, errorMessage: null });
-    console.log('arena league = ' + obj.arenaLeague);
-    this.props.reporter(obj.artifacts, obj.heroes, fileName, obj.arenaLeague);
+    //console.log('handleFileRead: hall = ' + obj.greatHall);
+    this.props.reporter(obj.artifacts, obj.heroes, fileName, obj.arenaLeague, obj.greatHall);
     var msg = "data loaded";
     this.setState({ statusMessage: msg });
   }
@@ -42,8 +42,8 @@ class RaidJsonLoader extends React.Component {
   render() {
     return (
       <div>
-        <p>Upload the JSON file you got from RaidExtractor,
-        that will load the Champions and Artifacts for further use.
+        <p>Upload the JSON file you got from RaidExtractor.
+        That contains the Champion, Artifact, Arena, and Great Hall data.
           </p>
         <p>
           {this.state.statusMessage ? (<span>{this.state.statusMessage}</span>) : ''}

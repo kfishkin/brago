@@ -14,6 +14,9 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.09 (19 April)
+Great Hall and Arena now read from JSON file.
+
 ## 1.08 (16 April)
 Artifacts filter is now an AND as well.
 

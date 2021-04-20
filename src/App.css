@@ -34,6 +34,10 @@ div.arena_current_level {
   background-color: rosybrown;
 }
 
+div.arena_level img {
+  opacity: 0.5;
+}
+
 div.header_detail {
   color: antiquewhite;
 }
@@ -139,7 +143,48 @@ div.artifact_rune div.container {
   position: relative;
 }
 
-.artifact_card {
+div.great_hall_rune div.container {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+img.great_hall_icon {
+  height: 120px;
+  width: 120px;
+  border-width: thin;
+  border-style: none;
+  //background-color: #444;
+  object-fit: contain;
+}
+
+div.container div.hall_level_overlay {
+  z-index: 2;
+  top: 1px;
+  opacity: 1.0;
+  height:20px;
+  color: white;
+  background-image: none;
+  font-size:18px;
+  text-align: center;
+  cursor:default;
+}
+
+div.container div.hall_bonus_overlay {
+  z-index: 3;
+  top: 60%;
+  opacity: 1.0;
+  height:20px;
+  color: white;
+  background-image: none;
+  font-size:18px;
+  text-align: center;
+  cursor:default;
+}
+
+.floats_above {
   width: 100%;
   height: 100%;
   position: absolute;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { InputNumber, Table } from 'antd';
+import { Table } from 'antd';
 import greatHallConfig from './config/great_hall.json';
 import Formatter from './Formatter';
 
 // props:
-// reporter - call to report new data
+// greatHallLevels - hash maps from affinities to hash maps from attributes to values.
 // 
 class GreatHall extends React.Component {
     // the GreatHall owns the column specs
@@ -12,6 +12,7 @@ class GreatHall extends React.Component {
         super(props);
         this.state = {
             columns: [],
+            formatter: new Formatter()
         }
 
     }
@@ -21,14 +22,13 @@ class GreatHall extends React.Component {
         // title: the header text
         // dataIndex: field in (dataByRows) to reference
         // render: knows how to render that column for that data.
-        var formatter = new Formatter();
         const columns = [
             {
                 title: 'Affinity',
                 dataIndex: 'icon',
                 key: 'icon',
                 render: (imgName, record) => (
-                    formatter.Image(imgName, record.label)
+                    this.state.formatter.Image(imgName, record.label)
                 )
             }
         ];
@@ -38,16 +38,26 @@ class GreatHall extends React.Component {
                     key: columnSpec.key,
                     title: columnSpec.label,
                     dataIndex: columnSpec.key,
-                    render: (value, record, index) => (
-                        <div><InputNumber min={0} max={10} precision={0} value={value}
-                            onChange={(value) => this.handleCellChange(value, columnSpec.key, record.key)} />
-                            {this.showBonus(columnSpec.key, value)}</div>
-                    )
+                    render: (value) => this.renderHallRune(columnSpec, value)
                 }
             )
         });
         this.setState({ columns: columns });
 
+    }
+
+    renderHallRune(columnSpec, value) {
+        var bonus = columnSpec.bonuses ? columnSpec.bonuses[value - 1] : null;
+        var bonusMsg = bonus ? this.state.formatter.BonusAmount(bonus.isAbsolute, bonus.value) : null;
+        return (
+            <div className="great_hall_rune">
+                <div className="container">
+                    {this.state.formatter.Image(columnSpec.icon, value, { className: "great_hall_icon" })}
+                    <div className="floats_above hall_level_overlay">{value}/10</div>
+                    <div className="floats_above hall_bonus_overlay">{bonusMsg}</div>
+                </div>
+            </div>
+        )
     }
 
     showBonus(colKey, value) {
@@ -79,9 +89,6 @@ class GreatHall extends React.Component {
         var txt = formatter.BonusAmount(bonus.isAbsolute, bonus.value);
         return (<span><i>&nbsp;{txt}</i></span>);
     }
-    handleCellChange(value, attr, affinity) {
-        this.props.reporter(affinity, attr, value);
-    }
 
     // return the row data
     makeRowData() {
@@ -92,7 +99,9 @@ class GreatHall extends React.Component {
         // then (n) fields, one for each attribute.
         const dataByRows = [
         ];
+        var levels = this.props.greatHallLevels;
         greatHallConfig.rows.forEach((bundle, index) => {
+            var affinity = bundle.key;
             var rowData = {
                 key: bundle.key,
                 icon: bundle.icon,
@@ -100,18 +109,11 @@ class GreatHall extends React.Component {
             };
             greatHallConfig.columns.forEach((colBundle) => {
                 var attr = colBundle.key;
-                if (this.props.greatHallData && this.props.greatHallData.length > index) {
-                    var rowDataIn = this.props.greatHallData[index];
-                    rowData[attr] = (attr in rowDataIn) ?
-                        rowDataIn[attr] : 0;
-                } else {
-                    rowData[attr] = 0;
-                }
+                var level = (levels && levels[affinity]) ? levels[affinity][attr] : 0;
+                rowData[attr] = level;
             });
             dataByRows.push(rowData);
         });
-        // squirrel this away:
-        //this.setState({ dataByRows: dataByRows });
         return dataByRows;
     }
 

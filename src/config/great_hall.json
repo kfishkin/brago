@@ -23,8 +23,9 @@
   ],
   "columns": [
     {
-      "key": "hp",
+      "key": "health",
       "label": "HP",
+      "icon": "pix/great_hall/health.png",
       "bonuses": [
         {
           "level": 1,
@@ -79,8 +80,9 @@
       ]
     },
     {
-      "key": "atk",
+      "key": "attack",
       "label": "ATK",
+      "icon": "pix/great_hall/attack.png",
       "bonuses": [
         {
           "level": 1,
@@ -135,7 +137,8 @@
       ]
     },
     {
-      "key": "def",
+      "key": "defense",
+      "icon": "pix/great_hall/defense.png",
       "label": "DEF",
       "bonuses": [
         {
@@ -191,7 +194,8 @@
       ]
     },
     {
-      "key": "cd",
+      "key": "criticalDamage",
+      "icon": "pix/great_hall/criticalDamage.png",
       "label": "C.DMG",
       "bonuses": [
         {
@@ -247,7 +251,8 @@
       ]
     },
     {
-      "key": "res",
+      "key": "resistance",
+      "icon": "pix/great_hall/resistance.png",
       "label": "RESIST",
       "bonuses": [
         {
@@ -303,7 +308,8 @@
       ]
     },
     {
-      "key": "acc",
+      "key": "accuracy",
+      "icon": "pix/great_hall/accuracy.png",
       "label": "ACC",
       "bonuses": [
         {

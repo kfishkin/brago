@@ -61,7 +61,7 @@ class ArtifactRune extends React.Component {
         } else {
           baseImg = this.formatter.Image(typeSpec.icon, msg, { "className": "artifact_icon", "rarity": artifact.rarity });
           meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
-            { "className": "artifact_card meatball" });
+            { "className": "floats_above meatball" });
         }
       }
     }
@@ -80,8 +80,8 @@ class ArtifactRune extends React.Component {
       }
     }
     var levelText = artifact.level ? ("+" + artifact.level) : "";
-    var level = <div className="artifact_card level_overlay">{levelText}</div>
-    var stars = <div className="artifact_card stars_overlay">{starsImg}</div>
+    var level = <div className="floats_above level_overlay">{levelText}</div>
+    var stars = <div className="floats_above stars_overlay">{starsImg}</div>
     containerDiv = <div className="container">
       {baseImg}
       {stars}

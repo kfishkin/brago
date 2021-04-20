@@ -340,19 +340,7 @@ class ChampionDetailPage extends React.Component {
     if (this.arenaData && this.arenaData.bonuses) {
       arenaBonuses = this.arenaData.bonuses;
     }
-    var hallBonuses = {};
-    if (this.props.greatHallData) {
-      // find the row for this champs affinity.
-      this.props.greatHallData.some((hallDict) => {
-        //console.log('key = ' + hallDict.key + ", affinity = " + affinity);
-        if (hallDict.key.toLowerCase() === affinity) {
-          hallBonuses = hallDict;
-          return true;
-        }
-        return false;
-
-      });
-    }
+    var hallBonuses = this.props.greatHallLevels ? this.props.greatHallLevels[affinity] : {};
 
     var masteryIdsAsSet = this.masteryNamesById(curChamp.masteries);
     var artifactAndAmplificationBonuses = this.computeArtifactBonusInfo(curChamp.artifacts, masteryIdsAsSet);
@@ -418,8 +406,8 @@ class ChampionDetailPage extends React.Component {
       }
       // great hall bonus.
       if (hallBonuses) {
-        var hallLevel = hallBonuses[key];
-        var bonus = this.arenaBonusMap[key + ":" + hallLevel];
+        var hallLevel = hallBonuses[attrSpec.jsonKey];
+        var bonus = this.arenaBonusMap[attrSpec.jsonKey + ":" + hallLevel];
         if (bonus) {
           var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
           rowData['great_hall'] = JSON.stringify(amt);

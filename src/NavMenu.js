@@ -1,11 +1,10 @@
 import React from 'react';
 import { Menu } from 'antd';
-import greatHallConfig from './config/great_hall.json';
 import arenaConfig from './config/arena.json';
 
 // props:
 // arenaKey - key into current arena level
-// greatHallData - array of great hall data, empty if none.
+// greatHallLevels - hash of great hall levels, indexed by affinity.
 // lockedSlots - which types of armor are locked
 // eligibleRanks - which ranks are eligible
 // fileName - last loaded fileName
@@ -30,18 +29,14 @@ class NavMenu extends React.Component {
     }
     return <div status="gtg">View some Champions</div>
   }
-  greatHallText(greatHallData) {
-    if (!greatHallData || greatHallData.length === 0) {
+  greatHallText(greatHallLevels) {
+    if (!greatHallLevels || greatHallLevels.length === 0) {
       return <div>Great Hall</div>
     }
     var total = 0;
-    greatHallData.forEach((entry) => {
-      greatHallConfig.columns.forEach((bundle) => {
-        var attr = bundle.key; // 'hp', 'atk', etc.
-        if (attr in entry) {
-          total += entry[attr];
-          //console.log('attr ' + attr + ' has value ' + entry[attr]);
-        }
+    Object.values(greatHallLevels).forEach((affinityDict) => {
+      Object.values(affinityDict).forEach((val) => {
+        total += val;
       });
     });
     if (total === 0) {
@@ -64,7 +59,7 @@ class NavMenu extends React.Component {
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('arena')}>{this.arenaText(this.props.arenaKey)}</Menu.Item>
-        <Menu.Item onClick={() => this.props.handleShowPage('great hall')}>Great Hall</Menu.Item>
+        <Menu.Item onClick={() => this.props.handleShowPage('great hall')}>{this.greatHallText(this.props.greatHallLevels)}</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('about')}>About</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('help')}>Help</Menu.Item>
       </Menu >
