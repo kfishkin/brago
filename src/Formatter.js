@@ -3,7 +3,7 @@ import factionConfig from './config/factions.json';
 import artifactSetsConfig from './config/artifact_sets.json';
 
 class Formatter {
-    constructor(props) {
+    constructor() {
         var factionsByKey = {};
         factionConfig.factions.forEach((faction) => {
             factionsByKey[faction.key] = faction;

@@ -19,15 +19,21 @@ import ChampionDetailPage from './ChampionDetailPage';
 import ChampionPage from './ChampionPage';
 import HeaderDetail from './HeaderDetail';
 import HelpPage from './HelpPage';
+import IdleTimer from 'react-idle-timer';
 import LockComponent from './LockComponent';
 import OtherChampionsComponent from './OtherChampionsComponent';
 import ReactGA from 'react-ga';
 import WhichRanksComponent from './WhichRanksComponent';
 import WhichSetsComponent from './WhichSetsComponent';
 
+
 export const OTHER_GEAR_UNWORN = "unworn";
 export const OTHER_GEAR_VAULT = "vault";
 export const OTHER_GEAR_ALL = "all";
+
+// how long should I wait before doing idle processing,
+// AND how long does the idle process get to do its thing
+const IDLE_HYSTERESIS = 2000;
 
 class TopLevel extends React.Component {
     constructor(props) {
@@ -39,11 +45,14 @@ class TopLevel extends React.Component {
             eligibleRanks: {
                 'one': true, 'two': true, 'three': true,
                 'four': true, 'five': true, 'six': true
-            }
+            },
+            hasDoneSomething: true
             // setSpec map from set key to {None, Some, Set}. Default is 'Some'
             // fileName name of last loaded file.
         }
         this.artifactFilterer = new ArtifactFilterer();
+        this.idleTimer = null;
+        this.counter = 0;
     }
     handleShowPage(which) {
         this.setState({ currentPage: which });
@@ -68,6 +77,75 @@ class TopLevel extends React.Component {
             this.onLoadJson(artifacts, champions, fileName, arenaKey, greatHallLevels);
         }
     };
+
+    onAction(e) {
+        //console.log(this.counter++, 'user did something', e)
+        this.setState({ hasDoneSomething: true })
+    }
+
+    onActive(e) {
+        //console.log(this.counter++, 'user is active', e)
+        //this.setState({ hasDoneSomething: true })
+    }
+
+    computeTotalStatsFor(champion) {
+        var t1 = Date.now();
+        var msg = 'total stats for ' + champion.id;
+        var t2 = Date.now();
+        console.log('compute total stats for champ ', champion.id, ':', champion.name, 'took ', (t2 - t1));
+        this.onComputeTotalStats(champion.id, msg);
+    }
+
+    doIdleProcessing() {
+        // starting at (nextIndexForTotalStats), find a champion
+        // whose total stats aren't known.
+        var firstIndex = this.state.nextIndexForTotalStats;
+        var champs = this.state.champions;
+        if (!champs) return;
+        var index = firstIndex;
+
+        for (; ;) {
+            if (index >= champs.length) {
+                index = 0;
+            }
+            var champId = champs[index].id;
+            if (champId in this.state.knownChampionTotalStats) {
+                index++;
+                if (index === firstIndex) {
+                    console.log('all champs have total stats');
+                    return;
+                }
+            } else {
+                this.computeTotalStatsFor(champs[index]);
+                this.setState({ nextIndexForTotalStats: index + 1 });
+                return;
+            }
+        }
+    }
+
+    onComputeTotalStats(champId, totalStats) {
+        console.log('just computed stats for champ id ' + champId);
+        var cur = this.state.knownChampionTotalStats;
+        cur[champId] = totalStats;
+        this.setState({ knownChampionTotalStats: cur });
+
+    }
+
+    // called when app enters idle state.
+    onIdle(e) {
+        if (this.state.hasDoneSomething) {
+            // not anymore, they haven't....
+            this.setState({ hasDoneSomething: false });
+            // and start the countdown...
+            this.idleTimer.reset();
+        } else {
+            // time to do something on idle
+            //console.log(this.counter++, 'DO ONIDLE')
+            this.doIdleProcessing();
+            // and start the countdown to the NEXT onIdle
+            this.idleTimer.reset();
+        }
+    }
 
     onLoadJson(artifacts, champions, fileName, arenaKey, greatHallLevels) {
         if (arenaKey) {
@@ -112,7 +190,9 @@ class TopLevel extends React.Component {
             champions: champions,
             fileName: fileName,
             arenaKey: arenaKey,
-            greatHallLevels: greatHallLevels
+            greatHallLevels: greatHallLevels,
+            knownChampionTotalStats: {},
+            nextIndexForTotalStats: 0
         });
     }
 
@@ -296,6 +376,8 @@ class TopLevel extends React.Component {
                         curChamp={this.state.curChamp}
                         arenaKey={this.state.arenaKey}
                         greatHallLevels={this.state.greatHallLevels}
+                        knownChampionTotalStats={this.state.knownChampionTotalStats}
+                        onComputeTotalStats={(champId, stats) => this.onComputeTotalStats(champId, stats)}
                         reporter={(champion) => this.onChooseChampion(champion)} />);
                 } else {
                     return (
@@ -356,8 +438,17 @@ class TopLevel extends React.Component {
         const { Header, Footer, Sider, Content } = Layout;
         return (
             <Layout>
-                <Header><HeaderDetail
-                    curChamp={this.state.curChamp} fileName={this.state.fileName}></HeaderDetail></Header>
+                <Header>
+                    <IdleTimer
+                        ref={ref => { this.idleTimer = ref }}
+                        element={document}
+                        onActive={(e) => this.onActive(e)}
+                        onIdle={(e) => this.onIdle(e)}
+                        onAction={(e) => this.onAction(e)}
+                        debounce={250}
+                        timeout={IDLE_HYSTERESIS} />
+                    <HeaderDetail
+                        curChamp={this.state.curChamp} fileName={this.state.fileName}></HeaderDetail></Header>
                 <Layout>
                     <Sider><NavMenu haveChamps={false}
                         artifacts={this.state.artifacts}

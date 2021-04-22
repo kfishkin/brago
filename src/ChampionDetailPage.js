@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutoComplete, Popover, Table } from 'antd'
 import arenaConfig from './config/arena.json';
+import BonusList from './BonusList';
 import Formatter from './Formatter';
 import Numberer from './Numberer';
 import artifactSetConfig from './config/artifact_sets.json';
@@ -134,9 +135,9 @@ class ChampionDetailPage extends React.Component {
     // and an array of the artifact objects.
     var artifactObjects = [];
     var amplificationBonuses = {};
-    var bonuses = {};
+    var bonusesByAttr = {};
     if (!artifacts || artifacts.length === 0) {
-      return [bonuses, amplificationBonuses];
+      return [bonusesByAttr, amplificationBonuses];
     }
     artifacts.forEach((artifactId) => {
       var obj = this.props.artifactsById[artifactId];
@@ -167,29 +168,21 @@ class ChampionDetailPage extends React.Component {
         //console.log('checking set bonuses for set ' + setConfig.label + ', times = ' + times);
         setConfig.bonuses.forEach((bonus) => {
           var attr = bonus.kind;
-          var entry = [bonus, setConfig.label + " set bonus"];
-          if (!(attr in bonuses)) {
-            bonuses[attr] = [];
-          }
+
           if (key1 in amplifyBonusesBySetName) {
             //console.log('bonus applies to ' + key1 + ':' + JSON.stringify(amplifyBonusesBySetName[key1]));
             var amplification = amplifyBonusesBySetName[key1][1].value * bonus.value;
-            // console.log('ampl = ' + amplification + ', isAbs = ' + bonus.isAbsolute);
-            var amplBonus =
-            {
-              "kind": "amplify",
-              "isAbsolute": bonus.isAbsolute,
-              "value": amplification
-            }
+            //console.log('ampl = ' + amplification + ', isAbs = ' + bonus.isAbsolute);
             var masteryName = masteryNamesById[amplifyBonusesBySetName[key1][0]];
-            var amplEntry = [amplBonus, masteryName + " bonus to " + setConfig.label + " set"];
             if (!(attr in amplificationBonuses)) {
-              amplificationBonuses[attr] = [];
-              amplificationBonuses[attr].push(amplEntry);
+              amplificationBonuses[attr] = new BonusList();
             }
+            amplificationBonuses[attr].Add("amplify", bonus.isAbsolute, amplification, masteryName + " bonus to " + setConfig.label + " set");
           }
-          bonuses[attr].push(entry);
-
+          if (!(attr in bonusesByAttr)) {
+            bonusesByAttr[attr] = new BonusList();
+          }
+          bonusesByAttr[attr].AddBonus(bonus, setConfig.label + " set bonus");
         });
       }
       return false;
@@ -198,26 +191,24 @@ class ChampionDetailPage extends React.Component {
     artifactObjects.forEach((artifact) => {
       if (('primaryBonus' in artifact) && ('kind' in artifact.primaryBonus)) {
         var attr = this.attributesByJsonKey[artifact.primaryBonus.kind.toLowerCase()].key;
-        var entry = [artifact.primaryBonus, artifact.kind + ' main stat'];
-        if (!(attr in bonuses)) {
-          bonuses[attr] = [];
+        if (!(attr in bonusesByAttr)) {
+          bonusesByAttr[attr] = new BonusList();
         }
         //console.log(' primary bonus to ' + attr + ' of ' + JSON.stringify(artifact.primaryBonus));
-        bonuses[attr].push(entry);
+        bonusesByAttr[attr].AddBonus(artifact.primaryBonus, artifact.kind + ' main stat');
       }
       if (('secondaryBonuses' in artifact) && (artifact.secondaryBonuses.length > 0)) {
         artifact.secondaryBonuses.forEach((secondary) => {
           attr = this.attributesByJsonKey[secondary.kind.toLowerCase()].key;
-          entry = [secondary, this.artifactTypesByKey[artifact.kind.toLowerCase()].label + ' substat'];
-          if (!(attr in bonuses)) {
-            bonuses[attr] = [];
+          if (!(attr in bonusesByAttr)) {
+            bonusesByAttr[attr] = new BonusList();
           }
           //console.log(' secondary bonus to ' + attr + ' of ' + JSON.stringify(secondary));
-          bonuses[attr].push(entry);
+          bonusesByAttr[attr].AddBonus(secondary, this.artifactTypesByKey[artifact.kind.toLowerCase()].label + ' substat');
         });
       }
     });
-    return [bonuses, amplificationBonuses];
+    return [bonusesByAttr, amplificationBonuses];
   }
 
 
@@ -258,9 +249,7 @@ class ChampionDetailPage extends React.Component {
    * @param {hash} bonuses the bonuses we have going in:
    * 
    * a hash table, keyed by attribute ('hp', 'atk', etc.).
-   * Each entry in the hash table is an array of tuples.
-   * First entry is the Bonus to apply.
-   * Second entry is a string describing the bonus
+   * Each entry in the hash table is a BonusList
    */
   computeMasteryBonusInfo(masteryNamesById, bonuses) {
     masteriesConfig.masteries.some((masterySpec) => {
@@ -272,11 +261,10 @@ class ChampionDetailPage extends React.Component {
       }
       masterySpec.bonuses.forEach((bonus) => {
         var attr = bonus.kind;
-        var entry = [bonus, masterySpec.label + ' mastery bonus'];
         if (!(attr in bonuses)) {
-          bonuses[attr] = [];
+          bonuses[attr] = new BonusList();
         }
-        bonuses[attr].push(entry);
+        bonuses[attr].AddBonus(bonus, masterySpec.label + ' mastery bonus');
       });
       return true;
     });
@@ -360,12 +348,11 @@ class ChampionDetailPage extends React.Component {
 
       var bonusExplanations = [];
       if (key in artBonusInfo) {
-        var bonusTuples = artBonusInfo[key];
-        bonusTuples.forEach((tuple, index) => {
-          var bonus = tuple[0];
+        var bonuses = artBonusInfo[key].Bonuses();
+        bonuses.forEach((bonus, index) => {
           var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
           artAmount += amt;
-          bonusExplanations.push(<li key={index}>{amt} from {tuple[1]}</li>)
+          bonusExplanations.push(<li key={index}>{amt} from {bonus.why}</li>)
         });
       }
       total += artAmount;
@@ -377,16 +364,15 @@ class ChampionDetailPage extends React.Component {
       bonusExplanations = [];
       artAmount = 0;
       if (key in masteryBonusInfo) {
-        bonusTuples = masteryBonusInfo[key];
-        bonusTuples.forEach((tuple, index) => {
-          var bonus = tuple[0];
+        bonuses = masteryBonusInfo[key].Bonuses();
+        bonuses.forEach((bonus, index) => {
           var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
           artAmount += amt;
-          bonusExplanations.push(<li key={index}>{amt} from {tuple[1]}</li>)
+          bonusExplanations.push(<li key={index}>{amt} from {bonus.why}</li>)
         });
       }
-      // do the above again for amplifications.
       total += artAmount;
+      // do the above again for amplifications.
       content = (bonusExplanations.length > 0) ? (<ul>{bonusExplanations}</ul>) : null;
       rowData['masteries'] = (bonusExplanations.length > 0) ?
         <Popover content={content} focus="hover"><span className="has_popover">{artAmount}</span></Popover>
@@ -554,30 +540,30 @@ class ChampionDetailPage extends React.Component {
     var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
     var tryNum = 0;
 
-    parts.push(<img className="champion_avatar" alt="avatar" title={champ.name} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
-    parts.push(<span>{champ.rarity}</span>);
-    parts.push(<span> {champ.element}</span>);
-    parts.push(<span> {numberer.RankFromStars(champ.grade)} *</span>);
+    parts.push(<img key="c0" className="champion_avatar" alt="avatar" title={champ.name} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
+    parts.push(<span key="c1">{champ.rarity}</span>);
+    parts.push(<span key="c2"> {champ.element}</span>);
+    parts.push(<span key="c3"> {numberer.RankFromStars(champ.grade)} *</span>);
     parts.push(formatter.Faction(champ.fraction));
-    parts.push(<span>  <b>{champ.name}</b></span>);
-    parts.push(<span>, level {champ.level}</span>);
+    parts.push(<span key="c5">  <b>{champ.name}</b></span>);
+    parts.push(<span key="c6">, level {champ.level}</span>);
     if (champ.inStorage) {
-      parts.push(<span> (Vault)</span>);
+      parts.push(<span key="c7"> (Vault)</span>);
     }
 
     if (champ.marker && champ.marker !== "None") {
       var spec = this.markerFromKey(champ.marker);
       if (spec) {
-        parts.push(<span>. Marker:</span>);
-        parts.push(<MarkerRune marker={champ.marker} />);
+        parts.push(<span key="c8">. Marker:</span>);
+        parts.push(<MarkerRune key="c9" marker={champ.marker} />);
       }
     }
 
-    parts.push(<hr />);
+    parts.push(<hr key="c10" />);
     parts.push(this.renderArtifacts(champ.artifacts));
-    parts.push(<hr />);
+    parts.push(<hr key="c12" />);
     parts.push(this.renderMasteries(champ.masteries));
-    parts.push(<hr />);
+    parts.push(<hr key="c14" />);
     parts.push(this.renderTotalStats());
     return <div>{parts}</div>;
   }
