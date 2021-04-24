@@ -377,15 +377,18 @@ class TotalStatsCalculator {
         });
         // divide the counts by the amount needed, that tells you
         // how many sets they have.
+        var filtered = {};
         Object.keys(counts).forEach((setKind) => {
             var key = setKind;
             var minSize = ('set_size' in this.artifactSetInfo[key]) ?
                 this.artifactSetInfo[key].set_size : 4;
             var times = Math.floor(counts[key]) / minSize;
-            counts[key] = times;
+            if (times >= 1) {
+                filtered[key] = times;
+            }
         });
         //console.log('set counts =', JSON.stringify(counts));
-        return counts;
+        return filtered;
     }
 
     /**
@@ -405,7 +408,7 @@ class TotalStatsCalculator {
         Object.entries(setCounts).some((tuple) => {
             var setKind = tuple[0];
             var numSets = tuple[1];
-            if (numSets <= 0) {
+            if (numSets < 1) {
                 return false;
             }
             var setInfo = this.artifactSetInfo[setKind];
