@@ -74,9 +74,9 @@ class Numberer {
         var isAbsolute = bonus.isAbsolute;
         if (bonus.kind.toLowerCase() in grr) {
             isAbsolute = true;
-            val *= 100;
+            //val *= 100;
         }
-        return isAbsolute ? val : (base * val);
+        return isAbsolute ? (base + val) : (base * val);
     }
 
 }

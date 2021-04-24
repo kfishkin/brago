@@ -10,7 +10,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -26,14 +26,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.15
                 }
             ]
         },
         {
-            "key": "def",
+            "key": "defense",
             "ordinality": 2,
             "jsonKey": "Defense",
             "label": "Defense",
@@ -42,14 +42,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.15
                 }
             ]
         },
         {
-            "key": "cr",
+            "key": "criticalChance",
             "ordinality": 4,
             "jsonKey": "CriticalChance",
             "label": "Critical Rate",
@@ -58,14 +58,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "cr",
+                    "kind": "criticalChance",
                     "isAbsolute": false,
                     "value": 0.15
                 }
             ]
         },
         {
-            "key": "cd",
+            "key": "criticalDamage",
             "jsonKey": "CriticalDamage",
             "ordinality": 5,
             "label": "Crit Damage",
@@ -74,14 +74,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "cd",
+                    "kind": "criticalDamage",
                     "isAbsolute": false,
                     "value": 0.20
                 }
             ]
         },
         {
-            "key": "acc",
+            "key": "accuracy",
             "ordinality": 6,
             "jsonKey": "Accuracy",
             "label": "Accuracy",
@@ -90,14 +90,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "acc",
+                    "kind": "accuracy",
                     "isAbsolute": true,
                     "value": 40
                 }
             ]
         },
         {
-            "key": "spd",
+            "key": "speed",
             "ordinality": 3,
             "jsonKey": "AttackSpeed",
             "label": "Speed",
@@ -106,14 +106,14 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "spd",
+                    "kind": "speed",
                     "isAbsolute": false,
                     "value": 0.12
                 }
             ]
         },
         {
-            "key": "res",
+            "key": "resistance",
             "ordinality": 7,
             "jsonKey": "Resistance",
             "label": "Resistance",
@@ -122,7 +122,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "res",
+                    "kind": "resistance",
                     "isAbsolute": true,
                     "value": 40
                 }
@@ -338,7 +338,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -354,7 +354,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -370,7 +370,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -386,7 +386,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "cr",
+                    "kind": "criticalChance",
                     "isAbsolute": false,
                     "value": 0.12
                 }
@@ -402,7 +402,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.15
                 }
@@ -418,7 +418,7 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "spd",
+                    "kind": "speed",
                     "isAbsolute": false,
                     "value": 0.12
                 }
@@ -434,12 +434,12 @@
             "set_size": 4,
             "bonuses": [
                 {
-                    "kind": "spd",
+                    "kind": "speed",
                     "isAbsolute": false,
                     "value": 0.18
                 },
                 {
-                    "kind": "cd",
+                    "kind": "criticalDamage",
                     "isAbsolute": false,
                     "value": 0.30
                 }
@@ -455,12 +455,12 @@
             "set_size": 4,
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.20
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.20
                 }
@@ -476,12 +476,12 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.10
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.10
                 }
@@ -497,12 +497,12 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "acc",
+                    "kind": "accuracy",
                     "isAbsolute": true,
                     "value": 40
                 },
                 {
-                    "kind": "spd",
+                    "kind": "speed",
                     "isAbsolute": false,
                     "value": 0.05
                 }
@@ -518,7 +518,7 @@
             "set_size": 4,
             "bonuses": [
                 {
-                    "kind": "cd",
+                    "kind": "criticalDamage",
                     "isAbsolute": false,
                     "value": 0.30
                 }
@@ -527,13 +527,14 @@
         {
             "key": "untouch",
             "ordinality": 39,
+            "jsonKey": "untouchUnkown",
             "label": "Untouchable",
             "icon": "untouch.png",
             "piece_icon_base": "pix/item_sets/Untouchable_",
             "set_size": 4,
             "bonuses": [
                 {
-                    "kind": "res",
+                    "kind": "resistance",
                     "isAbsolute": true,
                     "value": 40
                 }
@@ -549,12 +550,12 @@
             "set_size": 2,
             "bonuses": [
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.15
                 },
                 {
-                    "kind": "cr",
+                    "kind": "criticalChance",
                     "isAbsolute": false,
                     "value": 0.05
                 }
@@ -563,6 +564,7 @@
         {
             "key": "bite",
             "ordinality": 41,
+            "jsonKey": "biteUnknown",
             "label": "Frostbite",
             "icon": "frostbite.png",
             "piece_icon_base": "pix/item_sets/Frostbite_",
@@ -572,13 +574,14 @@
         {
             "key": "bloodthirst",
             "ordinality": 42,
+            "jsonKey": "bloodthirstUnknown",
             "label": "Bloodthirst",
             "icon": "bloodthirst.png",
             "piece_icon_base": "pix/item_sets/Bloodthirst_",
             "set_size": 4,
             "bonuses": [
                 {
-                    "kind": "cr",
+                    "kind": "criticalChance",
                     "isAbsolute": false,
                     "value": 0.12
                 }
@@ -587,6 +590,7 @@
         {
             "key": "guardian",
             "ordinality": 43,
+            "jsonKey": "guardianUnknown",
             "label": "Guardian",
             "icon": "guardian.png",
             "piece_icon_base": "pix/item_sets/Guardian_",

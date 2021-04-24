@@ -253,8 +253,15 @@ button.is_lower_bound {
 
 button.is_lower_bound span {
   background-color: white;
-
 }
+
+span[attr="criticalChance"]::after {
+content: "%";
+}
+
+span[attr="criticalDamage"]::after {
+  content: "%";
+  }
 
 @keyframes App-logo-spin {
   from {

@@ -6,17 +6,17 @@
             "label": "Bronze I",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.01
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.01
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.01
                 }
@@ -29,17 +29,17 @@
             "label": "Bronze II",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.02
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.02
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.02
                 }
@@ -52,17 +52,17 @@
             "jsonKey": "bronzeiii",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.03
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.03
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.03
                 }
@@ -75,17 +75,17 @@
             "jsonKey": "bronzeiv",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.04
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.04
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.04
                 }
@@ -98,17 +98,17 @@
             "jsonKey": "silveri",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.06
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.06
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.06
                 }
@@ -121,17 +121,17 @@
             "jsonKey": "silverii",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.08
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.08
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.08
                 }
@@ -144,17 +144,17 @@
             "jsonKey": "silveriii",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.10
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.10
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.10
                 }
@@ -167,17 +167,17 @@
             "jsonKey": "silveriv",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.12
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.12
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.12
                 }
@@ -190,17 +190,17 @@
             "label": "Gold I",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.14
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.14
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.14
                 }
@@ -213,17 +213,17 @@
             "jsonKey": "goldii",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.16
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.16
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.16
                 }
@@ -236,17 +236,17 @@
             "jsonKey": "goldiii",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.18
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.18
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.18
                 }
@@ -259,17 +259,17 @@
             "label": "Gold IV",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.20
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.20
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.20
                 }
@@ -281,17 +281,17 @@
             "label": "Platinum",
             "bonuses": [
                 {
-                    "kind": "hp",
+                    "kind": "health",
                     "isAbsolute": false,
                     "value": 0.25
                 },
                 {
-                    "kind": "atk",
+                    "kind": "attack",
                     "isAbsolute": false,
                     "value": 0.25
                 },
                 {
-                    "kind": "def",
+                    "kind": "defense",
                     "isAbsolute": false,
                     "value": 0.25
                 }

@@ -89,10 +89,10 @@ class TopLevel extends React.Component {
     }
 
     computeTotalStatsFor(champion) {
-        var t1 = Date.now();
+        //var t1 = Date.now();
         var msg = 'total stats for ' + champion.id;
-        var t2 = Date.now();
-        console.log('compute total stats for champ ', champion.id, ':', champion.name, 'took ', (t2 - t1));
+        //var t2 = Date.now();
+        //console.log('compute total stats for champ ', champion.id, ':', champion.name, 'took ', (t2 - t1));
         this.onComputeTotalStats(champion.id, msg);
     }
 
@@ -112,7 +112,7 @@ class TopLevel extends React.Component {
             if (champId in this.state.knownChampionTotalStats) {
                 index++;
                 if (index === firstIndex) {
-                    console.log('all champs have total stats');
+                    //console.log('all champs have total stats');
                     return;
                 }
             } else {
@@ -124,7 +124,7 @@ class TopLevel extends React.Component {
     }
 
     onComputeTotalStats(champId, totalStats) {
-        console.log('just computed stats for champ id ' + champId);
+        //console.log('just computed stats for champ id ' + champId);
         var cur = this.state.knownChampionTotalStats;
         cur[champId] = totalStats;
         this.setState({ knownChampionTotalStats: cur });
