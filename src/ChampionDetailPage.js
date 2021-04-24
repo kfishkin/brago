@@ -12,6 +12,11 @@ import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
 import ArtifactRune from './ArtifactRune';
 import MarkerRune from './MarkerRune';
+import TotalStatsCalculator,
+{
+  ARENA_COLUMN, BASE_COLUMN, GREAT_HALL_COLUMN, TOTALS_COLUMN,
+  MASTERIES_COLUMN, AMPLIFY_BONUS, ARTIFACTS_COLUMN
+} from './TotalStatsCalculator';
 import { Row, Col } from 'antd';
 
 // props:
@@ -20,7 +25,7 @@ import { Row, Col } from 'antd';
 // reporter - f(champion), call when chosen
 // curChamp - current champion, if any
 // arenaKey - key into arena data.
-// greatHallData - values from great hall
+// greatHallLevels - values from great hall
 class ChampionDetailPage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +33,7 @@ class ChampionDetailPage extends React.Component {
     this.numberer = new Numberer();
     // load and store a map from attribute:level
     // to what it's bonuses are.
-    this.arenaBonusMap = {}
+    this.greatHallBonusMap = {}
     greatHallConfig.columns.forEach((configCol) => {
       var key = configCol.key;
       configCol.bonuses.forEach((bonusEntry) => {
@@ -38,7 +43,7 @@ class ChampionDetailPage extends React.Component {
           'isAbsolute': bonusEntry.isAbsolute,
           'value': bonusEntry.value
         };
-        this.arenaBonusMap[key + ":" + level] = bonus;
+        this.greatHallBonusMap[key + ":" + level] = bonus;
       });
     });
     // map from attribute json to my key
@@ -177,7 +182,7 @@ class ChampionDetailPage extends React.Component {
             if (!(attr in amplificationBonuses)) {
               amplificationBonuses[attr] = new BonusList();
             }
-            amplificationBonuses[attr].Add("amplify", bonus.isAbsolute, amplification, masteryName + " bonus to " + setConfig.label + " set");
+            amplificationBonuses[attr].Add(AMPLIFY_BONUS, bonus.isAbsolute, amplification, masteryName + " bonus to " + setConfig.label + " set");
           }
           if (!(attr in bonusesByAttr)) {
             bonusesByAttr[attr] = new BonusList();
@@ -225,7 +230,7 @@ class ChampionDetailPage extends React.Component {
       // find the amplification bonus.
       var theBonus = null;
       masterySpec.bonuses.some((bonus) => {
-        if (bonus && bonus.kind === "amplify") {
+        if (bonus && bonus.kind === AMPLIFY_BONUS) {
           theBonus = bonus;
           return true;
         }
@@ -243,34 +248,6 @@ class ChampionDetailPage extends React.Component {
     return amplifyBonuses;
   }
 
-  /**
-   * Computes all the info about which mastery bonuses this champ
-   * @param {hash} masteryNamesById. Hash table, keys are ids.
-   * @param {hash} bonuses the bonuses we have going in:
-   * 
-   * a hash table, keyed by attribute ('hp', 'atk', etc.).
-   * Each entry in the hash table is a BonusList
-   */
-  computeMasteryBonusInfo(masteryNamesById, bonuses) {
-    masteriesConfig.masteries.some((masterySpec) => {
-      if (!(masterySpec.key in masteryNamesById)) {
-        return false;
-      }
-      if (!masterySpec.bonuses || masterySpec.bonuses.length === 0) {
-        return false;
-      }
-      masterySpec.bonuses.forEach((bonus) => {
-        var attr = bonus.kind;
-        if (!(attr in bonuses)) {
-          bonuses[attr] = new BonusList();
-        }
-        bonuses[attr].AddBonus(bonus, masterySpec.label + ' mastery bonus');
-      });
-      return true;
-    });
-    return bonuses;
-  }
-
   masteryNamesById(masteryIds) {
     var all = {};
     masteriesConfig.masteries.forEach((masterySpec) => {
@@ -284,6 +261,13 @@ class ChampionDetailPage extends React.Component {
       })
     }
     return masteriesSet;
+  }
+
+  hasDetail(bonusList) {
+    if (!bonusList || !bonusList.Bonuses()) return false;
+    var list = bonusList.Bonuses();
+    if (list.length >= 2) return true;
+    return (list[0].why !== null);
   }
   renderTotalStats() {
     var arenaLabel = this.arenaData ? (" (" + this.arenaData.label + ")") : "";
@@ -321,88 +305,55 @@ class ChampionDetailPage extends React.Component {
       }
     ];
     var curChamp = this.props.curChamp;
-    var affinity = curChamp['element'].toLowerCase();
     const dataByRows = [
     ];
-    var arenaBonuses = [];
-    if (this.arenaData && this.arenaData.bonuses) {
-      arenaBonuses = this.arenaData.bonuses;
-    }
-    var hallBonuses = this.props.greatHallLevels ? this.props.greatHallLevels[affinity] : {};
-
-    var masteryIdsAsSet = this.masteryNamesById(curChamp.masteries);
-    var artifactAndAmplificationBonuses = this.computeArtifactBonusInfo(curChamp.artifacts, masteryIdsAsSet);
-    var artBonusInfo = artifactAndAmplificationBonuses[0];
-    var masteryBonusInfo = artifactAndAmplificationBonuses[1];
-    this.computeMasteryBonusInfo(masteryIdsAsSet, masteryBonusInfo);
+    var calculator = new TotalStatsCalculator();
+    var stats = calculator.MakeAndBake(curChamp, this.props.arenaKey, this.props.greatHallLevels, this.props.artifactsById);
+    //console.log('stats = ' + JSON.stringify(stats[GREAT_HALL_COLUMN]));
 
     attributesConfig.attributes.forEach((attrSpec) => {
-      var key = attrSpec.key;
-      var rowData = { key: key };
+      var attr = attrSpec.jsonKey;
+      var attrKey = attr.toLowerCase();
+      var rowData = { key: attr };
       // base stats.
-      var base = curChamp[attrSpec.jsonKey];
-      var total = base;
-      var artAmount = 0;
+      var base = (stats && stats[BASE_COLUMN] && stats[BASE_COLUMN][attrKey]) ?
+        stats[BASE_COLUMN][attrKey].Bonuses()[0].value : 0;
       rowData['base_stats'] =
         attrSpec.label + "  " + base;
 
-      var bonusExplanations = [];
-      if (key in artBonusInfo) {
-        var bonuses = artBonusInfo[key].Bonuses();
-        bonuses.forEach((bonus, index) => {
-          var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-          artAmount += amt;
-          bonusExplanations.push(<li key={index}>{amt} from {bonus.why}</li>)
-        });
-      }
-      total += artAmount;
-      var content = (bonusExplanations.length > 0) ? (<ul className="bonus_popover">{bonusExplanations}</ul>) : null;
-      rowData['artifacts'] = (bonusExplanations.length > 0) ?
-        <Popover content={content} focus="hover"><span className="has_popover">{artAmount}</span></Popover>
-        : artAmount;
-
-      bonusExplanations = [];
-      artAmount = 0;
-      if (key in masteryBonusInfo) {
-        bonuses = masteryBonusInfo[key].Bonuses();
-        bonuses.forEach((bonus, index) => {
-          var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-          artAmount += amt;
-          bonusExplanations.push(<li key={index}>{amt} from {bonus.why}</li>)
-        });
-      }
-      total += artAmount;
-      // do the above again for amplifications.
-      content = (bonusExplanations.length > 0) ? (<ul>{bonusExplanations}</ul>) : null;
-      rowData['masteries'] = (bonusExplanations.length > 0) ?
-        <Popover content={content} focus="hover"><span className="has_popover">{artAmount}</span></Popover>
-        : '';
-
-      // arena bonus
-      if (arenaBonuses && arenaBonuses.some) {
-        arenaBonuses.some((bonus) => {
-          if (bonus.kind === key) {
-            var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-            rowData['arena'] = amt;
-            total += amt;
-            return true;
-          }
-          return false;
-        });
-      }
-      // great hall bonus.
-      if (hallBonuses) {
-        var hallLevel = hallBonuses[attrSpec.jsonKey];
-        var bonus = this.arenaBonusMap[attrSpec.jsonKey + ":" + hallLevel];
-        if (bonus) {
-          var amt = Math.round(this.numberer.EvaluateBonus(base, bonus));
-          rowData['great_hall'] = JSON.stringify(amt);
-          total += amt;
+      //the interior rows.
+      var cols = [ARTIFACTS_COLUMN, MASTERIES_COLUMN, ARENA_COLUMN, GREAT_HALL_COLUMN];
+      var rowDataKeys = ['artifacts', 'masteries', 'arena', 'great_hall'];
+      for (var i = 0; i < cols.length; i++) {
+        var columnKey = cols[i];
+        var rowDataKey = rowDataKeys[i];
+        var cellBonuses = stats[columnKey][attrKey];
+        var toShow = null;
+        if (!cellBonuses || !cellBonuses.Bonuses()) {
+          //console.log('no artifact bonuses for ' + attr);
+          toShow = '';
+        } else if (!this.hasDetail(cellBonuses)) {
+          //console.log('artifactBonuses[', attr, '] =', JSON.stringify(artifactBonuses.Bonuses()));
+          var val = this.numberer.EvaluateBonus(0, cellBonuses.Bonuses()[0]);
+          toShow = <span attr={attr}>+{val}</span>;
+        } else {
+          //console.log('artifactBonuses[', attr, '] =', JSON.stringify(artifactBonuses.Bonuses()));
+          var cellTotal = 0;
+          var parts = [];
+          // eslint-disable-next-line 
+          cellBonuses.Bonuses().forEach((bonus, index) => {
+            let val = this.numberer.EvaluateBonus(0, bonus);
+            cellTotal += val;
+            parts.push(<li key={index}>{val} from {bonus.why}</li>);
+          });
+          var ul = <ul className="bonus_popover">{parts}</ul>
+          toShow = <Popover content={ul} focus="hover"><span className="has_popover" attr={attr}>+{cellTotal}</span></Popover >
         }
+        rowData[rowDataKey] = toShow;
       }
-
+      var total = (stats && stats[TOTALS_COLUMN] && stats[TOTALS_COLUMN][attrKey]) ?
+        stats[TOTALS_COLUMN][attrKey].Bonuses()[0].value : 0;
       rowData['total'] = Math.round(total);
-
 
       dataByRows.push(rowData);
 
