@@ -201,9 +201,7 @@ class HelpPage extends React.Component {
                 </p>
             <img src="pix/help/detail_artifacts.png" alt="the top 3 lines" />
             <p>
-                Below that, you'll see the 'Known Masteries'. Brago only knows about some of the masteries in the game - I'm
-                adding to the list as I uncover the meaning of the IDs the game assigns to masteries.
-                In this case, you'll see Brago knows about 7 of Kael's masteries, including
+                Below that, you'll see the 'Masteries'. You'll see 7 of Kael's masteries, including
                 'Lore of Steel' (you get this by hovering over an icon).
                 </p>
             <img src="pix/help/detail_masteries.png" alt="the masteries" />

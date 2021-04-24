@@ -192,6 +192,7 @@ class TotalStatsCalculator {
         var column = {}
         if (!masteryIds) return column;
         masteriesConfig.masteries.some((masterySpec) => {
+            //console.log(masterySpec.label + ":" + masterySpec.key);
             if (!masterySpec.key) return false;
             if (masteryIds.indexOf(masterySpec.key) === -1) return false;
             if (!masterySpec.bonuses || masterySpec.bonuses.length === 0) {

@@ -590,7 +590,7 @@
         {
             "key": "guardian",
             "ordinality": 43,
-            "jsonKey": "guardianUnknown",
+            "jsonKey": "PassiveShareDamageAndHeal",
             "label": "Guardian",
             "icon": "guardian.png",
             "piece_icon_base": "pix/item_sets/Guardian_",
