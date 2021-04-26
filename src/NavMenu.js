@@ -55,7 +55,7 @@ class NavMenu extends React.Component {
           View some artifacts
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('bump artifacts')}>
-          Artifacts to bump
+          Artifact Enhancement
         </Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('champion chooser')}>Champion Detail</Menu.Item>
         <Menu.Item onClick={() => this.props.handleShowPage('arena')}>{this.arenaText(this.props.arenaKey)}</Menu.Item>

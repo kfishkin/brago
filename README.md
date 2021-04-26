@@ -14,6 +14,9 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.12 (26 April)
+Can now view and sort by total stats in the Champions view page.
+
 ## 1.11 (25 April)
 Added check for worn artifacts that could use glyph-ing.
 

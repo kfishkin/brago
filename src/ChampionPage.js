@@ -8,11 +8,14 @@ import MarkerRune from './MarkerRune';
 import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
+import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
 const DONT_DISPLAY = "Uninteresting";
 
+// props:
+// newTotalStatsReporter - called when I I compute new total stats.
 class ChampionPage extends React.Component {
   constructor(props) {
     super(props);
@@ -82,7 +85,8 @@ class ChampionPage extends React.Component {
       'is_lower_bound': STARTING_IS_LOWER_BOUND,
       barSpecifierId: barSpecifierId,
       rankLabels: rankLabels,
-      attributesByKey: attributesByKey
+      attributesByKey: attributesByKey,
+      includeTotalStats: false
     }
   }
 
@@ -176,8 +180,8 @@ class ChampionPage extends React.Component {
             + "' bonus without a glyph";
           whys.push(why);
         }
-        return false;
       });
+      return false;
     });
     if (whys.length === 0) {
       return null;
@@ -319,6 +323,85 @@ class ChampionPage extends React.Component {
     </div >);
   }
 
+  onIncludeTotalStatsChange(checked) {
+    var calculator = new TotalStatsCalculator();
+    var numCalced = 0;
+    var totalStats = this.props.knownChampionTotalStats;
+    var t0 = Date.now();
+    // takes roughly 0.4 millis per champion, so even with 500
+    // champions it's only 0.2 seconds. If this was way longer
+    // some notification would be called for.
+    if (checked && this.props.champions && totalStats) {
+      // fill in all the total stats.
+      this.props.champions.some((champion) => {
+        if (champion.id in totalStats) {
+          return false;
+        }
+        //console.log('calculating for ', champion.name);
+        var newStats = calculator.MakeAndBake(champion, this.props.arenaKey, this.props.greatHallLevels, this.props.artifactsById);
+        totalStats[champion.id] = newStats;
+        numCalced++;
+        return false;
+      });
+    }
+    var t1 = Date.now();
+    console.log('computed ', numCalced, ' new stats, took', (t1 - t0), 'millis');
+    if (numCalced > 0 && this.props.reportNewTotalStats) {
+      this.props.reportNewTotalStats(totalStats);
+    }
+    this.setState({ includeTotalStats: checked });
+  }
+
+  renderDisplayModePart() {
+    return (
+      <div>
+        Show total stats:&nbsp;&nbsp;
+        <Switch size="medium" checked={this.state.includeTotalStats} onChange={(checked, e) => { this.onIncludeTotalStatsChange(checked) }}></Switch>
+        <hr />
+      </div>
+    )
+  }
+
+  getTotalStat(attrKey, championTotalStats) {
+    // if should be there as the 'value' in the first bonus
+    // in the (attribte) entry
+    if (!championTotalStats) return null;
+    var column = championTotalStats[TOTALS_COLUMN];
+    if (!column) return null;
+    var bonusList = championTotalStats[TOTALS_COLUMN][attrKey.toLowerCase()];
+    if (!bonusList) return null;
+    return bonusList.Bonuses()[0].value;
+  }
+
+  renderTotalStat(attrKey, championTotalStats) {
+    var val = this.getTotalStat(attrKey, championTotalStats);
+    return val ? val : "--";
+  }
+
+  compareTotalStat(key, champ1Stats, champ2Stats) {
+    var v1 = this.getTotalStat(key, champ1Stats);
+    var v2 = this.getTotalStat(key, champ2Stats);
+    if (!v1 && !v2) return 0;
+    if (!v1) return 1;
+    if (!v2) return -1;
+    return v1 - v2;
+  }
+
+  addStatsColumnHeaders(columns) {
+    if (!columns || !this.state.includeTotalStats) return;
+    attributesConfig.attributes.forEach((attrSpec) => {
+      var key = attrSpec.jsonKey;
+      var headerEntry = {
+        title: 'Total ' + attrSpec.label,
+        key: key,
+        dataIndex: 'champion_total_stats',
+        render: (championTotalStats) => this.renderTotalStat(key, championTotalStats),
+        sorter: (a, b) => this.compareTotalStat(key, a.champion_total_stats, b.champion_total_stats)
+      };
+      columns.push(headerEntry);
+    });
+  }
+
   render() {
     var formatter = new Formatter();
     var numberer = new Numberer();
@@ -327,7 +410,8 @@ class ChampionPage extends React.Component {
       return (<div><span>No champions to show</span></div>);
     }
 
-    const columns = [
+
+    var columns = [
       {
         title: 'Who',
         dataIndex: 'champion',
@@ -383,21 +467,15 @@ class ChampionPage extends React.Component {
         key: 'inStorage',
         sorter: (a, b) => a.inStorage - b.inStorage,
         render: (inStorage) => (inStorage ? "YES" : "NO")
-      },
-      /*
-      {
-        title: 'Artifacts',
-        dataIndex: 'artifacts',
-        key: 'artifacts',
-        render: (artifacts) => this.renderWornArtifacts(artifacts),
-      },
-      */
+      }];
+    if (this.state.includeTotalStats)
+      this.addStatsColumnHeaders(columns);
+    columns.push(
       {
         title: 'Why',
         dataIndex: 'why',
         key: 'why'
-      }
-    ];
+      });
     const dataByRows = [
     ];
 
@@ -469,6 +547,8 @@ class ChampionPage extends React.Component {
           artifacts: artifacts,
           marker: champion.marker,
           awakenLevel: champion.awakenLevel,
+          champion_total_stats: this.props.knownChampionTotalStats ?
+            this.props.knownChampionTotalStats[champion.id] : null,
           why: whys.join(',')
         };
         dataByRows.push(rowData);
@@ -480,6 +560,7 @@ class ChampionPage extends React.Component {
       <div>
         <h3>There are {dataByRows.length} Champions.</h3>
         {this.renderSelectorPart()}
+        {this.renderDisplayModePart()}
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
       </div >
     );

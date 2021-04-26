@@ -24,7 +24,7 @@ export const OTHER_GEAR_ALL = "all";
 
 // how long should I wait before doing idle processing,
 // AND how long does the idle process get to do its thing
-const IDLE_HYSTERESIS = 500;
+const IDLE_HYSTERESIS = 200;
 
 class TopLevel extends React.Component {
     constructor(props) {
@@ -186,6 +186,11 @@ class TopLevel extends React.Component {
             nextIndexForTotalStats: 0
         });
     }
+
+    onNewTotalStatsBulk(newTotals) {
+        this.setState({ knownChampionTotalStats: newTotals });
+    }
+
     onChooseChampion(champion) {
         var gearByIds = {};
         if (champion && champion.artifacts) {
@@ -251,7 +256,12 @@ class TopLevel extends React.Component {
                 }
             case 'champions':
                 if ('champions' in this.state) {
-                    return (<ChampionPage fileName={this.state.fileName} champions={this.state.champions} artifactsById={this.state.artifactsById} />);
+                    return (<ChampionPage fileName={this.state.fileName} champions={this.state.champions}
+                        knownChampionTotalStats={this.state.knownChampionTotalStats}
+                        reportNewTotalStats={(newStats) => this.onNewTotalStatsBulk(newStats)}
+                        arenaKey={this.state.arenaKey}
+                        greatHallLevels={this.state.greatHallLevels}
+                        artifactsById={this.state.artifactsById} />);
                 } else {
                     return (
                         <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey, greatHallLevels) => this.onLoadJson(artifacts, champions, fileName, arenaKey, greatHallLevels)} />
@@ -282,7 +292,7 @@ class TopLevel extends React.Component {
                         onActive={(e) => this.onActive(e)}
                         onIdle={(e) => this.onIdle(e)}
                         onAction={(e) => this.onAction(e)}
-                        debounce={250}
+                        debounce={50}
                         timeout={IDLE_HYSTERESIS} />
                     <HeaderDetail
                         curChamp={this.state.curChamp} fileName={this.state.fileName}></HeaderDetail></Header>

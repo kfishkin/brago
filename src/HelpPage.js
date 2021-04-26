@@ -31,7 +31,7 @@ class HelpPage extends React.Component {
             <ul>
                 <li><a href="#view_champions">The 'View Champions' page</a></li>
                 <li><a href="#view_artifacts">The 'View Artifacts' page</a></li>
-                <li><a href="#to_bump">The 'Artifacts to bump' page</a></li>
+                <li><a href="#to_bump">The 'Artifact Enhancement' page</a></li>
                 <li><a href="#champion_detail">The 'Champion Detail' page</a></li>
                 <li><a href="#arena">The 'Arena Tier' screen</a></li>
                 <li><a href="#great_hall">The 'Great Hall' page</a></li>
@@ -127,7 +127,7 @@ class HelpPage extends React.Component {
                 </p>
             <img src="pix/help/sell_4.png" alt="sell sorted Rares" />
 
-            <h2 id="to_bump">The 'Artifacts to bump' screen</h2>
+            <h2 id="to_bump">The 'Artifact Enhancement' screen</h2>
             <p>
                 When you're in an artifact enhancement event, you only
                 get points when an artifact is enhanced to a level that's
