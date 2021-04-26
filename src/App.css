@@ -156,7 +156,6 @@ img.great_hall_icon {
   width: 120px;
   border-width: thin;
   border-style: none;
-  //background-color: #444;
   object-fit: contain;
 }
 
@@ -242,7 +241,7 @@ img.champion_avatar_small {
   object-fit: contain;
 }
 
-div.rank_specifier div.ant-select-selector {
+div.bar_specifier div.ant-select-selector {
   width: 80px;
 }
 

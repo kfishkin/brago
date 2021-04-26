@@ -62,7 +62,7 @@ class BarSpecifier extends React.Component {
                     {this.props.intro}
                 </span>
                 {this.renderComparator()}
-                <Select className="rank_specifier" onClick={(e) => {
+                <Select className="bar_specifier" onClick={(e) => {
                     e.stopPropagation();
                 }} value={initial} onSelect={(value) => this.onSelect(value)}>
                     {options}

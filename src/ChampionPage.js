@@ -12,6 +12,16 @@ import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
+const AFFINITY_INTRO = "Affinity";
+// not worth it to make a config file out of this, yet:
+// in the order shown when 'view by affinity' done in the app
+const AFFINITY_KEYS = ["void", "force", "magic", "spirit"];
+const AFFINITY_LABELS = {
+  void: "Void", force: "Force",
+  magic: "Magic", spirit: "Spirit"
+};
+// the display looks off if you don't give an initial value
+const AFFINITY_INITIAL = "(Any)";
 const DONT_DISPLAY = "Uninteresting";
 
 // props:
@@ -35,6 +45,11 @@ class ChampionPage extends React.Component {
     checkers.push({
       id: id++,
       label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onRankBarChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.CheckRank
+    });
+    var affinityBarSpecifierId = id;
+    checkers.push({
+      id: id++, label: <BarSpecifier intro={AFFINITY_INTRO}
+        is_exact={true} reporter={(v, b) => this.onAffinityBarChange(v, b)} initial={AFFINITY_INITIAL} labels={AFFINITY_LABELS} keys={AFFINITY_KEYS} />, fn: this.CheckAffinity
     });
     checkers.push({ id: id++, label: "In the vault", fn: this.CheckInVault });
     checkers.push({ id: id++, label: "NOT in the vault", fn: this.CheckNotInVault });
@@ -84,6 +99,7 @@ class ChampionPage extends React.Component {
       'rankBar': INITIAL_RANK_BAR,
       'is_lower_bound': STARTING_IS_LOWER_BOUND,
       barSpecifierId: barSpecifierId,
+      affinityBarSpecifierId: affinityBarSpecifierId,
       rankLabels: rankLabels,
       attributesByKey: attributesByKey,
       includeTotalStats: false
@@ -105,8 +121,25 @@ class ChampionPage extends React.Component {
       is_lower_bound: is_lower_bound,
       checkers: checkers
     });
-
   }
+
+
+  onAffinityBarChange(v) {
+    console.log('onAffinityBarChange: v from ' + this.state.affinityBar + " to " + v);
+    var checkers = this.state.checkers;
+    // because 'checkers' was set in the constructor, before 'this.state' was set,
+    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
+    var barSpecifierId = this.state.affinityBarSpecifierId;
+    checkers[barSpecifierId] = {
+      id: barSpecifierId,
+      label: <BarSpecifier intro={AFFINITY_INTRO} is_exact={true} initial={v} reporter={(v, b) => this.onAffinityBarChange(v, b)} labels={AFFINITY_LABELS} keys={AFFINITY_KEYS} />, fn: this.CheckAffinity
+    };
+    this.setState({
+      affinityBar: v,
+      checkers: checkers
+    });
+  }
+
   // these guys can't refer to 'this', so extra state is passed
   // in 2nd param.
   CheckRank(champion, extra) {
@@ -115,6 +148,19 @@ class ChampionPage extends React.Component {
     var rank = numberer.RankFromStars(champion.grade);
     var rankBar = extra.rankBar;
     var passes = (extra.is_lower_bound) ? (rank >= rankBar) : (rank <= rankBar);
+    return passes ? DONT_DISPLAY : null;
+  }
+
+  // these guys can't refer to 'this', so extra state is passed
+  // in 2nd param.
+  CheckAffinity(champion, extra) {
+    if (!champion || !champion.element) return null;
+    var key = champion.element.toLowerCase();
+    var bar = extra.affinityBar;
+    if (!bar) {
+      return DONT_DISPLAY; // unset affinity bar.
+    }
+    var passes = (key === bar.toLowerCase());
     return passes ? DONT_DISPLAY : null;
   }
 
@@ -517,6 +563,7 @@ class ChampionPage extends React.Component {
       extra.rankBar = this.state.rankBar;
       extra.is_lower_bound = this.state.is_lower_bound;
       extra.attributesByKey = this.state.attributesByKey;
+      extra.affinityBar = this.state.affinityBar;
       var whys = [];
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {

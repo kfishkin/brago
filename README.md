@@ -16,6 +16,7 @@ learning experiment, so be gentle with your comments :)
 
 ## 1.12 (26 April)
 Can now view and sort by total stats in the Champions view page.
+Also added affinity filter.
 
 ## 1.11 (25 April)
 Added check for worn artifacts that could use glyph-ing.
