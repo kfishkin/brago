@@ -4,49 +4,57 @@
             "ordinality": 0,
             "key": "hp",
             "jsonKey": "health",
-            "label": "Health Points"
+            "label": "Health Points",
+            "glyphable": true
         },
         {
             "ordinality": 1,
             "key": "atk",
             "jsonKey": "attack",
-            "label": "Attack"
+            "label": "Attack",
+            "glyphable": true
         },
         {
             "ordinality": 2,
             "key": "def",
             "jsonKey": "defense",
-            "label": "Defense"
+            "label": "Defense",
+            "glyphable": true
         },
         {
             "ordinality": 3,
             "key": "spd",
             "jsonKey": "speed",
-            "label": "Speed"
+            "label": "Speed",
+            "glyphable": true
         },
         {
             "ordinality": 4,
             "key": "cr",
             "jsonKey": "criticalChance",
-            "label": "Critical Rate"
+            "label": "Critical Rate",
+            "glyphable": false
         },
         {
             "ordinality": 5,
             "key": "cd",
             "jsonKey": "criticalDamage",
-            "label": "Critical Damage"
+            "label": "Critical Damage",
+            "glyphable": false
         },
         {
             "ordinality": 6,
             "key": "res",
             "jsonKey": "resistance",
-            "label": "Debuff Resistance"
+            "label": "Debuff Resistance",
+            "glyphable": true
         },
         {
             "ordinality": 7,
             "key": "acc",
             "jsonKey": "accuracy",
-            "label": "Debuff Accuracy"
+            "label": "Debuff Accuracy",
+            "glyphable": true
         }
     ]
 }

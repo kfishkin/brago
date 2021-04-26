@@ -5,12 +5,6 @@ import GreatHall from './GreatHall';
 import AboutPage from './AboutPage';
 import { VERSION } from './AboutPage';
 import Arena from './Arena';
-import ArtifactFilterer from './ArtifactFilterer';
-import {
-    FILTER_IN, FILTER_OUT, FILTER_MAYBE, FILTER_IN_CURRENT_GEAR,
-    FILTER_OUT_JEWELRY_BY_FACTION, FILTER_OUT_BY_SLOT, FILTER_OUT_BY_WEARER,
-    FILTER_OUT_BY_RANK, FILTER_OUT_BY_SET
-} from './ArtifactFilterer';
 import RaidJsonLoader from './RaidJsonLoader';
 import ArtifactPage from './ArtifactPage';
 import ArtifactBumpPage from './ArtifactBumpPage';
@@ -20,11 +14,8 @@ import ChampionPage from './ChampionPage';
 import HeaderDetail from './HeaderDetail';
 import HelpPage from './HelpPage';
 import IdleTimer from 'react-idle-timer';
-import LockComponent from './LockComponent';
-import OtherChampionsComponent from './OtherChampionsComponent';
 import ReactGA from 'react-ga';
-import WhichRanksComponent from './WhichRanksComponent';
-import WhichSetsComponent from './WhichSetsComponent';
+import TotalStatsCalculator from './TotalStatsCalculator';
 
 
 export const OTHER_GEAR_UNWORN = "unworn";
@@ -33,7 +24,7 @@ export const OTHER_GEAR_ALL = "all";
 
 // how long should I wait before doing idle processing,
 // AND how long does the idle process get to do its thing
-const IDLE_HYSTERESIS = 2000;
+const IDLE_HYSTERESIS = 500;
 
 class TopLevel extends React.Component {
     constructor(props) {
@@ -50,9 +41,9 @@ class TopLevel extends React.Component {
             // setSpec map from set key to {None, Some, Set}. Default is 'Some'
             // fileName name of last loaded file.
         }
-        this.artifactFilterer = new ArtifactFilterer();
         this.idleTimer = null;
-        this.counter = 0;
+        this.idleCounter = 0;
+        this.totalStatsCalculator = new TotalStatsCalculator();
     }
     handleShowPage(which) {
         this.setState({ currentPage: which });
@@ -89,11 +80,11 @@ class TopLevel extends React.Component {
     }
 
     computeTotalStatsFor(champion) {
-        //var t1 = Date.now();
-        var msg = 'total stats for ' + champion.id;
-        //var t2 = Date.now();
-        //console.log('compute total stats for champ ', champion.id, ':', champion.name, 'took ', (t2 - t1));
-        this.onComputeTotalStats(champion.id, msg);
+        if (!champion) return;
+        if ((champion.id in this.state.knownChampionTotalStats)) return;
+        var stats = this.totalStatsCalculator.MakeAndBake(champion, this.state.arenaKey, this.state.greatHallLevels, this.state.artifactsById);
+        //console.log('topLevel: computed stats for ' + champion.name);
+        this.onComputeTotalStats(champion.id, stats);
     }
 
     doIdleProcessing() {
@@ -195,42 +186,6 @@ class TopLevel extends React.Component {
             nextIndexForTotalStats: 0
         });
     }
-
-    SetFilteredArtifacts() {
-        if (!this.state.artifacts) {
-            this.setState({ filteredArtifactsByKind: {} });
-            return;
-        }
-        var firstPass = {};
-        this.state.artifacts.forEach((artifact) => {
-            if (this.artifactFilterer.IsWearable(artifact)) {
-                var kind = artifact.kind;
-                if (!(kind in firstPass)) {
-                    firstPass[kind] = [];
-                }
-                firstPass[kind].push(artifact);
-            }
-        });
-        this.setState({ filteredArtifactsByKind: firstPass });
-    }
-
-    onLockSlotChange(slot) {
-        //console.log('toplevel: lock slot change for ' + slot);
-        var newMap = Object.assign(this.state.lockedSlots);
-        if (slot in newMap) {
-            delete newMap[slot];
-        } else {
-            newMap[slot] = true;
-        }
-        this.artifactFilterer.SetFilterer(FILTER_OUT_BY_SLOT, (artifact) => {
-            var toss = artifact && artifact.kind && (artifact.kind.toLowerCase() in newMap);
-            return toss ? FILTER_OUT : FILTER_MAYBE;
-        });
-        this.setState({ lockedSlots: newMap });
-        this.SetFilteredArtifacts();
-
-    }
-
     onChooseChampion(champion) {
         var gearByIds = {};
         if (champion && champion.artifacts) {
@@ -238,97 +193,7 @@ class TopLevel extends React.Component {
                 gearByIds[artifactId] = true;
             });
         }
-
-        this.artifactFilterer.SetFilterer(
-            FILTER_IN_CURRENT_GEAR, (artifact) => {
-                if (artifact.id in gearByIds) return FILTER_IN;
-                return FILTER_MAYBE;
-            });
-        var faction = champion.fraction.toLowerCase();
-        this.artifactFilterer.SetFilterer(FILTER_OUT_JEWELRY_BY_FACTION,
-            (artifact) => {
-                if (!artifact.requiredFraction) return FILTER_MAYBE;
-                var gearFaction = artifact.requiredFraction.toLowerCase();
-                return (faction === gearFaction) ? FILTER_MAYBE : FILTER_OUT;
-            });
-        this.SetFilteredArtifacts();
         this.setState({ curChamp: champion });
-    }
-
-    onOtherChampionsSpecChange(setting) {
-        if (setting === this.state.otherChampionGearMode) return;
-        var excludedIds = {};
-        // find all the worn gear by (a) anyone, or
-        // (b) anyone not in valut, depending.
-        if (this.state.champions) {
-            this.state.champions.some((champion) => {
-                if (setting === OTHER_GEAR_ALL) {
-                    return false; // you can take from this guy...
-                }
-                if (setting === OTHER_GEAR_VAULT && champion.inStorage) {
-                    //ditto
-                    return false;
-                }
-                // to get to here, this champ's gear is off limits.
-                if (champion.artifacts) {
-                    champion.artifacts.forEach((artifactId) => {
-                        excludedIds[artifactId] = true;
-                    });
-                }
-                return false;
-            });
-        }
-        this.artifactFilterer.SetFilterer(FILTER_OUT_BY_WEARER, (artifact) => {
-            return (artifact && artifact.id && (artifact.id in excludedIds))
-                ? FILTER_OUT : FILTER_MAYBE;
-        });
-        this.SetFilteredArtifacts();
-
-
-        this.setState({ otherChampionGearMode: setting });
-    }
-
-    onWhichRanksChange(rankName, nowIn) {
-        var newSet = Object.assign(this.state.eligibleRanks);
-        if (nowIn) {
-            newSet[rankName.toLowerCase()] = true;
-        } else {
-            delete newSet[rankName.toLowerCase()];
-        }
-        this.artifactFilterer.SetFilterer(FILTER_OUT_BY_RANK, (artifact) => {
-            var rank = (artifact && artifact.rank) ? artifact.rank.toLowerCase() : 'xx';
-            return (rank in newSet) ? FILTER_MAYBE : FILTER_OUT;
-        });
-        this.SetFilteredArtifacts();
-        this.setState({ eligibleRanks: newSet });
-    }
-
-    onSetSpecChange(key, value) {
-        //key = key.toLowerCase();
-        //console.log('top: set spec change of ' + key + ' to ' + value);
-        if (this.state.setSpec && (key in this.state.setSpec)
-            && (this.state.setSpec[key] === value)) {
-            return;
-        }
-        var newMap = {};
-        if (this.state.setSpec) {
-            newMap = Object.assign(this.state.setSpec);
-        }
-        newMap[key] = value;
-        this.artifactFilterer.SetFilterer(FILTER_OUT_BY_SET, (artifact) => {
-            if (!artifact || !('setKind' in artifact)) {
-                return FILTER_MAYBE; // happens on accessories
-            }
-            var kind = artifact.setKind;
-            if (!(kind in newMap)) {
-                return FILTER_MAYBE; // default is to allow.
-            }
-            var setting = newMap[kind];
-            //console.log('kind = ' + kind + ', setting = ' + setting);
-            return (setting.toLowerCase() === "none") ? FILTER_OUT : FILTER_MAYBE;
-        });
-        this.SetFilteredArtifacts();
-        this.setState({ setSpec: newMap });
     }
 
     renderContent() {
@@ -392,14 +257,6 @@ class TopLevel extends React.Component {
                         <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey, greatHallLevels) => this.onLoadJson(artifacts, champions, fileName, arenaKey, greatHallLevels)} />
                     )
                 }
-            case 'gear to lock':
-                return (<LockComponent
-                    filteredArtifactsByKind={this.state.filteredArtifactsByKind}
-                    curChamp={this.state.curChamp}
-                    artifactsById={this.state.artifactsById}
-                    lockedSlots={this.state.lockedSlots}
-                    reporter={(slot) => this.onLockSlotChange(slot)}
-                />);
             case 'great hall':
                 return <GreatHall
                     greatHallLevels={this.state.greatHallLevels}
@@ -410,26 +267,6 @@ class TopLevel extends React.Component {
                 return (
                     <RaidJsonLoader fileName={this.state.fileName} reporter={(artifacts, champions, fileName, arenaKey, greatHallLevels) => this.onLoadJson(artifacts, champions, fileName, arenaKey, greatHallLevels)} />
                 );
-            case 'other champions':
-                return (<OtherChampionsComponent
-                    champions={this.state.champions}
-                    filteredArtifactsByKind={this.state.filteredArtifactsByKind}
-                    otherChampionGearMode={this.state.otherChampionGearMode}
-                    reporter={(setting) => this.onOtherChampionsSpecChange(setting)}
-                />);
-            case 'ranks chooser':
-                return (<WhichRanksComponent
-                    artifacts={this.state.artifacts}
-                    filteredArtifactsByKind={this.state.filteredArtifactsByKind}
-                    eligibleRanks={this.state.eligibleRanks}
-                    reporter={(rankName, nowIn) => this.onWhichRanksChange(rankName, nowIn)}
-                />);
-            case 'set chooser':
-                return (<WhichSetsComponent
-                    filteredArtifactsByKind={this.state.filteredArtifactsByKind}
-                    setSpec={this.state.setSpec}
-                    reporter={(key, value) => this.onSetSpecChange(key, value)}
-                />);
             default:
                 return (<p>Please start by clicking on 'Load JSON' and loading a JSON file</p>);
         }
@@ -457,7 +294,6 @@ class TopLevel extends React.Component {
                         arenaKey={this.state.arenaKey}
                         greatHallLevels={this.state.greatHallLevels}
                         lockedSlots={this.state.lockedSlots}
-                        otherChampionGearMode={this.state.otherChampionGearMode}
                         eligibleRanks={this.state.eligibleRanks}
                         handleShowPage={(which) => this.handleShowPage(which)}
                         fileName={this.state.fileName}

@@ -14,6 +14,9 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.11 (25 April)
+Added check for worn artifacts that could use glyph-ing.
+
 ## 1.10 (24 April)
 All masteries now known.
 

@@ -1,13 +1,10 @@
 import React from 'react';
 import { AutoComplete, Popover, Table } from 'antd'
 import arenaConfig from './config/arena.json';
-import BonusList from './BonusList';
 import Formatter from './Formatter';
 import Numberer from './Numberer';
-import artifactSetConfig from './config/artifact_sets.json';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
-import greatHallConfig from './config/great_hall.json';
 import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
 import ArtifactRune from './ArtifactRune';
@@ -15,7 +12,7 @@ import MarkerRune from './MarkerRune';
 import TotalStatsCalculator,
 {
   ARENA_COLUMN, BASE_COLUMN, GREAT_HALL_COLUMN, TOTALS_COLUMN,
-  MASTERIES_COLUMN, AMPLIFY_BONUS, ARTIFACTS_COLUMN
+  MASTERIES_COLUMN, ARTIFACTS_COLUMN
 } from './TotalStatsCalculator';
 import { Row, Col } from 'antd';
 
@@ -31,21 +28,6 @@ class ChampionDetailPage extends React.Component {
     super(props);
     this.formatter = new Formatter();
     this.numberer = new Numberer();
-    // load and store a map from attribute:level
-    // to what it's bonuses are.
-    this.greatHallBonusMap = {}
-    greatHallConfig.columns.forEach((configCol) => {
-      var key = configCol.key;
-      configCol.bonuses.forEach((bonusEntry) => {
-        var level = bonusEntry.level;
-        var bonus = {
-          'kind': key,
-          'isAbsolute': bonusEntry.isAbsolute,
-          'value': bonusEntry.value
-        };
-        this.greatHallBonusMap[key + ":" + level] = bonus;
-      });
-    });
     // map from attribute json to my key
     this.attributesByJsonKey = {};
     attributesConfig.attributes.forEach((attrSpec) => {
@@ -116,153 +98,6 @@ class ChampionDetailPage extends React.Component {
     }
   }
 
-  /**
-   * Computes all the info about which artifact bonuses this champ
-   * @param {array} artifacts the array of worn artifact ids.
-   * @param {hash} masteryNamesById set of masteries champ has.
-   * 
-   * returns two hash tables as an array.
-   * 0 - the artifact bonuses,
-   * keyed by attribute ('hp', 'atk', etc.).
-   * Each entry in the hash table is an array of tuples.
-   * First entry is the Bonus to apply.
-   * Second entry is a string describing the bonus
-   * 
-   * 1 - the 'amplification' bonuses from a mastery bonus on an artifact set.
-   * format is that same as entry 0.
-   */
-  computeArtifactBonusInfo(artifacts, masteryNamesById) {
-    // make a hash table whose key is the armor kind (toxic, cruel, etc.)
-    // and whose value is how many of that type have been seen.
-    // anything missing has a count of 0.
-    var setTypeCounts = {};
-    //
-    // and an array of the artifact objects.
-    var artifactObjects = [];
-    var amplificationBonuses = {};
-    var bonusesByAttr = {};
-    if (!artifacts || artifacts.length === 0) {
-      return [bonusesByAttr, amplificationBonuses];
-    }
-    artifacts.forEach((artifactId) => {
-      var obj = this.props.artifactsById[artifactId];
-      if (obj) {
-        artifactObjects.push(obj);
-        if (obj.setKind && !(obj.setKind === "None")) {
-          var val = (obj.setKind in setTypeCounts) ? setTypeCounts[obj.setKind] : 0;
-          setTypeCounts[obj.setKind] = val + 1;
-        }
-      }
-    });
-    //console.log('set type counts = ' + JSON.stringify(setTypeCounts));
-    // see if I have any mastery bonuses that amplify a set....
-    // hash table, maps from set name to an amplification.
-    // each amplification is [amplifying mastery id, bonus]
-    var amplifyBonusesBySetName = this.computeAmplificationBonuses(masteryNamesById);
-    // go through the armor sets, see if I get their bonuses....
-    artifactSetConfig.sets.some((setConfig) => {
-      var key1 = setConfig.jsonKey;
-      var key2 = setConfig.key;
-      if (!(key1 in setTypeCounts) && !(key2 in setTypeCounts)) {
-        return false; // keep looking
-      }
-      var count = (key1 in setTypeCounts) ? setTypeCounts[key1] : setTypeCounts[key2];
-      //console.log('key1 = ' + key1 + ', key2 = ' + key2 + ', count = ' + count);
-      var times = Math.floor(setConfig.set_size / count);
-      for (var i = 0; i < times; i++) {
-        //console.log('checking set bonuses for set ' + setConfig.label + ', times = ' + times);
-        setConfig.bonuses.forEach((bonus) => {
-          var attr = bonus.kind;
-
-          if (key1 in amplifyBonusesBySetName) {
-            //console.log('bonus applies to ' + key1 + ':' + JSON.stringify(amplifyBonusesBySetName[key1]));
-            var amplification = amplifyBonusesBySetName[key1][1].value * bonus.value;
-            //console.log('ampl = ' + amplification + ', isAbs = ' + bonus.isAbsolute);
-            var masteryName = masteryNamesById[amplifyBonusesBySetName[key1][0]];
-            if (!(attr in amplificationBonuses)) {
-              amplificationBonuses[attr] = new BonusList();
-            }
-            amplificationBonuses[attr].Add(AMPLIFY_BONUS, bonus.isAbsolute, amplification, masteryName + " bonus to " + setConfig.label + " set");
-          }
-          if (!(attr in bonusesByAttr)) {
-            bonusesByAttr[attr] = new BonusList();
-          }
-          bonusesByAttr[attr].AddBonus(bonus, setConfig.label + " set bonus");
-        });
-      }
-      return false;
-    });
-    // and then the bonuses from the pieces themselves.
-    artifactObjects.forEach((artifact) => {
-      if (('primaryBonus' in artifact) && ('kind' in artifact.primaryBonus)) {
-        var attr = this.attributesByJsonKey[artifact.primaryBonus.kind.toLowerCase()].key;
-        if (!(attr in bonusesByAttr)) {
-          bonusesByAttr[attr] = new BonusList();
-        }
-        //console.log(' primary bonus to ' + attr + ' of ' + JSON.stringify(artifact.primaryBonus));
-        bonusesByAttr[attr].AddBonus(artifact.primaryBonus, artifact.kind + ' main stat');
-      }
-      if (('secondaryBonuses' in artifact) && (artifact.secondaryBonuses.length > 0)) {
-        artifact.secondaryBonuses.forEach((secondary) => {
-          attr = this.attributesByJsonKey[secondary.kind.toLowerCase()].key;
-          if (!(attr in bonusesByAttr)) {
-            bonusesByAttr[attr] = new BonusList();
-          }
-          //console.log(' secondary bonus to ' + attr + ' of ' + JSON.stringify(secondary));
-          bonusesByAttr[attr].AddBonus(secondary, this.artifactTypesByKey[artifact.kind.toLowerCase()].label + ' substat');
-        });
-      }
-    });
-    return [bonusesByAttr, amplificationBonuses];
-  }
-
-
-  computeAmplificationBonuses(masteryNamesById) {
-    var amplifyBonuses = {}
-    masteriesConfig.masteries.some((masterySpec) => {
-      if (!masteryNamesById)
-        return false; // just in case
-      if (!(masterySpec.key in masteryNamesById))
-        return false;
-      // I have this mastery. Does it have an amplification bonus?
-      if (!masterySpec.setBonusFor || !masterySpec.bonuses)
-        return false;
-      // find the amplification bonus.
-      var theBonus = null;
-      masterySpec.bonuses.some((bonus) => {
-        if (bonus && bonus.kind === AMPLIFY_BONUS) {
-          theBonus = bonus;
-          return true;
-        }
-        return false;
-      });
-      if (!theBonus)
-        return false;
-      // yay, finally:
-      masterySpec.setBonusFor.forEach((setName) => {
-        var tuple = [masterySpec.key, theBonus];
-        amplifyBonuses[setName] = tuple;
-      });
-      return false;
-    });
-    return amplifyBonuses;
-  }
-
-  masteryNamesById(masteryIds) {
-    var all = {};
-    masteriesConfig.masteries.forEach((masterySpec) => {
-      all[masterySpec.key] = masterySpec.label;
-
-    });
-    var masteriesSet = {};
-    if (masteryIds) {
-      masteryIds.forEach((masteryId) => {
-        masteriesSet[masteryId] = all[masteryId];
-      })
-    }
-    return masteriesSet;
-  }
-
   hasDetail(bonusList) {
     if (!bonusList || !bonusList.Bonuses()) return false;
     var list = bonusList.Bonuses();
@@ -308,7 +143,22 @@ class ChampionDetailPage extends React.Component {
     const dataByRows = [
     ];
     var calculator = new TotalStatsCalculator();
-    var stats = calculator.MakeAndBake(curChamp, this.props.arenaKey, this.props.greatHallLevels, this.props.artifactsById);
+
+    var stats;
+    //var cached = false;
+    if (this.props.knownChampionTotalStats && (curChamp.id in this.props.knownChampionTotalStats)) {
+      stats = this.props.knownChampionTotalStats[curChamp.id];
+      //cached = true;
+    } else {
+      stats = calculator.MakeAndBake(curChamp, this.props.arenaKey, this.props.greatHallLevels, this.props.artifactsById);
+    }
+    /**
+     * can't change state during a render, causes an infinite loop.
+     * causes a run-time warning, and is dangerous. oh well.
+    if (!cached && this.props.onComputeTotalStats) {
+      this.props.onComputeTotalStats(curChamp.id, stats);
+    };
+    */
     //console.log('stats = ' + JSON.stringify(stats[GREAT_HALL_COLUMN]));
 
     attributesConfig.attributes.forEach((attrSpec) => {
@@ -462,7 +312,7 @@ class ChampionDetailPage extends React.Component {
         {inBranch}
       </li>);
     }
-    return (<div><p><b>Known Masteries:</b></p><ul className="mastery_list">{elements}</ul></div >);
+    return (<div><p><b>Masteries:</b></p><ul className="mastery_list">{elements}</ul></div >);
   }
 
   onError(evt, tryNum, imgUrl) {

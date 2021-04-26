@@ -7,6 +7,7 @@ import ChampionRune from './ChampionRune';
 import MarkerRune from './MarkerRune';
 import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
+import attributesConfig from './config/attributes.json';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
@@ -53,6 +54,10 @@ class ChampionPage extends React.Component {
       ttip: "gear < Rare", fn: this.CheckInferiorRarity
     });
     checkers.push({
+      id: id++, label: "glyph-able worn artifact",
+      ttip: "worn artifact with an attribute that is glyph-able, but isn't", fn: this.CheckGlyphable
+    });
+    checkers.push({
       id: id++, label: "missing accessory",
       ttip: "fillable accessory slot", fn: this.CheckMissingAccessory
     });
@@ -63,13 +68,21 @@ class ChampionPage extends React.Component {
       var v = (checker.fn === this.CheckNotInVault);
       checkedByCheckerId[checker.id] = v;
     });
+
+    var attributesByKey = {};
+    attributesConfig.attributes.forEach((attrSpec) => {
+      var key = attrSpec.jsonKey;
+      attributesByKey[key] = attrSpec;
+      attributesByKey[key.toLowerCase()] = attrSpec;
+    });
     this.state = {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
       'rankBar': INITIAL_RANK_BAR,
       'is_lower_bound': STARTING_IS_LOWER_BOUND,
       barSpecifierId: barSpecifierId,
-      rankLabels: rankLabels
+      rankLabels: rankLabels,
+      attributesByKey: attributesByKey
     }
   }
 
@@ -143,6 +156,36 @@ class ChampionPage extends React.Component {
     }
     return null;
   }
+
+  CheckGlyphable(champion, extra) {
+    if (!champion) return null;
+    var artifacts = extra.artifacts;
+    var artifactTypeMap = extra.artifactTypeMap;
+    var attributesByKey = extra.attributesByKey;
+    if (!artifacts) return null;
+
+    var whys = [];
+    artifacts.some((artifact) => {
+      if (!artifact.secondaryBonuses) return false;
+      artifact.secondaryBonuses.forEach((bonus) => {
+        var attribute = bonus.kind;
+        var attrSpec = attributesByKey[attribute.toLowerCase()];
+        if (attrSpec && attrSpec.glyphable && bonus.enhancement < 0.001) {
+          var why = artifactTypeMap[artifact.kind.toLowerCase()].label +
+            " has a '" + attrSpec.label
+            + "' bonus without a glyph";
+          whys.push(why);
+        }
+        return false;
+      });
+    });
+    if (whys.length === 0) {
+      return null;
+    } else {
+      return whys.join(". ");
+    }
+  }
+
   CheckMissingAccessory(champion, extra) {
     if (!champion || !champion.grade || !champion.awakenLevel) return null;
     var numberer = new Numberer();
@@ -395,6 +438,7 @@ class ChampionPage extends React.Component {
       extra.artifactTypeMap = artifactTypeMap;
       extra.rankBar = this.state.rankBar;
       extra.is_lower_bound = this.state.is_lower_bound;
+      extra.attributesByKey = this.state.attributesByKey;
       var whys = [];
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {
