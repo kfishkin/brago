@@ -527,7 +527,7 @@
         {
             "key": "untouch",
             "ordinality": 39,
-            "jsonKey": "untouchUnkown",
+            "jsonKey": "ResistanceAndBlockDebuff",
             "label": "Untouchable",
             "icon": "untouch.png",
             "piece_icon_base": "pix/item_sets/Untouchable_",
@@ -574,7 +574,7 @@
         {
             "key": "bloodthirst",
             "ordinality": 42,
-            "jsonKey": "bloodthirstUnknown",
+            "jsonKey": "CritRateAndLifeDrain",
             "label": "Bloodthirst",
             "icon": "bloodthirst.png",
             "piece_icon_base": "pix/item_sets/Bloodthirst_",
