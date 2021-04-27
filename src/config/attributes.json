@@ -46,14 +46,14 @@
             "ordinality": 6,
             "key": "res",
             "jsonKey": "resistance",
-            "label": "Debuff Resistance",
+            "label": "Resistance",
             "glyphable": true
         },
         {
             "ordinality": 7,
             "key": "acc",
             "jsonKey": "accuracy",
-            "label": "Debuff Accuracy",
+            "label": "Accuracy",
             "glyphable": true
         }
     ]

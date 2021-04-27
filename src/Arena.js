@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'antd';
 import arenaConfig from './config/arena.json';
 import Formatter from './Formatter';
 
@@ -10,37 +9,21 @@ class Arena extends React.Component {
 
     showArenaUI(arenaKey) {
         var levels = [];
-        const LEVELS_PER_ROW = 4;
-        var span_per_level = 24 / LEVELS_PER_ROW; // 24 from Ant.
-        var rowCells = [];
-
-        var rowNum = 1;
-        arenaConfig.levels.forEach((arenaLevel) => {
+        arenaConfig.levels.some((arenaLevel) => {
             var isNow = (arenaKey === arenaLevel.jsonKey);
-            var className = isNow ? "arena_current_level" : "arena_level"
-
-            if (rowCells.length >= LEVELS_PER_ROW) {
-                // finish it off.
-                levels.push(<Row key={rowNum}>{rowCells} </Row>);
-                // and start a new one.
-                rowCells = [];
-                rowNum++;
+            if (!isNow) {
+                return false;
             }
-            rowCells.push(
-                <Col span={span_per_level} key={arenaLevel.key}>
-                    <div className={className}>
-                        <img src={arenaLevel.icon} alt={arenaLevel.label} />
-                        <br />
-                        <span clas="arena_label">{arenaLevel.label}</span>
-                    </div ></Col>);
+            var className = isNow ? "arena_current_level" : "arena_level"
+            levels.push(
+                <div className={className}>
+                    <img src={arenaLevel.icon} alt={arenaLevel.label} />
+                    <br />
+                    <span className="arena_label">{arenaLevel.label}</span>
+                </div >);
+            return true;
         });
-        if (rowCells.length > 0) {
-            // finish it off.
-            levels.push(<Row key={rowNum}>{rowCells} </Row>);
-            // and start a new one.
-            rowCells = [];
-        }
-        return (<div><div>{levels}</div><div>{this.showArenaBonuses(arenaKey)}</div></div>);
+        return (<div>{levels}<div>{this.showArenaBonuses(arenaKey)}</div></div>);
     }
 
     showArenaBonuses(arenaKey) {

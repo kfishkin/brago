@@ -8,6 +8,7 @@ import MarkerRune from './MarkerRune';
 import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
+import markersConfig from './config/markers.json';
 import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
 
 const RANK_INTRO = "Rank";
@@ -21,7 +22,16 @@ const AFFINITY_LABELS = {
   magic: "Magic", spirit: "Spirit"
 };
 // the display looks off if you don't give an initial value
-const AFFINITY_INITIAL = "(Any)";
+const AFFINITY_INITIAL = "force";
+
+const VAULT_INTRO = "Vaulted";
+const VAULT_KEYS = ["no", "yes"];
+const VAULT_LABELS = { "no": "No", "yes": "Yes" };
+const VAULT_INITIAL = "no";
+
+const MARKER_INTRO = "Marker";
+const MARKER_INITIAL = "None";
+
 const DONT_DISPLAY = "Uninteresting";
 
 // props:
@@ -41,49 +51,109 @@ class ChampionPage extends React.Component {
     RANK_KEYS.forEach((rank) => {
       rankLabels[rank] = formatter.Rank(rank);
     });
-    var barSpecifierId = id;
+    this.state = {
+      affinityBar: AFFINITY_INITIAL,
+      rankBar: INITIAL_RANK_BAR,
+      is_lower_bound: STARTING_IS_LOWER_BOUND,
+      vaultBar: VAULT_INITIAL,
+      markerBar: MARKER_INITIAL
+    };
     checkers.push({
       id: id++,
-      label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_IS_LOWER_BOUND} reporter={(v, b) => this.onRankBarChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.CheckRank
+      labelInfo: this.makeLabelInfo({
+        intro: RANK_INTRO,
+        reporter: (v, b) => this.onRankBarChange(v, b),
+        keys: RANK_KEYS,
+        labels: rankLabels,
+        // some of the bar attributes must be derived at render-time, not now.
+        // do this by making a function, evaluated at render-time, which returns
+        // (key, value) attributes for the bar specifier.
+        dynamic: () => { return { 'initial': this.state.rankBar, 'is_lower_bound': this.state.is_lower_bound } },
+      }),
+      fn: this.CheckRank,
     });
-    var affinityBarSpecifierId = id;
     checkers.push({
-      id: id++, label: <BarSpecifier intro={AFFINITY_INTRO}
-        is_exact={true} reporter={(v, b) => this.onAffinityBarChange(v, b)} initial={AFFINITY_INITIAL} labels={AFFINITY_LABELS} keys={AFFINITY_KEYS} />, fn: this.CheckAffinity
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onAffinityBarChange(v, b)),
+        intro: AFFINITY_INTRO,
+        keys: AFFINITY_KEYS,
+        labels: AFFINITY_LABELS,
+        dynamic: () => { return { 'initial': this.state.affinityBar } }
+      }),
+      fn: this.CheckAffinity
     });
-    checkers.push({ id: id++, label: "In the vault", fn: this.CheckInVault });
-    checkers.push({ id: id++, label: "NOT in the vault", fn: this.CheckNotInVault });
-    checkers.push({ id: id++, label: "has a marker", fn: this.CheckHasMarker });
-    checkers.push({ id: id++, label: "has a dupe", fn: this.CheckHasDupe });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onVaultBarChange(v, b)),
+        intro: VAULT_INTRO,
+        keys: VAULT_KEYS,
+        labels: VAULT_LABELS,
+        dynamic: () => { return { 'initial': this.state.vaultBar } }
+      }),
+      fn: this.CheckVault
+    });
+    var markerKeys = [];
+    var markerLabels = {};
+    markersConfig.markers.forEach((markerSpec) => {
+      markerKeys.push(markerSpec.key);
+      markerLabels[markerSpec.key] = markerSpec.label;
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onMarkerBarChange(v, b)),
+        intro: MARKER_INTRO,
+        keys: markerKeys,
+        labels: markerLabels,
+        dynamic: () => { return { 'initial': this.state.markerBar } }
+      }),
+      fn: this.CheckMarker
+    });
+    checkers.push({
+      id: id++, label: "has a dupe",
+      labelInfo: this.makeLabelInfo("has a dupe"),
+      fn: this.CheckHasDupe
+    });
     checkers.push({
       id: id++, label: "under-ascended",
+      labelInfo: this.makeLabelInfo("under-ascended"),
       ttip: "fewer ascensions than rank", fn: this.CheckUnderAscended
     });
     checkers.push({
       id: id++, label: "missing armor",
+      labelInfo: this.makeLabelInfo("missing armor"),
       ttip: "empty armor slot", fn: this.CheckMissingArmor
     });
     checkers.push({
       id: id++, label: "inferior gear rank",
+      labelInfo: this.makeLabelInfo("inferior gear rank"),
       ttip: "gear 2 or more stars below the champion", fn: this.CheckInferiorGear
     });
     checkers.push({
       id: id++, label: "inferior gear rarity",
+      labelInfo: this.makeLabelInfo("inferior gear rarity"),
       ttip: "gear < Rare", fn: this.CheckInferiorRarity
     });
     checkers.push({
       id: id++, label: "glyph-able worn artifact",
+      labelInfo: this.makeLabelInfo("glyph-able worn artifact"),
       ttip: "worn artifact with an attribute that is glyph-able, but isn't", fn: this.CheckGlyphable
     });
     checkers.push({
       id: id++, label: "missing accessory",
+      labelInfo: this.makeLabelInfo("missing accessory"),
       ttip: "fillable accessory slot", fn: this.CheckMissingAccessory
     });
 
 
     var checkedByCheckerId = {};
     checkers.forEach((checker) => {
-      var v = (checker.fn === this.CheckNotInVault);
+      var v = (checker.fn === this.CheckVault);
       checkedByCheckerId[checker.id] = v;
     });
 
@@ -93,51 +163,49 @@ class ChampionPage extends React.Component {
       attributesByKey[key] = attrSpec;
       attributesByKey[key.toLowerCase()] = attrSpec;
     });
-    this.state = {
+    this.state = Object.assign(this.state, {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
-      'rankBar': INITIAL_RANK_BAR,
-      'is_lower_bound': STARTING_IS_LOWER_BOUND,
-      barSpecifierId: barSpecifierId,
-      affinityBarSpecifierId: affinityBarSpecifierId,
-      rankLabels: rankLabels,
       attributesByKey: attributesByKey,
       includeTotalStats: false
+    });
+  }
+
+  /**
+   * Helper proc to make the label info.
+   * If 'info' is a string, returns info for making a string label.
+   * Else, it's a dict, it's for making a 'BarSpecifier'.
+   * @param {*} info 
+   */
+  makeLabelInfo(info) {
+    if (typeof (info) === "string") {
+      return { 'text': info };
+    } else {  // assume a BarSpecifier, could add more later.
+      return { 'bar': info };
     }
   }
 
   onRankBarChange(v, is_lower_bound) {
-    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
-    var checkers = this.state.checkers;
-    // because 'checkers' was set in the constructor, before 'this.state' was set,
-    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
-    var barSpecifierId = this.state.barSpecifierId;
-    checkers[barSpecifierId] = {
-      id: barSpecifierId,
-      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onRankBarChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.CheckRank
-    };
     this.setState({
       rankBar: v,
-      is_lower_bound: is_lower_bound,
-      checkers: checkers
+      is_lower_bound: is_lower_bound
     });
   }
 
-
   onAffinityBarChange(v) {
-    console.log('onAffinityBarChange: v from ' + this.state.affinityBar + " to " + v);
-    var checkers = this.state.checkers;
-    // because 'checkers' was set in the constructor, before 'this.state' was set,
-    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
-    var barSpecifierId = this.state.affinityBarSpecifierId;
-    checkers[barSpecifierId] = {
-      id: barSpecifierId,
-      label: <BarSpecifier intro={AFFINITY_INTRO} is_exact={true} initial={v} reporter={(v, b) => this.onAffinityBarChange(v, b)} labels={AFFINITY_LABELS} keys={AFFINITY_KEYS} />, fn: this.CheckAffinity
-    };
     this.setState({
-      affinityBar: v,
-      checkers: checkers
+      affinityBar: v
     });
+  }
+
+  onVaultBarChange(v) {
+    this.setState({
+      vaultBar: v
+    });
+  }
+
+  onMarkerBarChange(v) {
+    this.setState({ markerBar: v });
   }
 
   // these guys can't refer to 'this', so extra state is passed
@@ -164,15 +232,22 @@ class ChampionPage extends React.Component {
     return passes ? DONT_DISPLAY : null;
   }
 
-  CheckInVault(champion) {
-    return (champion && champion.inStorage) ? DONT_DISPLAY : null;
+  CheckVault(champion, extra) {
+    if (!champion) return null;
+    var inStorage = ('inStorage' in champion) && (champion.inStorage === true);
+    var bar = extra.vaultBar;
+    var passes = (inStorage === (bar === "yes"));
+    return passes ? DONT_DISPLAY : null;
   }
-  CheckNotInVault(champion) {
-    return (champion && !champion.inStorage) ? DONT_DISPLAY : null;
+
+  CheckMarker(champion, extra) {
+    if (!champion) return null;
+    var champKey = champion.marker ? champion.marker.toLowerCase() : "";
+    var bar = extra.markerBar;
+    var passes = champKey === bar.toLowerCase();
+    return passes ? DONT_DISPLAY : null;
   }
-  CheckHasMarker(champion) {
-    return (champion && champion.marker && champion.marker.toLowerCase() !== "none") ? ("marker: " + champion.marker) : null;
-  }
+
   CheckHasDupe(champion, extra) {
     if (!champion || !champion.name) return null;
     var key = champion.name.toLowerCase();
@@ -330,11 +405,33 @@ class ChampionPage extends React.Component {
     this.setState({ checkedByCheckerId: cur });
   }
 
+
   checkerHtmlLabel(checker) {
-    var text = checker.label ? checker.label : checker.id;
+    var body = checker.label;
+    if (checker.labelInfo) {
+      if ('text' in checker.labelInfo) {
+        body = checker.labelInfo.text;
+      } else if ('bar' in checker.labelInfo) {
+        var props = checker.labelInfo.bar;
+        /**
+         * This took me forever to find. If I'm making a BarSpecifier,
+         * the 'initial' value must be set _at render time_. So not
+         * in the constructor. not anywhere else. Otherwise, React won't know
+         * to re-render the component when the appropriate state variable changes.
+         * So the 'labelInfo', for a BarSpecifier, has 'dynamic', a *function* that
+         * is called at run-time to evaluate any non-static values.
+         */
+        var dynamicProps = ('dynamic' in props) ? props.dynamic() : {};
+        //console.log('dynamicProps =', JSON.stringify(dynamicProps));
+        // put dynamicProps last here so it 'trumps' static values.
+        var stamped = Object.assign({}, props, dynamicProps);
+        // the bar specifier
+        body = <BarSpecifier {...stamped} />;
+      }
+    }
     return checker.ttip ?
-      (<Tooltip title={checker.ttip}>{text}</Tooltip>)
-      : text;
+      (<Tooltip title={checker.ttip}>{body}</Tooltip>)
+      : body;
   }
 
   renderSelectorPart() {
@@ -350,6 +447,7 @@ class ChampionPage extends React.Component {
         }
         curCols = [];
       }
+
       var cur = this.state.checkedByCheckerId[checker.id];
       curCols.push(<Col className="gutter-row" span={span}>
         <div><Switch size="small" checked={cur} onChange={(checked, e) => { this.onFilterChange(checked, checker) }}></Switch>&nbsp;
@@ -556,14 +654,17 @@ class ChampionPage extends React.Component {
         });
       }
       var passesAll = true;
-      var extra = {};
-      extra.artifacts = artifacts;
-      extra.championCounts = championCounts;
-      extra.artifactTypeMap = artifactTypeMap;
-      extra.rankBar = this.state.rankBar;
-      extra.is_lower_bound = this.state.is_lower_bound;
-      extra.attributesByKey = this.state.attributesByKey;
-      extra.affinityBar = this.state.affinityBar;
+      var extra = {
+        artifacts: artifacts,
+        championCounts: championCounts,
+        artifactTypeMap: artifactTypeMap,
+        rankBar: this.state.rankBar,
+        is_lower_bound: this.state.is_lower_bound,
+        attributesByKey: this.state.attributesByKey,
+        affinityBar: this.state.affinityBar,
+        vaultBar: this.state.vaultBar,
+        markerBar: this.state.markerBar
+      }
       var whys = [];
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {

@@ -11,6 +11,7 @@ const { Option } = Select;
  * initial - initial value.
  * is_lower_bound - is this a lower bound?
  * is_exact. if true, then the <=/>= isn't shown.
+ * keys - the keys for the options.
  * labels - maps from key to label to show
  * reporter - F(new value, new is_lower), called when value changes.
  */
@@ -53,7 +54,9 @@ class BarSpecifier extends React.Component {
 
         // stop propagation to keep clicking from changing the sort order.
         //var initialAsNum = parseInt(this.props.initial);
+
         var initial = this.props.initial;
+        //console.log('bar: initial = ', initial);
 
 
         return (

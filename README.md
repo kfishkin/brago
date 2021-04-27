@@ -13,6 +13,8 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.13 (27 April)
+Tightened up champions filters.
 
 ## 1.12 (26 April)
 Can now view and sort by total stats in the Champions view page.
