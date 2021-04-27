@@ -81,7 +81,7 @@ class TotalStatsCalculator {
         columns[BASE_COLUMN] = this.computeBaseStats(champion, columns)
         columns[ARENA_COLUMN] = this.computeArenaStats(this.computeArenaData(arenaLeague));
         columns[GREAT_HALL_COLUMN] = this.computeGreatHallStats(champion.element.toLowerCase(), greatHallLevels);
-        var setCounts = this.computeSets(champion.artifacts, artifactsById);
+        var setCounts = this.computeSets(champion.artifacts, artifactsById, champion.name);
         columns[ARTIFACTS_COLUMN] = this.computeSetBonuses(setCounts);
         columns[MASTERIES_COLUMN] = this.computeMasteries(champion.masteries, setCounts);
         this.addPieceBonuses(columns[ARTIFACTS_COLUMN], champion.artifacts, artifactsById);
@@ -360,7 +360,7 @@ class TotalStatsCalculator {
      * @param {array} artifactIds array of worn artifact Ids
      * @param {Object} artifactsById hash from id to artifact info.
      */
-    computeSets(artifactIds, artifactsById) {
+    computeSets(artifactIds, artifactsById, champName) {
         if (!artifactIds || !artifactsById) {
             return {};
         }
@@ -380,11 +380,15 @@ class TotalStatsCalculator {
         var filtered = {};
         Object.keys(counts).forEach((setKind) => {
             var key = setKind;
-            var minSize = ('set_size' in this.artifactSetInfo[key]) ?
-                this.artifactSetInfo[key].set_size : 4;
-            var times = Math.floor(counts[key]) / minSize;
-            if (times >= 1) {
-                filtered[key] = times;
+            if (!this.artifactSetInfo[key]) {
+                console.log('\tunknown artifact set', key, ' being worn by ', champName);
+            } else {
+                var minSize = ('set_size' in this.artifactSetInfo[key]) ?
+                    this.artifactSetInfo[key].set_size : 4;
+                var times = Math.floor(counts[key]) / minSize;
+                if (times >= 1) {
+                    filtered[key] = times;
+                }
             }
         });
         //console.log('set counts =', JSON.stringify(counts));

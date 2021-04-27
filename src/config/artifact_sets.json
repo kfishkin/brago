@@ -564,7 +564,7 @@
         {
             "key": "bite",
             "ordinality": 41,
-            "jsonKey": "biteUnknown",
+            "jsonKey": "FreezeResistAndRate",
             "label": "Frostbite",
             "icon": "frostbite.png",
             "piece_icon_base": "pix/item_sets/Frostbite_",
