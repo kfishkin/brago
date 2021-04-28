@@ -596,6 +596,22 @@
             "piece_icon_base": "pix/item_sets/Guardian_",
             "set_size": 4,
             "bonuses": []
+        },
+        {
+            "key": "IgnoreCooldown",
+            "ordinality": 44,
+            "jsonKey": "IgnoreCooldown",
+            "label": "Refresh",
+            "set_size": 7,
+            "bonuses": []
+        },
+        {
+            "key": "RemoveDebuff",
+            "ordinality": 45,
+            "jsonKey": "RemoveDebuff",
+            "label": "Cleansing",
+            "set_size": 7,
+            "bonuses": []
         }
     ]
 }
