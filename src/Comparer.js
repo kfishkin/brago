@@ -1,15 +1,7 @@
 
 import Numberer from './Numberer';
-import {
-    DIMENSION_RANK,
-    DIMENSION_RARITY,
-    DIMENSION_LEVEL,
-    DIMENSION_SLOT,
-    DIMENSION_FACTION,
-    DIMENSION_SETKIND,
-    DIMENSION_MAIN_STAT
-} from './ArtifactDimensionChooser';
 import artifactSetsConfig from './config/artifact_sets.json';
+import factionConfig from './config/factions.json';
 
 // collects the various comparison methods. DRY.
 // these methods are all 'static', they are exported
@@ -17,6 +9,19 @@ import artifactSetsConfig from './config/artifact_sets.json';
 
 // hence need the below as a package variable:
 var setOrdinalities = {};
+
+// must start at 0, and go up by 1, and match the order
+// of the labels in the chooser.
+export const DIMENSION_NONE = 0;
+const DIMENSION_RANK = 1;
+const DIMENSION_RARITY = 2;
+const DIMENSION_LEVEL = 3;
+const DIMENSION_SLOT = 4; // for artifacts
+const DIMENSION_AFFINITY = 4; // for champions
+const DIMENSION_SETKIND = 5; // for artifacts
+const DIMENSION_MARKER = 5; // for champions
+const DIMENSION_FACTION = 6;
+const DIMENSION_MAIN_STAT = 7;
 
 class Comparer {
     constructor() {
@@ -31,6 +36,25 @@ class Comparer {
         });
         // handle 'None' specially:
         setOrdinalities["none"] = count + 1;
+        // make the champion sorters - by using lambdas, the functions
+        // can refer to member variables.
+        var championSorters = {};
+        championSorters[DIMENSION_NONE] = (c1, c2) => this.Champions(c1, c2);
+        championSorters[DIMENSION_RANK] = (c1, c2) => this.ChampionsByRank(c1, c2);
+        championSorters[DIMENSION_RARITY] = (c1, c2) => this.ChampionsByRarity(c1, c2);
+        championSorters[DIMENSION_LEVEL] = (c1, c2) => this.ChampionsByLevel(c1, c2);
+        championSorters[DIMENSION_AFFINITY] = (c1, c2) => this.ChampionsByAffinity(c1, c2);
+        championSorters[DIMENSION_MARKER] = (c1, c2) => this.ChampionsByMarker(c1, c2);
+        championSorters[DIMENSION_FACTION] = (c1, c2) => this.ChampionsByFaction(c1, c2);
+        this.championSorters = championSorters;
+        this.numberer = new Numberer();
+        // map from faction key to ordinality
+        var factionOrdinalities = {};
+        factionConfig.factions.forEach((factionSpec) => {
+            factionOrdinalities[factionSpec.key.toLowerCase()] = factionSpec.ordinality;
+
+        });
+        this.factionOrdinalities = factionOrdinalities;
     }
     makeArtifactSorters() {
         var artifactSorters = {};
@@ -111,6 +135,14 @@ class Comparer {
         return v1 - v2;
     }
 
+    ChampionsOn(c1, c2, dimension) {
+        var sorter = this.championSorters[dimension];
+        if (!sorter) {
+            return this.Champions(c1, c2);
+        }
+        return sorter(c1, c2);
+    }
+
     Champions(c1, c2) {
         // sorting on id works, but is non-intuitive.
         // instead use name.
@@ -124,10 +156,41 @@ class Comparer {
         if (!m1 || m1 === "None") return 1;
         if (!m2 || m2 === "None") return -1;
         return m1.toLowerCase().localeCompare(m2.toLowerCase());
-
     }
-
-
+    ChampionsByRank(c1, c2) {
+        var numberer = this.numberer;
+        var v1 = numberer.RankFromStars(c1.grade);
+        var v2 = numberer.RankFromStars(c2.grade);
+        return v1 - v2;
+    }
+    ChampionsByRarity(c1, c2) {
+        var numberer = this.numberer;
+        var v1 = numberer.Rarity(c1.rarity);
+        var v2 = numberer.Rarity(c2.rarity);
+        return v1 - v2;
+    }
+    ChampionsByLevel(c1, c2) {
+        var v1 = c1.level;
+        var v2 = c2.level;
+        return v1 - v2;
+    }
+    ChampionsByAffinity(c1, c2) {
+        var v1 = c1.element;
+        var v2 = c2.element;
+        return v1.localeCompare(v2);
+    }
+    ChampionsByMarker(c1, c2) {
+        var v1 = c1.marker;
+        var v2 = c2.marker;
+        return this.Marker(v1, v2);
+    }
+    ChampionsByFaction(c1, c2) {
+        var v1 = (c1.fraction || c1.faction).toLowerCase();
+        v1 = (v1 in this.factionOrdinalities) ? this.factionOrdinalities[v1] : v1;
+        var v2 = (c2.fraction || c2.faction).toLowerCase();
+        v2 = (v2 in this.factionOrdinalities) ? this.factionOrdinalities[v2] : v2;
+        return v1 - v2;
+    }
 }
 
 export default Comparer;

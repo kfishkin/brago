@@ -11,7 +11,8 @@ import BarSpecifier from './BarSpecifier';
 
 import {
   DIMENSION_NONE,
-} from './ArtifactDimensionChooser';
+} from './Comparer';
+
 
 const DONT_DISPLAY = "Uninteresting";
 const MAX_TO_SHOW = 500;

@@ -9,7 +9,7 @@ import ChampionRune from './ChampionRune';
 
 import {
   DIMENSION_NONE,
-} from './ArtifactDimensionChooser';
+} from './Comparer';
 
 class ArtifactBumpPage extends React.Component {
   constructor(props) {

@@ -38,7 +38,8 @@ class ArtifactRune extends React.Component {
     var typeSpec = this.artifactTypeMap[artifact.kind.toLowerCase()];
     // the type and the rarity can go together in the image:
     var msg = artifact.rarity + " " + typeSpec.label;
-    var starsText = this.numberer.Rank(artifact.rank) + "*";
+    const UNICODE_STAR = "\u2605";
+    var starsText = this.numberer.Rank(artifact.rank) + UNICODE_STAR;
     const STAR_IMAGE_SRC = "https://github.com/PatPat1567/RaidShadowLegendsData/blob/master/images/Misc/regular_star.png?raw=true";
     var starsImg = [<span key="0">{this.numberer.Rank(artifact.rank)}</span>, <img key="1" className="artifact_star" src={STAR_IMAGE_SRC} alt={starsText} title={starsText} />];
     msg = starsText + " " + msg;

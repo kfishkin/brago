@@ -1,10 +1,10 @@
 import React from 'react';
-import Comparer from './Comparer';
+import Comparer, { DIMENSION_NONE } from './Comparer';
 import Formatter from './Formatter';
 import Numberer from './Numberer';
 import { Col, Row, Switch, Table, Tooltip } from 'antd';
+import ArtifactDimensionChooser from './ArtifactDimensionChooser';
 import ChampionRune from './ChampionRune';
-import MarkerRune from './MarkerRune';
 import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
@@ -167,7 +167,8 @@ class ChampionPage extends React.Component {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
       attributesByKey: attributesByKey,
-      includeTotalStats: false
+      includeTotalStats: false,
+      championDimension: DIMENSION_NONE
     });
   }
 
@@ -296,9 +297,10 @@ class ChampionPage extends React.Component {
         var attribute = bonus.kind;
         var attrSpec = attributesByKey[attribute.toLowerCase()];
         if (attrSpec && attrSpec.glyphable && bonus.enhancement < 0.001) {
-          var why = artifactTypeMap[artifact.kind.toLowerCase()].label +
-            " has a '" + attrSpec.label
-            + "' bonus without a glyph";
+          var why = artifactTypeMap[artifact.kind.toLowerCase()].label
+            + ": unglyphed '"
+            + attrSpec.label
+            + "' bonus"
           whys.push(why);
         }
       });
@@ -546,64 +548,50 @@ class ChampionPage extends React.Component {
     });
   }
 
-  render() {
-    var formatter = new Formatter();
-    var numberer = new Numberer();
+  onDimensionChange(newDimension) {
+    if (newDimension === this.state.championDimension) {
+      return;
+    }
+    this.setState({ championDimension: newDimension });
+  }
+
+  championSorter(c1, c2) {
     var comparer = new Comparer();
+    return comparer.ChampionsOn(c1, c2, this.state.championDimension)
+  }
+
+  render() {
+    var numberer = new Numberer();
     if (!this.props.champions || this.props.champions.length === 0) {
       return (<div><span>No champions to show</span></div>);
     }
+    // must match the values in Comparer.js:
+    var dimensionLabels = [
+      "None",
+      "Rank",
+      "Rarity",
+      "Level",
+      "Affinity",
+      "Marker",
+      "Faction"
+    ]
 
-
+    var runeHeader = <ArtifactDimensionChooser initialValue={this.state.championDimension}
+      labels={dimensionLabels}
+      reporter={(value) => this.onDimensionChange(value)} />;
     var columns = [
       {
-        title: 'Who',
+        title: runeHeader,
         dataIndex: 'champion',
         key: 'champion',
         render: (champion) => <ChampionRune champion={champion} />,
-        sorter: (a, b) => comparer.Champions(a.champion, b.champion),
-      },
-      {
-        title: 'Marker',
-        dataIndex: 'marker',
-        key: 'marker',
-        render: (markerKey) => <MarkerRune marker={markerKey} />,
-        sorter: (a, b) => comparer.Marker(a.marker, b.marker)
-      },
-      {
-        title: 'Faction',
-        dataIndex: 'faction',
-        key: 'faction',
-        render: (factionKey) => formatter.Faction(factionKey),
-        sorter: (a, b) => {
-          var aFaction = a.faction ? a.faction : "";
-          var bFaction = b.faction ? b.faction : "";
-          return aFaction.localeCompare(bFaction);
-        }
-      },
-      {
-        title: 'Rank',
-        dataIndex: 'grade',
-        key: 'grade',
-        sorter: (a, b) => a.grade - b.grade,
+        sorter: (a, b) => { return this.championSorter(a.champion, b.champion) },
       },
       {
         title: 'Ascensions',
         dataIndex: 'awakenLevel',
         key: 'awakenLevel',
         sorter: (a, b) => a.champion.awakenLevel - b.champion.awakenLevel,
-      },
-      {
-        title: 'Affinity',
-        dataIndex: 'element',
-        key: 'element',
-        sorter: (a, b) => a.element.localeCompare(b.element)
-      },
-      {
-        title: 'Level',
-        dataIndex: 'level',
-        key: 'level',
-        sorter: (a, b) => a.level - b.level,
       },
       {
         title: 'In Vault?',

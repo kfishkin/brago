@@ -71,9 +71,11 @@ img.mastery_icon {
   width: 48px;
 }
 
+/*
 img.marker_icon {
   height: 32px;
 }
+*/
 
 img.artifact_icon {
   height: 70px;
@@ -84,23 +86,23 @@ img.artifact_icon {
   object-fit: contain;
 }
 
-img.artifact_icon[rarity="Common"] {
+img[rarity="Common"] {
   border-color: #AEAEAE;
 }
 
-img.artifact_icon[rarity="Uncommon"] {
+img[rarity="Uncommon"] {
   border-color: #19D041;
 }
 
-img.artifact_icon[rarity="Rare"] {
+img[rarity="Rare"] {
   border-color: #2697FF;
 }
 
-img.artifact_icon[rarity="Epic"] {
+img[rarity="Epic"] {
   border-color: #E74AFF;
 }
 
-img.artifact_icon[rarity="Legendary"] {
+img[rarity="Legendary"] {
   border-color: #EE8100;
 }
 
@@ -159,6 +161,9 @@ img.great_hall_icon {
   object-fit: contain;
 }
 
+/* the container can have varying width, so only align 
+ * to the left, not the right
+ */
 div.container div.hall_level_overlay {
   z-index: 2;
   top: 1px;
@@ -205,6 +210,7 @@ div.stars_overlay {
   cursor:default;
 }
 
+
 img.artifact_star {
   height:16px;
   vertical-align: baseline;
@@ -234,11 +240,80 @@ img.meatball {
 
 img.champion_avatar {
   margin-right: 1em;
+  border-width: medium;
+  border-style: solid;
+  background-color: #444;
+  object-fit: contain;
 }
 
 img.champion_avatar_small {
-  height: 64px;
+  height: 72px;
+  border-width: medium;
+  border-style: solid;
   object-fit: contain;
+}
+
+div.champion_stars_overlay {
+  z-index: 2;
+  top: 1em;
+  opacity: 1.0;
+  height:20px;
+  text-align: left;
+  color: gold;
+  background-image: none;
+  font-size:14px;
+  left: 20px;
+  cursor:default;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+div.champion_level_overlay {
+  z-index: 1;
+  top: 5.75em;
+  opacity: 1.0;
+  height:24px;
+  text-align: left;
+  color: white;
+  background-image: none;
+  font-size:12px;
+  left:4.6em;
+  cursor:default;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+img.champion_affinity_overlay {
+  z-index: 1;
+  top: 69px;
+  opacity: 1.0;
+  height:16px;
+  width: 16px;
+  object-fit: contain;
+  left: 19px;
+  cursor:default;
+}
+
+
+img.champion_faction_overlay {
+  z-index: 1;
+  top: 1.5em;
+  opacity: 1.0;
+  height:14px;
+  width: 14px;
+  object-fit: contain;
+  left: 4em;
+  cursor:default;
+  background-color: rgba(34,34,34,0.7);
+}
+
+div.container img.marker_icon {
+  z-index: 1;
+  top: 49px;
+  opacity: 1.0;
+  height:14px;
+  width: 14px;
+  object-fit: contain;
+  left: 19px;
+  cursor:default;
 }
 
 div.bar_specifier div.ant-select-selector {

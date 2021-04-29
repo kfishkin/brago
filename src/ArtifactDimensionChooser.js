@@ -1,19 +1,8 @@
 import React from 'react';
 import Formatter from './Formatter';
-import Numberer from './Numberer';
 import { Select } from 'antd';
 
 const { Option } = Select;
-
-// must start at 0, and go up by 1
-export const DIMENSION_NONE = 0;
-export const DIMENSION_RANK = 1;
-export const DIMENSION_RARITY = 2;
-export const DIMENSION_LEVEL = 3;
-export const DIMENSION_SLOT = 4;
-export const DIMENSION_SETKIND = 5;
-export const DIMENSION_FACTION = 6;
-export const DIMENSION_MAIN_STAT = 7;
 
 /**
  * a single widget letting you choose a particular dimension of
@@ -22,13 +11,13 @@ export const DIMENSION_MAIN_STAT = 7;
  * props: 
  *   initialValue - the initial value
  *   reporter - called on a new value
+ *   labels - optional, if specified gives the labels.
  */
 class ArtifactDimensionChooser extends React.Component {
   constructor(props) {
     super(props);
     this.formatter = new Formatter();
-    this.numberer = new Numberer();
-    this.labels = [
+    this.defaultLabels = [
       "None",
       "Rank",
       "Rarity",
@@ -48,7 +37,11 @@ class ArtifactDimensionChooser extends React.Component {
   }
   render() {
     var options = [];
-    this.labels.forEach((label, index) => {
+    var labels = this.props.labels;
+    if (!labels) {
+      labels = this.defaultLabels;
+    }
+    labels.forEach((label, index) => {
       options.push(<Option key={index} value={index}>{label}</Option>);
     });
     // stop propagation to keep clicking from changing the sort order.

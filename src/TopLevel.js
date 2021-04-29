@@ -24,7 +24,7 @@ export const OTHER_GEAR_ALL = "all";
 
 // how long should I wait before doing idle processing,
 // AND how long does the idle process get to do its thing
-const IDLE_HYSTERESIS = 200;
+const IDLE_HYSTERESIS = 300;
 
 class TopLevel extends React.Component {
     constructor(props) {
@@ -292,7 +292,7 @@ class TopLevel extends React.Component {
                         onActive={(e) => this.onActive(e)}
                         onIdle={(e) => this.onIdle(e)}
                         onAction={(e) => this.onAction(e)}
-                        debounce={50}
+                        debounce={100}
                         timeout={IDLE_HYSTERESIS} />
                     <HeaderDetail
                         curChamp={this.state.curChamp} fileName={this.state.fileName}></HeaderDetail></Header>

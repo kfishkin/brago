@@ -319,13 +319,20 @@ class ChampionDetailPage extends React.Component {
     //console.log("tryNum = " + tryNum);
     // don't infinite loop.
     // 0 --> 1 replace https with http
+    // 1 --> 2, try 'unknown' image.
     // after 1, stop
-    if (tryNum >= 1) {
-      return tryNum;
-    }
-    var newUrl = imgUrl.replace("https", "http");
-    if (newUrl !== imgUrl) {
-      evt.target.src = newUrl;
+    switch (tryNum) {
+      case 0:
+        var newUrl = imgUrl.replace("https", "http");
+        if (newUrl !== imgUrl) {
+          evt.target.src = newUrl;
+        }
+        break;
+      case 1:
+        evt.target.src = process.env.PUBLIC_URL + "pix/champions/Unknown.png";
+        break;
+      default:
+        break;
     }
     return tryNum + 1;
   }

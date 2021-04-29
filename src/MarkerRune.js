@@ -7,6 +7,7 @@ import markersConfig from './config/markers.json';
  * 
  * props:
  * marker - text key
+ * moreClassName - add to the class name, if specified.
  */
 class MarkerRune extends React.Component {
   constructor(props) {
@@ -30,7 +31,11 @@ class MarkerRune extends React.Component {
     var spec = this.state.keyToSpec[key];
     if (!spec) return null;
     var formatter = new Formatter();
-    return formatter.Image(spec.icon, spec.label, { "className": "marker_icon" });
+    var className = "marker_icon";
+    if (this.props.moreClassName) {
+      className = className + " " + this.props.moreClassName;
+    }
+    return formatter.Image(spec.icon, spec.label, { "className": className });
   }
 }
 

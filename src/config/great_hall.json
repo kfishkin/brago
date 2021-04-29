@@ -2,23 +2,23 @@
   "rows": [
     {
       "key": "magic",
-      "label": "magic",
-      "icon": "pix/hall/magic_icon.png"
+      "label": "Magic",
+      "icon": "pix/affinities/magic_icon.png"
     },
     {
       "key": "spirit",
-      "label": "spirit",
-      "icon": "pix/hall/spirit_icon.png"
+      "label": "Spirit",
+      "icon": "pix/affinities/spirit_icon.png"
     },
     {
       "key": "force",
-      "label": "force",
-      "icon": "pix/hall/force_icon.png"
+      "label": "Force",
+      "icon": "pix/affinities/force_icon.png"
     },
     {
       "key": "void",
-      "label": "void",
-      "icon": "pix/hall/void_icon.png"
+      "label": "Void",
+      "icon": "pix/affinities/void_icon.png"
     }
   ],
   "columns": [
