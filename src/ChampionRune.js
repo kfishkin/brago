@@ -3,6 +3,7 @@ import Formatter from './Formatter';
 import MarkerRune from './MarkerRune';
 import factionConfig from './config/factions.json';
 import greatHallConfig from './config/great_hall.json';
+import raritiesConfig from './config/rarities.json';
 import Numberer from './Numberer';
 
 /**
@@ -27,11 +28,25 @@ class ChampionRune extends React.Component {
     factionConfig.factions.forEach((factionSpec) => {
       this.factionSpecMap[factionSpec.key] = factionSpec;
     });
+    this.rarityMap = {};
+    raritiesConfig.rarities.forEach((spec) => {
+      this.rarityMap[spec.key] = spec;
+    });
   }
   twoDigits(level) {
     if (!level) return level;
     if (level < 10) return " " + level;
     return level;
+
+  }
+
+  maybeRarity(rarity, label) {
+    if (!rarity || !this.rarityMap[rarity.toLowerCase()]) return null;
+    var spec = this.rarityMap[rarity.toLowerCase()];
+    if (!spec || !spec.surround) return null;
+    return (
+      <img className="floats_above surround" src={spec.surround} label={label} alt={label} />
+    )
 
   }
 
@@ -60,7 +75,7 @@ class ChampionRune extends React.Component {
         }
         break;
       case 1:
-        evt.target.src = process.env.PUBLIC_URL + "pix/champions/Unknown.png";
+        evt.target.src = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/1default/image.png";
         break;
       default:
         break;
@@ -94,9 +109,12 @@ class ChampionRune extends React.Component {
     }
     var imgName = champion.name.replace(/ /g, "_");
     var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
+    //var imgName = champion.name.replace(/ /g, "-").toLowerCase();
+    //var imgUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/" + imgName + "/image.png";
     var tryNum = 0;
 
     return (<div className="container">
+      {this.maybeRarity(champion.rarity, label)}
       <img className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label} src={imgUrl}
         onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} />
       <div className="floats_above champion_stars_overlay">{starTxt}</div>

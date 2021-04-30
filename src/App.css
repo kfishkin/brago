@@ -251,16 +251,14 @@ img.champion_avatar_small {
   width: 70px;
   left:18px;
   top:15px;
-  border-width: medium;
-  border-style: solid;
   object-fit: contain;
 }
 
 div.champion_stars_overlay {
   z-index: 2;
-  top: 1em;
+  top: 11px;
   opacity: 1.0;
-  height:20px;
+  height:19px;
   text-align: left;
   color: gold;
   background-image: none;
@@ -272,50 +270,50 @@ div.champion_stars_overlay {
 
 div.champion_level_overlay {
   z-index: 1;
-  top: 82px;
+  top: 86px;
   opacity: 1.0;
   height:24px;
   text-align: left;
   color: white;
   background-image: none;
   font-size:14px;
-  left:68px;
+  left:70px;
   cursor:default;
   text-shadow: 2px 2px 4px #000000;
 }
 
 img.champion_affinity_overlay {
   z-index: 1;
-  top: 84px;
+  top: 86px;
   opacity: 1.0;
   height:16px;
   width: 16px;
   object-fit: contain;
-  left: 20px;
+  left: 18px;
   cursor:default;
 }
 
 
 img.champion_faction_overlay {
   z-index: 1;
-  top: 20px;
+  top: 17px;
   opacity: 1.0;
   height:14px;
   width: 14px;
   object-fit: contain;
-  left: 70px;
+  left: 72px;
   cursor:default;
   background-color: rgba(34,34,34,0.7);
 }
 
 div.container img.marker_icon {
   z-index: 1;
-  top: 66px;
+  top: 68px;
   opacity: 1.0;
   height:14px;
   width: 14px;
   object-fit: contain;
-  left: 20px;
+  left: 18px;
   cursor:default;
 }
 
@@ -326,6 +324,16 @@ img.vault_icon {
   object-fit: contain;
   left: 45px;
   top: 65px;
+  cursor: default;
+}
+
+img.surround {
+  z-index: 0;
+  height:98px;
+  width:78px;
+  object-fit: fill;
+  left: 13px;
+  top: 11px;
   cursor: default;
 }
 

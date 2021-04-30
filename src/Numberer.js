@@ -1,6 +1,7 @@
 
 
 import artifactTypeConfig from './config/artifact_types.json';
+import raritiesConfig from './config/rarities.json';
 
 class Numberer {
     // convert from 'Five', 'Three', etc.
@@ -8,6 +9,10 @@ class Numberer {
         this.artifactMap = {};
         artifactTypeConfig.artifact_types.forEach((bundle) => {
             this.artifactMap[bundle.key] = bundle.ordinality;
+        });
+        this.rarityMap = {};
+        raritiesConfig.rarities.forEach((spec) => {
+            this.rarityMap[spec.key] = spec;
         });
     }
     Rank(rank) {
@@ -42,15 +47,8 @@ class Numberer {
     }
     // convert from 'Common', 'Epic', etc.
     Rarity(rarity) {
-        var map = {
-            'common': 0,
-            'uncommon': 1,
-            'rare': 2,
-            'epic': 3,
-            'legendary': 4
-        };
         var key = rarity.toLowerCase();
-        return (key in map) ? map[key] : key;
+        return (key in this.rarityMap) ? this.rarityMap[key].ordinality : 0;
     }
     // convert from 'Ring', 'Shield' etc. to a sort order.
     // note that Amulets are 'Cloak'

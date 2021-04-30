@@ -1,0 +1,34 @@
+{
+    "rarities": [
+        {
+            "key": "common",
+            "label": "Common",
+            "ordinality": 0,
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Common.png"
+        },
+        {
+            "key": "uncommon",
+            "ordinality": 1,
+            "label": "Uncommon",
+            "surround": "pix/misc/Uncommon.png"
+        },
+        {
+            "key": "rare",
+            "ordinality": 2,
+            "label": "Rare",
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Rare.png"
+        },
+        {
+            "key": "epic",
+            "ordinality": 3,
+            "label": "Rare",
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Epic.png"
+        },
+        {
+            "key": "legendary",
+            "ordinality": 4,
+            "label": "Legendary",
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Legendary.png"
+        }
+    ]
+}
