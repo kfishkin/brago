@@ -592,13 +592,6 @@ class ChampionPage extends React.Component {
         dataIndex: 'awakenLevel',
         key: 'awakenLevel',
         sorter: (a, b) => a.champion.awakenLevel - b.champion.awakenLevel,
-      },
-      {
-        title: 'In Vault?',
-        dataIndex: 'inStorage',
-        key: 'inStorage',
-        sorter: (a, b) => a.inStorage - b.inStorage,
-        render: (inStorage) => (inStorage ? "YES" : "NO")
       }];
     if (this.state.includeTotalStats)
       this.addStatsColumnHeaders(columns);
@@ -693,7 +686,7 @@ class ChampionPage extends React.Component {
 
     const paginationConfig = false;
     return (
-      <div>
+      <div className="runed_rows">
         <h3>There are {dataByRows.length} Champions.</h3>
         {this.renderSelectorPart()}
         {this.renderDisplayModePart()}

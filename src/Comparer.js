@@ -47,6 +47,7 @@ class Comparer {
         championSorters[DIMENSION_MARKER] = (c1, c2) => this.ChampionsByMarker(c1, c2);
         championSorters[DIMENSION_FACTION] = (c1, c2) => this.ChampionsByFaction(c1, c2);
         this.championSorters = championSorters;
+        this.artifactSorters = this.makeArtifactSorters();
         this.numberer = new Numberer();
         // map from faction key to ordinality
         var factionOrdinalities = {};
@@ -58,13 +59,13 @@ class Comparer {
     }
     makeArtifactSorters() {
         var artifactSorters = {};
-        artifactSorters[DIMENSION_RANK] = this.ArtifactByRank;
-        artifactSorters[DIMENSION_LEVEL] = this.ArtifactByLevel;
-        artifactSorters[DIMENSION_FACTION] = this.ArtifactByFaction;
-        artifactSorters[DIMENSION_RARITY] = this.ArtifactByRarity;
-        artifactSorters[DIMENSION_SLOT] = this.ArtifactByKind;
-        artifactSorters[DIMENSION_SETKIND] = this.ArtifactBySetKind;
-        artifactSorters[DIMENSION_MAIN_STAT] = this.ArtifactByMainStat;
+        artifactSorters[DIMENSION_RANK] = this.ArtifactByRank.bind(this);
+        artifactSorters[DIMENSION_LEVEL] = this.ArtifactByLevel.bind(this);
+        artifactSorters[DIMENSION_FACTION] = this.ArtifactByFaction.bind(this);
+        artifactSorters[DIMENSION_RARITY] = this.ArtifactByRarity.bind(this);
+        artifactSorters[DIMENSION_SLOT] = this.ArtifactByKind.bind(this);
+        artifactSorters[DIMENSION_SETKIND] = this.ArtifactBySetKind.bind(this);
+        artifactSorters[DIMENSION_MAIN_STAT] = this.ArtifactByMainStat.bind(this);
         return artifactSorters;
     }
 
@@ -133,6 +134,15 @@ class Comparer {
         v1 = b1.value + b1.enhancement;
         v2 = b2.value + b2.enhancement;
         return v1 - v2;
+    }
+
+    ArtifactsOn(a1, a2, dimension) {
+        var sorter = this.artifactSorters[dimension];
+        if (!sorter) {
+            return this.ArtifactByMainStat(a1, a2);
+        } else {
+            return sorter(a1, a2);
+        }
     }
 
     ChampionsOn(c1, c2, dimension) {

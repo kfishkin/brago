@@ -247,7 +247,10 @@ img.champion_avatar {
 }
 
 img.champion_avatar_small {
-  height: 72px;
+  height: 89px;
+  width: 70px;
+  left:18px;
+  top:15px;
   border-width: medium;
   border-style: solid;
   object-fit: contain;
@@ -269,51 +272,61 @@ div.champion_stars_overlay {
 
 div.champion_level_overlay {
   z-index: 1;
-  top: 5.75em;
+  top: 82px;
   opacity: 1.0;
   height:24px;
   text-align: left;
   color: white;
   background-image: none;
-  font-size:12px;
-  left:4.6em;
+  font-size:14px;
+  left:68px;
   cursor:default;
   text-shadow: 2px 2px 4px #000000;
 }
 
 img.champion_affinity_overlay {
   z-index: 1;
-  top: 69px;
+  top: 84px;
   opacity: 1.0;
   height:16px;
   width: 16px;
   object-fit: contain;
-  left: 19px;
+  left: 20px;
   cursor:default;
 }
 
 
 img.champion_faction_overlay {
   z-index: 1;
-  top: 1.5em;
+  top: 20px;
   opacity: 1.0;
   height:14px;
   width: 14px;
   object-fit: contain;
-  left: 4em;
+  left: 70px;
   cursor:default;
   background-color: rgba(34,34,34,0.7);
 }
 
 div.container img.marker_icon {
   z-index: 1;
-  top: 49px;
+  top: 66px;
   opacity: 1.0;
   height:14px;
   width: 14px;
   object-fit: contain;
-  left: 19px;
+  left: 20px;
   cursor:default;
+}
+
+img.vault_icon {
+  z-index: 1;
+  height:24px;
+  width:24px;
+  object-fit: contain;
+  left: 45px;
+  top: 65px;
+  cursor: default;
 }
 
 div.bar_specifier div.ant-select-selector {
@@ -335,6 +348,14 @@ content: "%";
 
 span[attr="criticalDamage"]::after {
   content: "%";
+  }
+
+  #champion_list_div tr {
+    height: 100px;
+  }
+
+  div.runed_rows tr {
+    height: 120px;
   }
 
 @keyframes App-logo-spin {

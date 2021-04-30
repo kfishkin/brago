@@ -26,12 +26,9 @@ class ArtifactBumpPage extends React.Component {
       [3, 10, 65, 340] // 6 star
     ];
     var comparer = new Comparer();
-    var artifactSorters = comparer.makeArtifactSorters();
-
     this.state = {
       'vpGains': vpGains,
       artifactDimension: DIMENSION_NONE,
-      artifactSorters: artifactSorters,
       'numberer': new Numberer(),
       'comparer': comparer
     }
@@ -57,10 +54,7 @@ class ArtifactBumpPage extends React.Component {
     if (!art1) return 1;
     if (!art2) return -1;
     var dimension = this.state.artifactDimension;
-    if (!(dimension in this.state.artifactSorters)) {
-      return 0;
-    }
-    return this.state.artifactSorters[dimension](art1, art2)
+    return this.state.comparer.ArtifactsOn(art1, art2, dimension);
   }
 
   render() {
@@ -121,16 +115,9 @@ class ArtifactBumpPage extends React.Component {
       }
 
     });
-    /*
-    const paginationConfig = {
-      defaultPageSize: 50,
-      hideOnSinglePage: true,
-      pageSize: 50
-    }
-    */
     const paginationConfig = false;
     return (
-      <div>
+      <div className="runed_rows">
         <h3>There are {dataByRows.length} artifacts to bump.</h3>
         <p>You could gain <b>{vpGain}</b> VPs if you bump them all.</p>
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />

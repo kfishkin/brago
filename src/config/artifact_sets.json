@@ -6,7 +6,7 @@
             "jsonKey": "Hp",
             "label": "Life",
             "icon": "life.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Life_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Life_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -22,7 +22,7 @@
             "jsonKey": "AttackPower",
             "label": "Offense",
             "icon": "off.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Offense_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Offense_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -38,7 +38,7 @@
             "jsonKey": "Defense",
             "label": "Defense",
             "icon": "def.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Defense_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Defense_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -54,7 +54,7 @@
             "jsonKey": "CriticalChance",
             "label": "Critical Rate",
             "icon": "cr.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Critical_Rate_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Critical_Rate_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -70,7 +70,7 @@
             "ordinality": 5,
             "label": "Crit Damage",
             "icon": "cd.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Berserker_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Berserker_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -86,7 +86,7 @@
             "jsonKey": "Accuracy",
             "label": "Accuracy",
             "icon": "acc.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Accuracy_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Accuracy_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -102,7 +102,7 @@
             "jsonKey": "AttackSpeed",
             "label": "Speed",
             "icon": "spd.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Speed_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Speed_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -118,7 +118,7 @@
             "jsonKey": "Resistance",
             "label": "Resistance",
             "icon": "res.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Resistance_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Resistance_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -134,7 +134,7 @@
             "jsonKey": "LifeDrain",
             "label": "Lifesteal",
             "icon": "steal.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Lifesteal_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Lifesteal_",
             "set_size": 4,
             "bonuses": []
         },
@@ -144,7 +144,7 @@
             "jsonKey": "DamageIncreaseOnHpDecrease",
             "label": "Fury",
             "icon": "fury.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Fury_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Fury_",
             "set_size": 4,
             "bonuses": []
         },
@@ -154,7 +154,7 @@
             "jsonKey": "SleepChance",
             "label": "Daze",
             "icon": "daze.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Daze_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Daze_",
             "set_size": 4,
             "bonuses": []
         },
@@ -164,7 +164,7 @@
             "jsonKey": "BlockHealChance",
             "label": "Cursed",
             "icon": "cursed.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Cursed_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Cursed_",
             "set_size": 4,
             "bonuses": []
         },
@@ -174,7 +174,7 @@
             "jsonKey": "FreezeRateOnDamageReceived",
             "label": "Frost",
             "icon": "frost.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Frost_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Frost_",
             "set_size": 4,
             "bonuses": []
         },
@@ -184,7 +184,7 @@
             "jsonKey": "Stamina",
             "label": "Frenzy",
             "icon": "frenzy.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Frenzy_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Frenzy_",
             "set_size": 4,
             "bonuses": []
         },
@@ -193,7 +193,7 @@
             "ordinality": 14,
             "jsonKey": "Heal",
             "label": "Regeneration",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Healing_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Healing_",
             "icon": "regen.png",
             "set_size": 4,
             "bonuses": []
@@ -204,7 +204,7 @@
             "jsonKey": "BlockDebuff",
             "label": "Immunity",
             "icon": "immunity.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Immunity_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Immunity_",
             "set_size": 4,
             "bonuses": []
         },
@@ -214,7 +214,7 @@
             "jsonKey": "Shield",
             "label": "Shield",
             "icon": "shield.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Shield_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Shield_",
             "set_size": 4,
             "bonuses": []
         },
@@ -224,7 +224,7 @@
             "jsonKey": "GetExtraTurn",
             "label": "Relentless",
             "icon": "relentless.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Relentless_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Relentless_",
             "set_size": 4,
             "bonuses": []
         },
@@ -234,7 +234,7 @@
             "jsonKey": "IgnoreDefense",
             "label": "Savage",
             "icon": "savage.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Savage_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Savage_",
             "set_size": 4,
             "bonuses": []
         },
@@ -244,7 +244,7 @@
             "jsonKey": "DecreaseMaxHp",
             "label": "Destroy",
             "icon": "destroy.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Destroy_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Destroy_",
             "set_size": 4,
             "bonuses": []
         },
@@ -254,7 +254,7 @@
             "jsonKey": "StunChance",
             "label": "Stun",
             "icon": "stun.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/Stun_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Stun_",
             "set_size": 4,
             "bonuses": []
         },
@@ -382,7 +382,7 @@
             "jsonKey": "ShieldAndCriticalChance",
             "label": "Divine Crit Rate",
             "icon": "divcr.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndCriticalChance_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/ShieldAndCriticalChance_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -398,7 +398,7 @@
             "jsonKey": "ShieldAndHp",
             "label": "Divine Life",
             "icon": "divlife.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndHp_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/ShieldAndHp_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -414,7 +414,7 @@
             "jsonKey": "ShieldAndSpeed",
             "label": "Divine Speed",
             "icon": "divspd.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/ShieldAndSpeed_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/ShieldAndSpeed_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -430,7 +430,7 @@
             "jsonKey": "UnkillableAndSpdAndCrDmg",
             "label": "Swift Parry",
             "icon": "parry.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/UnkillableAndSpdAndCrDmg_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/UnkillableAndSpdAndCrDmg_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -451,7 +451,7 @@
             "jsonKey": "BlockReflectDebuffAndHpAndDef",
             "label": "Deflection",
             "icon": "deflect.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/ItemSets/BlockReflectDebuffAndHpAndDef_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/BlockReflectDebuffAndHpAndDef_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -472,7 +472,7 @@
             "jsonKey": "HpAndDefence",
             "label": "Resilience",
             "icon": "resil.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/kfishkin/RaidShadowLegendsData/images/images/ItemSets/Resilience_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Resilience_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -493,7 +493,7 @@
             "jsonKey": "AccuracyAndSpeed",
             "label": "Perception",
             "icon": "percep.png",
-            "piece_icon_base": "https://raw.githubusercontent.com/kfishkin/RaidShadowLegendsData/images/images/ItemSets/Perception_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Perception_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -514,7 +514,7 @@
             "jsonKey": "CritDmgAndTransformWeekIntoCritHit",
             "label": "Affinity Breaker",
             "icon": "breaker.png",
-            "piece_icon_base": "pix/item_sets/Affinity_Breaker_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Affinity_Breaker_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -530,7 +530,7 @@
             "jsonKey": "ResistanceAndBlockDebuff",
             "label": "Untouchable",
             "icon": "untouch.png",
-            "piece_icon_base": "pix/item_sets/Untouchable_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Untouchable_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -546,7 +546,7 @@
             "jsonKey": "AttackAndCritRate",
             "label": "Fatal",
             "icon": "fatal.png",
-            "piece_icon_base": "pix/item_sets/Fatal_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Fatal_",
             "set_size": 2,
             "bonuses": [
                 {
@@ -567,7 +567,7 @@
             "jsonKey": "FreezeResistAndRate",
             "label": "Frostbite",
             "icon": "frostbite.png",
-            "piece_icon_base": "pix/item_sets/Frostbite_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Frostbite_",
             "set_size": 2,
             "bonuses": []
         },
@@ -577,7 +577,7 @@
             "jsonKey": "CritRateAndLifeDrain",
             "label": "Bloodthirst",
             "icon": "bloodthirst.png",
-            "piece_icon_base": "pix/item_sets/Bloodthirst_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Bloodthirst_",
             "set_size": 4,
             "bonuses": [
                 {
@@ -593,7 +593,7 @@
             "jsonKey": "PassiveShareDamageAndHeal",
             "label": "Guardian",
             "icon": "guardian.png",
-            "piece_icon_base": "pix/item_sets/Guardian_",
+            "piece_icon_base": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/ItemSets/Guardian_",
             "set_size": 4,
             "bonuses": []
         },

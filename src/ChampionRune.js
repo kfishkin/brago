@@ -38,8 +38,12 @@ class ChampionRune extends React.Component {
   maybeMarker(marker, label) {
     if (!marker || marker.toLowerCase() === "none") return null;
     return <MarkerRune marker={marker} moreClassName="floats_above" />
+  }
 
-
+  maybeVault(inStorage, label) {
+    if (!inStorage) return null;
+    var formatter = new Formatter();
+    return formatter.Image("pix/misc/vault.png", label, { 'className': 'floats_above vault_icon' });
   }
 
   onError(evt, tryNum, imgUrl) {
@@ -84,18 +88,23 @@ class ChampionRune extends React.Component {
       label += " " + faction.label;
     }
     label += " champion";
+    var inStorage = ('inStorage' in champion) ? champion.inStorage : false;
+    if (inStorage) {
+      label += " (vault)"
+    }
     var imgName = champion.name.replace(/ /g, "_");
     var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
     var tryNum = 0;
 
     return (<div className="container">
-      <img className="champion_avatar_small" rarity={champion.rarity} alt={label} title={label} src={imgUrl}
+      <img className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label} src={imgUrl}
         onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} />
       <div className="floats_above champion_stars_overlay">{starTxt}</div>
       {faction ? formatter.Image(faction.icon, label, { 'className': 'floats_above champion_faction_overlay' }) : null}
       {this.maybeMarker(champion.marker, label)}
       {formatter.Image(affinitySpec.icon, label,
         { 'className': 'floats_above champion_affinity_overlay' })}
+      {this.maybeVault(inStorage, label)}
       <div className="floats_above champion_level_overlay"><span>{this.twoDigits(champion.level)}</span></div>
 
     </div>);

@@ -13,6 +13,9 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.14 (30 April)
+Champion images are now 'decorated' with level, affinity, faction, stars, marker, and vault status.
+
 ## 1.13 (27 April)
 Tightened up champions filters.
 

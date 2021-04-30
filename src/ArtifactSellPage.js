@@ -21,6 +21,13 @@ const RANK_KEYS = [1, 2, 3, 4, 5, 6];
 const RARITY_INTRO = "Rarity"
 const RARITY_KEYS = ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
 const SLOT_INTRO = "Slot"
+const WORN_INTRO = "Worn";
+const WORN_KEYS = ["no", "yes"];
+const WORN_LABELS = { "no": "No", "yes": "Yes" };
+const WORN_INITIAL = "no";
+const LEVEL_INTRO = "Level";
+const LEVEL_KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+const LEVEL_INITIAL = 15;
 
 class ArtifactSellPage extends React.Component {
   constructor(props) {
@@ -44,135 +51,183 @@ class ArtifactSellPage extends React.Component {
       slotKeys.push(typeConfig.key.toLowerCase());
       slotLabels[typeConfig.key] = typeConfig.label;
     });
+    var levelLabels = {};
+    LEVEL_KEYS.forEach((level) => {
+      levelLabels[level] = level;
+    });
+
     // all the checkers for what to sell.
     // a checker is a function that takes an artifact JSON blob,
     // and returns null/empty string if the artifact isn't recommended for sale by this checker,
     // a 'why' string if it is.
     var checkers = [];
     var id = 0;
-    var barSpecifierId = id;
-    checkers.push({ id: id++, label: <BarSpecifier intro={RANK_INTRO} initial={INITIAL_RANK_BAR} is_lower_bound={STARTING_RANK_IS_LOWER_BOUND} reporter={(v, b) => this.onMinRankChange(v, b)} labels={rankLabels} keys={RANK_KEYS} />, fn: this.CheckByRank });
-    var rarityBarSpecifierId = id;
     checkers.push({
-      id: id++, label: <BarSpecifier intro={RARITY_INTRO}
-        initial={INITIAL_RARITY_BAR} is_lower_bound={STARTING_RARITY_IS_LOWER_BOUND} reporter={(v, b) => this.onRarityBarChange(v, b)} labels={rarityLabels} keys={RARITY_KEYS} />, fn: this.CheckByRarity
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: RANK_INTRO,
+        reporter: (v, b) => this.onRankBarChange(v, b),
+        keys: RANK_KEYS,
+        labels: rankLabels,
+        // some of the bar attributes must be derived at render-time, not now.
+        // do this by making a function, evaluated at render-time, which returns
+        // (key, value) attributes for the bar specifier.
+        dynamic: () => { return { 'initial': this.state.rankBar, 'is_lower_bound': this.state.is_lower_bound } },
+      }),
+      fn: this.CheckByRank,
     });
-    var slotBarSpecifierId = id;
     checkers.push({
-      id: id++, label: <BarSpecifier intro={SLOT_INTRO}
-        initial="boots" is_exact={true} reporter={(v, b) => this.onSlotBarChange(v, b)} labels={slotLabels} keys={slotKeys} />, fn: this.CheckBySlot
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: RARITY_INTRO,
+        reporter: (v, b) => this.onRarityBarChange(v, b),
+        keys: RARITY_KEYS,
+        labels: rarityLabels,
+        dynamic: () => { return { 'initial': this.state.rarityBar, 'is_lower_bound': this.state.rarity_is_lower_bound } },
+      }),
+      fn: this.CheckByRarity,
     });
-
-    checkers.push({ id: id++, label: " unworn gear", fn: this.CheckUnwornGear })
-    checkers.push({ id: id++, label: "Attack Amulets", fn: this.CheckAttackAmulets });
     checkers.push({
-      id: id++, label: "Defense Rings w/o 2 good substats", fn: this.CheckDefenseRingWithoutTwoGoodSubstats,
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: LEVEL_INTRO,
+        reporter: (v, b) => this.onLevelBarChange(v, b),
+        keys: LEVEL_KEYS,
+        labels: levelLabels,
+        dynamic: () => { return { 'initial': this.state.levelBar, 'is_lower_bound': this.state.level_is_lower_bound } },
+      }),
+      fn: this.CheckByLevel,
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: SLOT_INTRO,
+        is_exact: true,
+        reporter: (v, b) => this.onSlotBarChange(v, b),
+        keys: slotKeys,
+        labels: slotLabels,
+        dynamic: () => { return { 'initial': this.state.slotBar } },
+      }),
+      fn: this.CheckBySlot,
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onWornBarChange(v, b)),
+        intro: WORN_INTRO,
+        keys: WORN_KEYS,
+        labels: WORN_LABELS,
+        dynamic: () => { return { 'initial': this.state.wornBar } }
+      }),
+      fn: this.CheckWorn
+    });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Attack Amulets"), fn: this.CheckAttackAmulets });
+    checkers.push({
+      id: id++, labelInfo: this.makeLabelInfo("Defense Rings w/o 2 good substats"), fn: this.CheckDefenseRingWithoutTwoGoodSubstats,
       ttip: "Ring of Defense without 2 substats that are either % boost, or Spd"
     });
     checkers.push({
-      id: id++, label: "Defensive Rings w/o Defensive substat", fn: this.CheckDefensiveRingWithoutDefensiveSubstats,
+      id: id++, labelInfo: this.makeLabelInfo("Defensive Rings w/o Defensive substat"), fn: this.CheckDefensiveRingWithoutDefensiveSubstats,
       ttip: "Ring of DEF or HP with no substat of HP%, DEF%, or Speed"
     });
     checkers.push({
-      id: id++, label: "Non-Lego ring w/2 bad substats", fn: this.CheckNonLegoRingWith2BadSubstats,
+      id: id++, labelInfo: this.makeLabelInfo("Non-Lego ring w/2 bad substats"), fn: this.CheckNonLegoRingWith2BadSubstats,
       ttip: "Non-Legendary ring with 2 substats that are flat and not Speed"
     });
     checkers.push({
-      id: id++, label: "top row w/2 bad substats", fn: this.CheckTopRowWith2BadSubstats,
+      id: id++, labelInfo: this.makeLabelInfo("top row w/2 bad substats"), fn: this.CheckTopRowWith2BadSubstats,
       ttip: "A 'bad' substat is flat ATK,DEF,RES, or HP"
     });
 
-    checkers.push({ id: id++, label: "Atk% Gloves", fn: this.CheckAtkPercentGloves });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Atk% Gloves"), fn: this.CheckAtkPercentGloves });
     checkers.push({
-      id: id++, label: "CD Gloves w/o CR or SPD", fn: this.CheckMostCDGloves,
+      id: id++, labelInfo: this.makeLabelInfo("CD Gloves w/o CR or SPD"), fn: this.CheckMostCDGloves,
       ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
     });
-    checkers.push({ id: id++, label: "Epic Non-Speed Boots", fn: this.CheckEpicNonSpeedBoots });
-    checkers.push({ id: id++, label: "Defensive Boots Without SPD substat", fn: this.CheckDefensiveBootsWithoutSpeed });
-    checkers.push({ id: id++, label: "> 2 substats, none SPD", fn: this.CheckThreeSubstatsNoSpeed });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Epic Non-Speed Boots"), fn: this.CheckEpicNonSpeedBoots });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Defensive Boots Without SPD substat"), fn: this.CheckDefensiveBootsWithoutSpeed });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("> 2 substats, none SPD"), fn: this.CheckThreeSubstatsNoSpeed });
 
 
-    checkers.push({ id: id++, label: "bottom row flat HP/ATK/DEF", fn: this.CheckBottomRowFlatMainStat });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("bottom row flat HP/ATK/DEF"), fn: this.CheckBottomRowFlatMainStat });
     // map from checkerid to whether enabled. Not an array, to be fancy:
     var checkedByCheckerId = {};
     checkers.forEach((checker, index) => {
       checkedByCheckerId[checker.id] = (checker.fn === this.CheckUnwornGear);
     });
     var comparer = new Comparer();
-    var artifactSorters = comparer.makeArtifactSorters();
     this.state = {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
       'numberer': new Numberer(),
-      'artifactSorters': artifactSorters,
       'artifactDimension': DIMENSION_NONE,
       'comparer': comparer,
       'rankBar': INITIAL_RANK_BAR,
       'is_lower_bound': STARTING_RANK_IS_LOWER_BOUND,
-      barSpecifierId: barSpecifierId,
-      rankLabels: rankLabels,
       rarityBar: INITIAL_RARITY_BAR,
       rarity_is_lower_bound: STARTING_RARITY_IS_LOWER_BOUND,
-      rarityBarSpecifierId: rarityBarSpecifierId,
-      rarityLabels: rarityLabels,
       slotBar: "boots",
-      slotBarSpecifierId: slotBarSpecifierId,
-      slotLabels: slotLabels,
-      slotKeys: slotKeys
+      wornBar: WORN_INITIAL,
+      levelBar: LEVEL_INITIAL,
+      level_is_lower_bound: false
     }
   }
-  onMinRankChange(v, is_lower_bound) {
-    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
-    var checkers = this.state.checkers;
-    // because 'checkers' was set in the constructor, before 'this.state' was set,
-    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
-    var barSpecifierId = this.state.barSpecifierId;
-    checkers[barSpecifierId] = {
-      id: barSpecifierId,
-      label: <BarSpecifier intro={RANK_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onMinRankChange(v, b)} labels={this.state.rankLabels} keys={RANK_KEYS} />, fn: this.CheckByRank
-    };
+
+  /**
+   * Helper proc to make the label info.
+   * If 'info' is a string, returns info for making a string label.
+   * Else, it's a dict, it's for making a 'BarSpecifier'.
+   * @param {*} info 
+   */
+  makeLabelInfo(info) {
+    if (typeof (info) === "string") {
+      return { 'text': info };
+    } else {  // assume a BarSpecifier, could add more later.
+      return { 'bar': info };
+    }
+  }
+
+  onWornBarChange(v) {
+    this.setState({
+      wornBar: v
+    });
+  }
+
+  onRankBarChange(v, is_lower_bound) {
     this.setState({
       rankBar: v,
-      is_lower_bound: is_lower_bound,
-      checkers: checkers
+      is_lower_bound: is_lower_bound
     });
   }
 
   onRarityBarChange(v, is_lower_bound) {
-    //console.log('onMinRankChange: v from ' + this.state.rankBar + " to " + v + ", is_lower from " + this.state.is_lower_bound + " to " + is_lower_bound);
-    var checkers = this.state.checkers;
-    // because 'checkers' was set in the constructor, before 'this.state' was set,
-    // React doesn't know to change the checker when (v) or (is_lower_ changes). Have to do that myself:
-    var barSpecifierId = this.state.rarityBarSpecifierId;
-    checkers[barSpecifierId] = {
-      id: barSpecifierId,
-      label: <BarSpecifier intro={RARITY_INTRO} initial={v} is_lower_bound={is_lower_bound} reporter={(v, b) => this.onRarityBarChange(v, b)} labels={this.state.rarityLabels} keys={RARITY_KEYS} />,
-      fn: this.CheckByRarity
-    };
     this.setState({
       rarityBar: v,
-      rarity_is_lower_bound: is_lower_bound,
-      checkers: checkers
+      rarity_is_lower_bound: is_lower_bound
     });
   }
+
+  onLevelBarChange(v, is_lower_bound) {
+    this.setState({
+      levelBar: v,
+      level_is_lower_bound: is_lower_bound
+    });
+  }
+
 
   onSlotBarChange(v, is_lower_bound) {
-    //console.log('onSlotBarChange: v from ' + this.state.slotBar + " to " + v);
-    var checkers = this.state.checkers;
-    var slotSpecifierId = this.state.slotBarSpecifierId;
-    checkers[slotSpecifierId] = {
-      id: slotSpecifierId,
-      label: <BarSpecifier intro={SLOT_INTRO} initial={v} is_exact={true} reporter={(v, b) => this.onSlotBarChange(v, b)} labels={this.state.slotLabels} keys={this.state.slotKeys} />,
-      fn: this.CheckBySlot
-    };
     this.setState({
-      slotBar: v,
-      checkers: checkers
+      slotBar: v
     });
   }
 
-  CheckUnwornGear(artifact) {
-    return (artifact && !artifact.wearer) ? DONT_DISPLAY : null;
+  CheckWorn(artifact, extra) {
+    if (!artifact) return null;
+    var worn = !!(artifact && artifact.wearer);
+    var bar = extra.wornBar;
+    var passes = (worn === (bar === "yes"));
+    return passes ? DONT_DISPLAY : null;
   }
 
   CheckAtkPercentGloves(artifact) {
@@ -369,7 +424,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckByRank(artifact, extra) {
     if (!artifact) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    //if (artifact.requiredFraction) return null; // accessory
     if (!artifact.rank) return null;
     var bar = extra.rankBar;
     var is_lower_bound = extra.is_lower_bound;
@@ -391,6 +446,18 @@ class ArtifactSellPage extends React.Component {
     var bar = extra.numberer.Rarity(extra.rarityBar);
     var is_lower_bound = extra.rarity_is_lower_bound;
     var asNum = extra.numberer.Rarity(artifact.rarity);
+    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
+    if (passed) {
+      return DONT_DISPLAY;
+    }
+    return null;
+  }
+
+  CheckByLevel(artifact, extra) {
+    if (!artifact || !('level' in artifact)) return null;
+    var bar = extra.levelBar;
+    var is_lower_bound = extra.level_is_lower_bound;
+    var asNum = artifact.level;
     var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
     if (passed) {
       return DONT_DISPLAY;
@@ -423,10 +490,31 @@ class ArtifactSellPage extends React.Component {
   }
 
   checkerHtmlLabel(checker) {
-    var text = checker.label ? checker.label : checker.id;
+    var body = checker.label;
+    if (checker.labelInfo) {
+      if ('text' in checker.labelInfo) {
+        body = checker.labelInfo.text;
+      } else if ('bar' in checker.labelInfo) {
+        var props = checker.labelInfo.bar;
+        /**
+         * This took me forever to find. If I'm making a BarSpecifier,
+         * the 'initial' value must be set _at render time_. So not
+         * in the constructor. not anywhere else. Otherwise, React won't know
+         * to re-render the component when the appropriate state variable changes.
+         * So the 'labelInfo', for a BarSpecifier, has 'dynamic', a *function* that
+         * is called at run-time to evaluate any non-static values.
+         */
+        var dynamicProps = ('dynamic' in props) ? props.dynamic() : {};
+        //console.log('dynamicProps =', JSON.stringify(dynamicProps));
+        // put dynamicProps last here so it 'trumps' static values.
+        var stamped = Object.assign({}, props, dynamicProps);
+        // the bar specifier
+        body = <BarSpecifier {...stamped} />;
+      }
+    }
     return checker.ttip ?
-      (<Tooltip title={checker.ttip}>{text}</Tooltip>)
-      : text;
+      (<Tooltip title={checker.ttip}>{body}</Tooltip>)
+      : body;
   }
 
   renderSelectorPart() {
@@ -473,10 +561,7 @@ class ArtifactSellPage extends React.Component {
     if (!art1) return 1;
     if (!art2) return -1;
     var dimension = this.state.artifactDimension;
-    if (!(dimension in this.state.artifactSorters)) {
-      return 0;
-    }
-    return this.state.artifactSorters[dimension](art1, art2)
+    return this.state.comparer.ArtifactsOn(art1, art2, dimension);
   }
 
   render() {
@@ -534,7 +619,10 @@ class ArtifactSellPage extends React.Component {
       is_lower_bound: this.state.is_lower_bound,
       rarityBar: this.state.rarityBar,
       rarity_is_lower_bound: this.state.rarity_is_lower_bound,
-      slotBar: this.state.slotBar
+      slotBar: this.state.slotBar,
+      wornBar: this.state.wornBar,
+      levelBar: this.state.levelBar,
+      level_is_lower_bound: this.state.level_is_lower_bound
     };
     var shown = 0;
     this.props.artifacts.some((artifact) => {

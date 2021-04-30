@@ -102,16 +102,9 @@ class ArtifactPage extends React.Component {
       }
 
     });
-    /*
-    const paginationConfig = {
-      defaultPageSize: 50,
-      hideOnSinglePage: true,
-      pageSize: 50
-    }
-    */
     const paginationConfig = false;
     return (
-      <div>
+      <div className="runed_rows">
         <h3>There are {dataByRows.length} artifacts.</h3>
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
       </div>
