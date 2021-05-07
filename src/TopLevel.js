@@ -93,6 +93,7 @@ class TopLevel extends React.Component {
         var firstIndex = this.state.nextIndexForTotalStats;
         var champs = this.state.champions;
         if (!champs) return;
+        if (this.state.haveAllTotalStats) return;
         var index = firstIndex;
 
         for (; ;) {
@@ -103,7 +104,7 @@ class TopLevel extends React.Component {
             if (champId in this.state.knownChampionTotalStats) {
                 index++;
                 if (index === firstIndex) {
-                    //console.log('all champs have total stats');
+                    this.setState({ haveAllTotalStats: true });
                     return;
                 }
             } else {
@@ -183,12 +184,16 @@ class TopLevel extends React.Component {
             arenaKey: arenaKey,
             greatHallLevels: greatHallLevels,
             knownChampionTotalStats: {},
+            haveAllTotalStats: false,
             nextIndexForTotalStats: 0
         });
     }
 
     onNewTotalStatsBulk(newTotals) {
-        this.setState({ knownChampionTotalStats: newTotals });
+        this.setState({
+            knownChampionTotalStats: newTotals,
+            haveAllTotalStats: false
+        });
     }
 
     onChooseChampion(champion) {

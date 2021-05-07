@@ -8,6 +8,7 @@ import ChampionRune from './ChampionRune';
 import BarSpecifier from './BarSpecifier';
 import artifactTypeConfig from './config/artifact_types.json';
 import attributesConfig from './config/attributes.json';
+import factionsConfig from './config/factions.json';
 import markersConfig from './config/markers.json';
 import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
 
@@ -32,6 +33,8 @@ const VAULT_INITIAL = "no";
 const MARKER_INTRO = "Marker";
 const MARKER_INITIAL = "None";
 
+const FACTION_INTRO = "Faction";
+
 const DONT_DISPLAY = "Uninteresting";
 
 // props:
@@ -51,12 +54,32 @@ class ChampionPage extends React.Component {
     RANK_KEYS.forEach((rank) => {
       rankLabels[rank] = formatter.Rank(rank);
     });
+    var factionsByKey = {};
+    var factionKeys = [];
+    var factionLabels = {};
+    var initialFactionKey = null;
+    var initialFactionOrdinality = null;
+    // ugly kludge: shadowkin are called 'Samurai' (for champs),
+    // and 'AssassinsGuild' for accessories. Yuk.
+    var dontUse = "AssassinsGuild";
+    factionsConfig.factions.forEach((faction) => {
+      if (faction.key !== dontUse) {
+        factionsByKey[faction.key] = faction;
+        factionKeys.push(faction.key);
+        factionLabels[faction.key] = faction.label;
+        if (!initialFactionKey || (initialFactionOrdinality > faction.ordinality)) {
+          initialFactionKey = faction.key;
+          initialFactionOrdinality = faction.ordinality;
+        }
+      }
+    });
     this.state = {
       affinityBar: AFFINITY_INITIAL,
       rankBar: INITIAL_RANK_BAR,
       is_lower_bound: STARTING_IS_LOWER_BOUND,
       vaultBar: VAULT_INITIAL,
-      markerBar: MARKER_INITIAL
+      markerBar: MARKER_INITIAL,
+      factionBar: initialFactionKey
     };
     checkers.push({
       id: id++,
@@ -83,6 +106,18 @@ class ChampionPage extends React.Component {
         dynamic: () => { return { 'initial': this.state.affinityBar } }
       }),
       fn: this.CheckAffinity
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: FACTION_INTRO,
+        is_exact: true,
+        reporter: (v, b) => this.onFactionBarChange(v, b),
+        keys: factionKeys,
+        labels: factionLabels,
+        dynamic: () => { return { 'initial': this.state.factionBar } },
+      }),
+      fn: this.CheckFaction,
     });
     checkers.push({
       id: id++,
@@ -167,6 +202,7 @@ class ChampionPage extends React.Component {
       'checkers': checkers,
       'checkedByCheckerId': checkedByCheckerId,
       attributesByKey: attributesByKey,
+      factionsByKey: factionsByKey,
       includeTotalStats: false,
       championDimension: DIMENSION_NONE
     });
@@ -197,6 +233,10 @@ class ChampionPage extends React.Component {
     this.setState({
       affinityBar: v
     });
+  }
+
+  onFactionBarChange(v) {
+    this.setState({ factionBar: v });
   }
 
   onVaultBarChange(v) {
@@ -230,6 +270,18 @@ class ChampionPage extends React.Component {
       return DONT_DISPLAY; // unset affinity bar.
     }
     var passes = (key === bar.toLowerCase());
+    return passes ? DONT_DISPLAY : null;
+  }
+
+  CheckFaction(champion, extra) {
+    if (!champion || !champion.fraction) return null;
+    var key = champion.fraction;
+    var bar = extra.factionBar;
+    if (!bar) {
+      return DONT_DISPLAY;
+    }
+    var passes = (key.toLowerCase() === bar.toLowerCase());
+    // console.log('champ', champion.name, 'fraction', champion.fraction, 'bar', bar);
     return passes ? DONT_DISPLAY : null;
   }
 
@@ -588,6 +640,12 @@ class ChampionPage extends React.Component {
         sorter: (a, b) => { return this.championSorter(a.champion, b.champion) },
       },
       {
+        title: 'Role',
+        dataIndex: 'role',
+        key: 'role',
+        sorter: (a, b) => a.role.localeCompare(b.role),
+      },
+      {
         title: 'Ascensions',
         dataIndex: 'awakenLevel',
         key: 'awakenLevel',
@@ -597,7 +655,7 @@ class ChampionPage extends React.Component {
       this.addStatsColumnHeaders(columns);
     columns.push(
       {
-        title: 'Why',
+        title: 'Details',
         dataIndex: 'why',
         key: 'why'
       });
@@ -635,17 +693,13 @@ class ChampionPage extends React.Component {
         });
       }
       var passesAll = true;
-      var extra = {
+      var extra = Object.assign({
         artifacts: artifacts,
         championCounts: championCounts,
-        artifactTypeMap: artifactTypeMap,
-        rankBar: this.state.rankBar,
-        is_lower_bound: this.state.is_lower_bound,
-        attributesByKey: this.state.attributesByKey,
-        affinityBar: this.state.affinityBar,
-        vaultBar: this.state.vaultBar,
-        markerBar: this.state.markerBar
-      }
+        artifactTypeMap: artifactTypeMap
+      },
+        this.state
+      );
       var whys = [];
       this.state.checkers.some((checker) => {
         if (this.state.checkedByCheckerId[checker.id]) {
@@ -671,6 +725,7 @@ class ChampionPage extends React.Component {
           faction: champion.fraction,
           grade: numberer.RankFromStars(champion.grade),
           element: champion.element,
+          role: champion.role,
           level: champion.level,
           inStorage: champion.inStorage,
           artifacts: artifacts,
@@ -686,10 +741,10 @@ class ChampionPage extends React.Component {
 
     const paginationConfig = false;
     return (
-      <div className="runed_rows">
+      <div className="runed_rows" >
         <h3>There are {dataByRows.length} Champions.</h3>
-        {this.renderSelectorPart()}
-        {this.renderDisplayModePart()}
+        { this.renderSelectorPart()}
+        { this.renderDisplayModePart()}
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
       </div >
     );

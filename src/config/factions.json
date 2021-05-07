@@ -3,93 +3,99 @@
         {
             "key": "BannerLords",
             "ordinality": 0,
-            "label": "BannerLords",
-            "icon": "pix/factions/banner_lords.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/BannerLords"
+            "label": "Banner Lords",
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/BannerLords.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/BannerLords"
         },
         {
             "key": "HighElves",
             "ordinality": 1,
             "label": "High Elves",
-            "icon": "pix/factions/high_elves.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/HighElves"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/HighElves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/HighElves"
         },
         {
             "key": "SacredOrder",
             "ordinality": 2,
             "label": "The Sacred Order",
-            "icon": "pix/factions/sacred_order.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/SacredOrder"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/SacredOrder.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/SacredOrder"
         },
         {
             "key": "Barbarians",
             "ordinality": 3,
             "label": "Barbarians",
-            "icon": "pix/factions/barbarians.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Barbarians"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/Barbarians.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Barbarians"
         },
         {
             "key": "OgrynTribes",
             "ordinality": 4,
             "label": "Ogryn Tribes",
-            "icon": "pix/factions/ogryn_tribes.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/OgrynTribes"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/OgrynTribes.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/OgrynTribes"
         },
         {
             "key": "LizardMen",
             "ordinality": 5,
             "label": "Lizardmen",
-            "icon": "pix/factions/lizardmen.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/LizardMen"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/LizardMen.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/LizardMen"
         },
         {
             "key": "Skinwalkers",
             "ordinality": 6,
             "label": "Skinwalkers",
-            "icon": "pix/factions/skinwalkers.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Skinwalkers"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/Skinwalkers.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Skinwalkers"
         },
         {
             "key": "Orcs",
             "ordinality": 7,
             "label": "Orcs",
-            "icon": "pix/factions/orcs.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Orcs"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/Orcs.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Orcs"
         },
         {
             "key": "Demonspawn",
             "ordinality": 8,
             "label": "Demonspawn",
-            "icon": "pix/factions/demonspawn.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Demonspawn"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/Demonspawn.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Demonspawn"
         },
         {
             "key": "UndeadHordes",
             "ordinality": 9,
             "label": "Undead Hordes",
-            "icon": "pix/factions/undead_hordes.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/UndeadHordes"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/UndeadHordes.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/UndeadHordes"
         },
         {
             "key": "DarkElves",
             "ordinality": 10,
             "label": "Dark Elves",
-            "icon": "pix/factions/dark_elves.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/DarkElves"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/DarkElves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/DarkElves"
         },
         {
             "key": "KnightsRevenant",
             "ordinality": 11,
             "label": "Knight Revenant",
-            "icon": "pix/factions/knights_revenant.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/KnightsRevenant"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/KnightsRevenant.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/KnightsRevenant"
         },
         {
             "key": "Dwarves",
             "ordinality": 12,
             "label": "Dwarves",
-            "icon": "pix/factions/dwarves.png",
-            "accessory_prefix": "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/FactionAccessories/Dwarves"
+            "icon": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionIcons/Dwarves.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Dwarves"
+        },
+        {
+            "key": "Samurai",
+            "ordinality": 13,
+            "label": "Shadowkin",
+            "icon": "pix/factions/shadowkin.png"
         },
         {
             "key": "AssassinsGuild",

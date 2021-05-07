@@ -353,6 +353,7 @@ class ChampionDetailPage extends React.Component {
     parts.push(<span key="c2"> {champ.element}</span>);
     parts.push(<span key="c3"> {numberer.RankFromStars(champ.grade)} *</span>);
     parts.push(formatter.Faction(champ.fraction));
+    parts.push(<span key="c4">&nbsp;{champ.role}</span>);
     parts.push(<span key="c5">  <b>{champ.name}</b></span>);
     parts.push(<span key="c6">, level {champ.level}</span>);
     if (champ.inStorage) {

@@ -10,7 +10,7 @@
             "key": "uncommon",
             "ordinality": 1,
             "label": "Uncommon",
-            "surround": "pix/misc/Uncommon.png"
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Uncommon.png"
         },
         {
             "key": "rare",
@@ -21,14 +21,14 @@
         {
             "key": "epic",
             "ordinality": 3,
-            "label": "Rare",
+            "label": "Epic",
             "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Epic.png"
         },
         {
             "key": "legendary",
             "ordinality": 4,
             "label": "Legendary",
-            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity/Legendary.png"
+            "surround": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/Rarity//Legendary.png"
         }
     ]
 }

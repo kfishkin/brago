@@ -49,6 +49,14 @@ class Formatter {
             title={factionDict.label} />;
     }
 
+    FactionLabel(factionKey) {
+        var factionDict = this.state.factionsByKey[factionKey];
+        if (!factionDict) {
+            return factionKey;
+        }
+        return factionDict.label;
+    }
+
     Attribute(key) {
         var attributeNames = {
             'hp': 'HP',

@@ -249,9 +249,9 @@ img.champion_avatar {
 img.champion_avatar_small {
   height: 89px;
   width: 70px;
-  left:18px;
+  left:17px;
   top:15px;
-  object-fit: contain;
+  object-fit: fill;
 }
 
 div.champion_stars_overlay {
@@ -263,7 +263,7 @@ div.champion_stars_overlay {
   color: gold;
   background-image: none;
   font-size:14px;
-  left: 20px;
+  left: 19px;
   cursor:default;
   text-shadow: 2px 2px 4px #000000;
 }
@@ -289,7 +289,7 @@ img.champion_affinity_overlay {
   height:16px;
   width: 16px;
   object-fit: contain;
-  left: 18px;
+  left: 17px;
   cursor:default;
 }
 
