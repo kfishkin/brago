@@ -11,6 +11,7 @@ import attributesConfig from './config/attributes.json';
 import factionsConfig from './config/factions.json';
 import markersConfig from './config/markers.json';
 import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
+import SkillsFactory from './SkillsFactory';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
@@ -35,6 +36,17 @@ const MARKER_INITIAL = "None";
 
 const FACTION_INTRO = "Faction";
 
+const BOOKS_INTRO = "Books";
+const BOOKS_NONE = "none";
+const BOOKS_SOME = "some";
+const BOOKS_ALL = "all";
+const BOOKS_KEYS = [BOOKS_NONE, BOOKS_SOME, BOOKS_ALL];
+const BOOKS_LABELS = {
+  "none": "None",
+  "some": "Some", "all": "All"
+};
+const BOOKS_INITIAL = BOOKS_SOME;
+
 const DONT_DISPLAY = "Uninteresting";
 
 // props:
@@ -51,6 +63,7 @@ class ChampionPage extends React.Component {
     var id = 0;
     var rankLabels = {};
     var formatter = new Formatter();
+    this.formatter = formatter;
     RANK_KEYS.forEach((rank) => {
       rankLabels[rank] = formatter.Rank(rank);
     });
@@ -61,9 +74,9 @@ class ChampionPage extends React.Component {
     var initialFactionOrdinality = null;
     // ugly kludge: shadowkin are called 'Samurai' (for champs),
     // and 'AssassinsGuild' for accessories. Yuk.
-    var dontUse = "AssassinsGuild";
+    //var dontUse = "AssassinsGuild";
     factionsConfig.factions.forEach((faction) => {
-      if (faction.key !== dontUse) {
+      if (true /*faction.key !== dontUse */) {
         factionsByKey[faction.key] = faction;
         factionKeys.push(faction.key);
         factionLabels[faction.key] = faction.label;
@@ -79,7 +92,8 @@ class ChampionPage extends React.Component {
       is_lower_bound: STARTING_IS_LOWER_BOUND,
       vaultBar: VAULT_INITIAL,
       markerBar: MARKER_INITIAL,
-      factionBar: initialFactionKey
+      factionBar: initialFactionKey,
+      booksBar: BOOKS_INITIAL
     };
     checkers.push({
       id: id++,
@@ -130,6 +144,18 @@ class ChampionPage extends React.Component {
         dynamic: () => { return { 'initial': this.state.vaultBar } }
       }),
       fn: this.CheckVault
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onBooksBarChange(v, b)),
+        intro: BOOKS_INTRO,
+        keys: BOOKS_KEYS,
+        labels: BOOKS_LABELS,
+        dynamic: () => { return { 'initial': this.state.booksBar } }
+      }),
+      fn: this.CheckBooks
     });
     var markerKeys = [];
     var markerLabels = {};
@@ -245,6 +271,10 @@ class ChampionPage extends React.Component {
     });
   }
 
+  onBooksBarChange(v) {
+    this.setState({ booksBar: v });
+  }
+
   onMarkerBarChange(v) {
     this.setState({ markerBar: v });
   }
@@ -291,6 +321,46 @@ class ChampionPage extends React.Component {
     var bar = extra.vaultBar;
     var passes = (inStorage === (bar === "yes"));
     return passes ? DONT_DISPLAY : null;
+  }
+
+  CheckBooks(champion, extra) {
+    if (!champion) return null;
+    var skillsFactory = extra.skillsFactory;
+    if (!skillsFactory) return null;
+    var skills = skillsFactory.SkillsFor(champion);
+    if (!skills) return null;
+    var unbooked = [];
+    var partiallyBooked = [];
+    var fullyBooked = [];
+    var numSkills = 0;
+    skills.forEach((skillBundle) => {
+      numSkills++;
+      // skills.push({ id: id, name: name, level: level, maxLevel: maxLevel });
+      if (skillBundle.level === skillBundle.maxLevel) {
+        fullyBooked.push(<li key={skillBundle.id}><span class="skill_name">{skillBundle.name}</span></li>)
+      } else if (skillBundle.level > 1) {
+        partiallyBooked.push(<li key={skillBundle.id}><span class="skill_name">{skillBundle.name}</span> {skillBundle.level}/{skillBundle.maxLevel}</li>)
+      } else {
+        unbooked.push(<li key={skillBundle.id}><span class="skill_name">{skillBundle.name}</span></li>)
+      }
+    });
+    var bar = extra.booksBar;
+    var passes = null;
+    switch (bar) {
+      case BOOKS_NONE:
+        passes = (unbooked.length === numSkills) ? DONT_DISPLAY : null;
+        break;
+      case BOOKS_SOME:
+        passes = (partiallyBooked.length > 0) ?
+          DONT_DISPLAY /* <ul>{partiallyBooked}</ul> */ : null;
+        break;
+      case BOOKS_ALL:
+        passes = (fullyBooked.length === numSkills) ? DONT_DISPLAY : null;
+        break;
+      default:
+        passes = null;
+    }
+    return passes;
   }
 
   CheckMarker(champion, extra) {
@@ -576,6 +646,11 @@ class ChampionPage extends React.Component {
     return val ? val : "--";
   }
 
+  renderSkills(skillsArray) {
+    var asList = this.formatter.Skills(skillsArray);
+    return asList;
+  }
+
   compareTotalStat(key, champ1Stats, champ2Stats) {
     var v1 = this.getTotalStat(key, champ1Stats);
     var v2 = this.getTotalStat(key, champ2Stats);
@@ -612,6 +687,21 @@ class ChampionPage extends React.Component {
     return comparer.ChampionsOn(c1, c2, this.state.championDimension)
   }
 
+  skillsSorter(s1, s2) {
+    if (!s1 && !s2) return 0;
+    if (!s1) return 1;
+    if (!s2) return -1;
+    var levels1 = 0;
+    s1.forEach((skillBundle) => {
+      levels1 += skillBundle.level;
+    })
+    var levels2 = 0;
+    s2.forEach((skillBundle) => {
+      levels2 += skillBundle.level;
+    })
+    return levels1 - levels2;
+  }
+
   render() {
     var numberer = new Numberer();
     if (!this.props.champions || this.props.champions.length === 0) {
@@ -631,6 +721,7 @@ class ChampionPage extends React.Component {
     var runeHeader = <ArtifactDimensionChooser initialValue={this.state.championDimension}
       labels={dimensionLabels}
       reporter={(value) => this.onDimensionChange(value)} />;
+
     var columns = [
       {
         title: runeHeader,
@@ -644,6 +735,13 @@ class ChampionPage extends React.Component {
         dataIndex: 'role',
         key: 'role',
         sorter: (a, b) => a.role.localeCompare(b.role),
+      },
+      {
+        title: 'Skills',
+        dataIndex: 'skills',
+        key: 'skills',
+        render: (skillsArray) => { return this.formatter.Skills(skillsArray) },
+        sorter: (a, b) => this.skillsSorter(a.skills, b.skills)
       },
       {
         title: 'Ascensions',
@@ -680,6 +778,7 @@ class ChampionPage extends React.Component {
     artifactTypeConfig.artifact_types.forEach((typeSpec) => {
       artifactTypeMap[typeSpec.key.toLowerCase()] = typeSpec;
     });
+    var skillsFactory = new SkillsFactory();
 
     this.props.champions.forEach((champion) => {
       var artifacts = [];
@@ -696,7 +795,8 @@ class ChampionPage extends React.Component {
       var extra = Object.assign({
         artifacts: artifacts,
         championCounts: championCounts,
-        artifactTypeMap: artifactTypeMap
+        artifactTypeMap: artifactTypeMap,
+        skillsFactory: skillsFactory
       },
         this.state
       );
@@ -733,6 +833,7 @@ class ChampionPage extends React.Component {
           awakenLevel: champion.awakenLevel,
           champion_total_stats: this.props.knownChampionTotalStats ?
             this.props.knownChampionTotalStats[champion.id] : null,
+          skills: skillsFactory.SkillsFor(champion),
           why: whys.join(',')
         };
         dataByRows.push(rowData);

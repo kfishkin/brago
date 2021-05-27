@@ -13,6 +13,8 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.16 (27 May)
+Can display champion skills, and filter on booked status.
 
 ## 1.15 (7 May)
 Added 'role' to champion display, and added filter on faction.

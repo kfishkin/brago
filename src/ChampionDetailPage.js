@@ -9,6 +9,7 @@ import markersConfig from './config/markers.json';
 import masteriesConfig from './config/masteries.json';
 import ArtifactRune from './ArtifactRune';
 import MarkerRune from './MarkerRune';
+import SkillsFactory from './SkillsFactory';
 import TotalStatsCalculator,
 {
   ARENA_COLUMN, BASE_COLUMN, GREAT_HALL_COLUMN, TOTALS_COLUMN,
@@ -269,6 +270,16 @@ class ChampionDetailPage extends React.Component {
     return <div>{parts}</div>;
   }
 
+  renderSkills(champ) {
+    if (!champ || !champ.skills) {
+      return <span>(no skills)</span>;
+    }
+    var factory = new SkillsFactory();
+    var skillsArray = factory.SkillsFor(champ);
+    var asList = this.formatter.Skills(skillsArray);
+    return (<div><p><b>Skills:</b></p>{asList}</div >);
+  }
+
   renderMasteries(masteries) {
     if (!masteries || masteries.length === 0) {
       return <span>(no masteries)</span>;
@@ -372,6 +383,7 @@ class ChampionDetailPage extends React.Component {
     parts.push(this.renderArtifacts(champ.artifacts));
     parts.push(<hr key="c12" />);
     parts.push(this.renderMasteries(champ.masteries));
+    parts.push(this.renderSkills(champ));
     parts.push(<hr key="c14" />);
     parts.push(this.renderTotalStats());
     return <div>{parts}</div>;

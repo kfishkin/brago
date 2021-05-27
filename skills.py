@@ -13,41 +13,26 @@ def main():
     cur_state = State.BEFORE
     the_blob = ""
     # have to strip the ending comma from the last line...
-    last_line = ""
     for line in sys.stdin:
-        # line = line.rstrip()
-        if cur_state == State.BEFORE:
-            index = line.find('"SkillData":')
-            if index != -1:
-                cur_state = State.DURING
-                last_line = "{ " + line
-        elif cur_state == State.DURING:
-            index = line.find('"EffectData":')
-            if index != -1:
-                cur_state = State.AFTER
-                the_blob = the_blob + last_line.replace(",","") + " }"
-            else:
-                if len(last_line) > 0:
-                    the_blob = the_blob + last_line
-                last_line = line
-        else:
-            pass
-    #print(the_blob)
+        the_blob = the_blob + line
     as_json = json.loads(the_blob)
     skills = as_json["SkillData"]
     skills = skills["SkillTypes"]
-    placeholder_pat = re.compile("Skill\s+\d+\s+name", re.IGNORECASE)
+    l10n = as_json["StaticDataLocalization"]
+    print('{ "skills": [')
     for skill in skills:
+        skill_id = 0
+        if "Id" in skill.keys():
+            skill_id = skill["Id"]
         skill_levels = 0
-        name = skill["Name"]["DefaultValue"]
-        if placeholder_pat.match(name):
-            continue
         if "SkillLevelBonuses" in skill.keys():
             skill_levels = len(skill["SkillLevelBonuses"])
-        print('{},{},{}'.format(skill["Id"],
-            name,
-            skill_levels))
-    #print(skills)
+        name = skill["Name"]["DefaultValue"]
+        key = skill["Name"]["Key"]
+        if key in l10n:
+            name = l10n[key]
+        print(f'{{ "Id": {skill_id}, "Name": "{name}", "Levels": {skill_levels} }},')
+    print(f'{{ "Id": 0, "Name": "", "Levels": 0 }} ] }}')
 
 if __name__ == "__main__":
     main()

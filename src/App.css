@@ -114,6 +114,14 @@ ul.mastery_list {
   text-align: left;
 }
 
+ul.skills_list {
+  text-align: left;
+}
+
+span.skill_name {
+  font-style: italic;
+}
+
 ul.substats {
   text-align: left;
 }

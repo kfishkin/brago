@@ -156,6 +156,15 @@ class Formatter {
             <img src={process.env.PUBLIC_URL + src} title={label} alt={label} {...additional} />
         );
     }
+
+    Skills(skillsArray) {
+        var elements = [];
+        skillsArray.forEach((skill) => {
+            var ofPart = skill.maxLevel > 0 ? ("/" + skill.maxLevel) : "";
+            elements.push(<li key={skill.id}><span class="skill_name">{skill.name}</span>, level {skill.level}{ofPart}</li>);
+        })
+        return (<ul className="skills_list">{elements}</ul>);
+    }
 }
 
 export default Formatter;
