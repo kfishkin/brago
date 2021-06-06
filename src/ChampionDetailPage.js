@@ -286,10 +286,12 @@ class ChampionDetailPage extends React.Component {
     }
     // display by branch, within that by tier, within that random.
     var masterySpecs = [];
+    var numMasteries = 0;
     masteriesConfig.masteries.some((masterySpec) => {
       if (!masterySpec || !masterySpec.key) return false;
       if (masteries.indexOf(masterySpec.key) === -1) return false;
       masterySpecs.push(masterySpec);
+      numMasteries++;
       return false;
     });
     masterySpecs.sort((m1, m2) => {
@@ -323,7 +325,10 @@ class ChampionDetailPage extends React.Component {
         {inBranch}
       </li>);
     }
-    return (<div><p><b>Masteries:</b></p><ul className="mastery_list">{elements}</ul></div >);
+    const MAX_MASTERIES = 15;
+    var blurb = (numMasteries === MAX_MASTERIES) ? <span class="all_masteries">(Have 'em all)</span> :
+      <span>(need {MAX_MASTERIES - numMasteries} more)</span>;
+    return (<div><p><b>Masteries:</b> {blurb}</p><ul className="mastery_list">{elements}</ul></div >);
   }
 
   onError(evt, tryNum, imgUrl) {

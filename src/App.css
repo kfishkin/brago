@@ -374,6 +374,10 @@ span[attr="criticalDamage"]::after {
     height: 120px;
   }
 
+span.all_masteries {
+  background-color: lightgreen;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
