@@ -80,7 +80,8 @@ class TotalStatsCalculator {
         var columns = {}
         columns[BASE_COLUMN] = this.computeBaseStats(champion, columns)
         columns[ARENA_COLUMN] = this.computeArenaStats(this.computeArenaData(arenaLeague));
-        columns[GREAT_HALL_COLUMN] = this.computeGreatHallStats(champion.element.toLowerCase(), greatHallLevels);
+        var elt = champion.element || "Unknown"; // happens for new champs.
+        columns[GREAT_HALL_COLUMN] = this.computeGreatHallStats(elt.toLowerCase(), greatHallLevels);
         var setCounts = this.computeSets(champion.artifacts, artifactsById, champion.name);
         columns[ARTIFACTS_COLUMN] = this.computeSetBonuses(setCounts);
         columns[MASTERIES_COLUMN] = this.computeMasteries(champion.masteries, setCounts);
