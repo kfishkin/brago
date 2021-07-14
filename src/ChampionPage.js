@@ -358,13 +358,16 @@ class ChampionPage extends React.Component {
     const MAX_MASTERIES = 15;
     switch (extra.masteriesBar) {
       case MASTERIES_NONE:
-        passes = (howMany == 0);
+        passes = (howMany === 0);
         break;
       case MASTERIES_SOME:
         passes = (howMany > 0) && (howMany < MAX_MASTERIES);
         break;
       case MASTERIES_ALL:
         passes = (howMany >= MAX_MASTERIES);
+        break;
+      default:
+        passes = true;
         break;
     }
     return passes;
