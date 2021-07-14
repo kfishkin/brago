@@ -47,6 +47,17 @@ const BOOKS_LABELS = {
 };
 const BOOKS_INITIAL = BOOKS_SOME;
 
+const MASTERIES_INTRO = "Masteries";
+const MASTERIES_NONE = "none";
+const MASTERIES_SOME = "some";
+const MASTERIES_ALL = "all";
+const MASTERIES_KEYS = [MASTERIES_NONE, MASTERIES_SOME, MASTERIES_ALL];
+const MASTERIES_LABELS = {
+  "none": "None",
+  "some": "Some", "all": "All"
+};
+const MASTERIES_INITIAL = MASTERIES_SOME;
+
 const DONT_DISPLAY = "Uninteresting";
 
 // props:
@@ -93,7 +104,8 @@ class ChampionPage extends React.Component {
       vaultBar: VAULT_INITIAL,
       markerBar: MARKER_INITIAL,
       factionBar: initialFactionKey,
-      booksBar: BOOKS_INITIAL
+      booksBar: BOOKS_INITIAL,
+      masteriesBar: MASTERIES_INITIAL
     };
     checkers.push({
       id: id++,
@@ -156,6 +168,18 @@ class ChampionPage extends React.Component {
         dynamic: () => { return { 'initial': this.state.booksBar } }
       }),
       fn: this.CheckBooks
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        is_exact: true,
+        reporter: ((v, b) => this.onMasteriesBarChange(v, b)),
+        intro: MASTERIES_INTRO,
+        keys: MASTERIES_KEYS,
+        labels: MASTERIES_LABELS,
+        dynamic: () => { return { 'initial': this.state.masteriesBar } }
+      }),
+      fn: this.CheckMasteries
     });
     var markerKeys = [];
     var markerLabels = {};
@@ -279,6 +303,10 @@ class ChampionPage extends React.Component {
     this.setState({ markerBar: v });
   }
 
+  onMasteriesBarChange(v) {
+    this.setState({ masteriesBar: v });
+  }
+
   // these guys can't refer to 'this', so extra state is passed
   // in 2nd param.
   CheckRank(champion, extra) {
@@ -321,6 +349,25 @@ class ChampionPage extends React.Component {
     var bar = extra.vaultBar;
     var passes = (inStorage === (bar === "yes"));
     return passes ? DONT_DISPLAY : null;
+  }
+
+  CheckMasteries(champion, extra) {
+    if (!champion) return null;
+    var howMany = extra.NumMasteriesFor(champion);
+    var passes = true;
+    const MAX_MASTERIES = 15;
+    switch (extra.masteriesBar) {
+      case MASTERIES_NONE:
+        passes = (howMany == 0);
+        break;
+      case MASTERIES_SOME:
+        passes = (howMany > 0) && (howMany < MAX_MASTERIES);
+        break;
+      case MASTERIES_ALL:
+        passes = (howMany >= MAX_MASTERIES);
+        break;
+    }
+    return passes;
   }
 
   CheckBooks(champion, extra) {
@@ -586,7 +633,7 @@ class ChampionPage extends React.Component {
     return (<div style={divStyle}>
       <p><b>Show champions that pass <i>all</i> these checks:</b></p>
       <hr />
-      { rows}
+      {rows}
       <hr />
     </div >);
   }
@@ -702,6 +749,10 @@ class ChampionPage extends React.Component {
     return levels1 - levels2;
   }
 
+  NumMasteriesFor(champ) {
+    return (champ && champ.masteries) ? champ.masteries.length : 0;
+  }
+
   render() {
     var numberer = new Numberer();
     if (!this.props.champions || this.props.champions.length === 0) {
@@ -748,6 +799,12 @@ class ChampionPage extends React.Component {
         dataIndex: 'awakenLevel',
         key: 'awakenLevel',
         sorter: (a, b) => a.champion.awakenLevel - b.champion.awakenLevel,
+      },
+      {
+        title: '# Masteries',
+        dataIndex: 'masteries',
+        key: 'masteries',
+        sorter: (a, b) => this.NumMasteriesFor(a.champion) - this.NumMasteriesFor(b.champion)
       }];
     if (this.state.includeTotalStats)
       this.addStatsColumnHeaders(columns);
@@ -796,7 +853,8 @@ class ChampionPage extends React.Component {
         artifacts: artifacts,
         championCounts: championCounts,
         artifactTypeMap: artifactTypeMap,
-        skillsFactory: skillsFactory
+        skillsFactory: skillsFactory,
+        NumMasteriesFor: this.NumMasteriesFor,
       },
         this.state
       );
@@ -831,6 +889,7 @@ class ChampionPage extends React.Component {
           artifacts: artifacts,
           marker: champion.marker,
           awakenLevel: champion.awakenLevel,
+          masteries: this.NumMasteriesFor(champion),
           champion_total_stats: this.props.knownChampionTotalStats ?
             this.props.knownChampionTotalStats[champion.id] : null,
           skills: skillsFactory.SkillsFor(champion),
@@ -844,8 +903,8 @@ class ChampionPage extends React.Component {
     return (
       <div className="runed_rows" >
         <h3>There are {dataByRows.length} Champions.</h3>
-        { this.renderSelectorPart()}
-        { this.renderDisplayModePart()}
+        {this.renderSelectorPart()}
+        {this.renderDisplayModePart()}
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
       </div >
     );

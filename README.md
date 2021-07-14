@@ -13,6 +13,10 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+
+## 1.17 (14 July)
+Champion page displays # of masteries, and can filter on none/some/all.
+
 ## 1.16 (27 May)
 Can display champion skills, and filter on booked status.
 
