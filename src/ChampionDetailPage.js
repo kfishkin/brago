@@ -326,7 +326,7 @@ class ChampionDetailPage extends React.Component {
       </li>);
     }
     const MAX_MASTERIES = 15;
-    var blurb = (numMasteries === MAX_MASTERIES) ? <span class="all_masteries">(Have 'em all)</span> :
+    var blurb = (numMasteries === MAX_MASTERIES) ? <span className="all_masteries">(Have 'em all)</span> :
       <span>(need {MAX_MASTERIES - numMasteries} more)</span>;
     return (<div><p><b>Masteries:</b> {blurb}</p><ul className="mastery_list">{elements}</ul></div >);
   }
@@ -338,7 +338,7 @@ class ChampionDetailPage extends React.Component {
       return null;
     }
     var parts = [];
-    var imgName = champ.name.replace(/ /g, "_");
+    //var imgName = champ.name.replace(/ /g, "_");
     // folder name is champ name, all lcs, with spaces to dashes.
     var folderName = champ.name.replace(/ /g, "-").toLowerCase();
 
@@ -348,8 +348,8 @@ class ChampionDetailPage extends React.Component {
 
     // <source srcset={imgUrl} />
     parts.push(<picture key="c0">
-      <source srcset={imgUrl} />
-      <img src={unknownUrl} className="champion_avatar" />
+      <source srcSet={imgUrl} />
+      <img src={unknownUrl} className="champion_avatar" alt={"picture of " + champ.name} />
     </picture>);
     parts.push(<span key="c1">{champ.rarity}</span>);
     parts.push(<span key="c2"> {champ.element}</span>);

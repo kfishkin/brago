@@ -107,7 +107,7 @@ class ChampionRune extends React.Component {
     if (inStorage) {
       label += " (vault)"
     }
-    var imgName = champion.name.replace(/ /g, "_");
+    //var imgName = champion.name.replace(/ /g, "_");
     //var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
     //var imgName = champion.name.replace(/ /g, "-").toLowerCase();
     //var imgUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/" + imgName + "/image.png";
@@ -123,8 +123,9 @@ class ChampionRune extends React.Component {
     return (<div className="container">
       {this.maybeRarity(champion.rarity, label)}
       <picture className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label}>
-        <source srcset={imgUrl} />
-        <img src={unknownUrl} className="floats_above champion_avatar_small" />
+        <source srcSet={imgUrl} />
+        <img src={unknownUrl} className="floats_above champion_avatar_small"
+          alt={"picture of " + champion.name} />
       </picture>
       <div className="floats_above champion_stars_overlay">{starTxt}</div>
       {faction ? formatter.Image(faction.icon, label, { 'className': 'floats_above champion_faction_overlay' }) : null}
