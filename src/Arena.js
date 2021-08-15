@@ -45,7 +45,7 @@ class Arena extends React.Component {
                 bonusText += ", ";
             }
             var formatter = new Formatter();
-            bonusText += formatter.Bonus(bonusDict);
+            bonusText += formatter.Bonus(bonusDict, 0);
         });
         return (<div><span>{bonusText}</span></div>);
     }

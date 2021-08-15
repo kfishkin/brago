@@ -47,7 +47,7 @@ class ArtifactPage extends React.Component {
         dataIndex: 'primary',
         key: 'primary',
         render: (stats, record, index) => (
-          <div>{formatter.Stat(stats)}</div>
+          <div>{formatter.Stat(stats, 0)}</div>
         )
       },
       {

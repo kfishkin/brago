@@ -1,0 +1,70 @@
+{
+    "substats": [
+        {
+            "key": "hp%",
+            "attrKey": "health",
+            "label": "HP(%)",
+            "isAbsolute": false
+        },
+        {
+            "key": "hp",
+            "attrKey": "health",
+            "label": "HP",
+            "isAbsolute": true
+        },
+        {
+            "key": "atk%",
+            "attrKey": "attack",
+            "label": "Attack(%)",
+            "isAbsolute": false
+        },
+        {
+            "key": "atk",
+            "attrKey": "attack",
+            "label": "Attack",
+            "isAbsolute": true
+        },
+        {
+            "key": "def%",
+            "attrKey": "defense",
+            "label": "Defense(%)",
+            "isAbsolute": false
+        },
+        {
+            "key": "def",
+            "attrKey": "defense",
+            "label": "Defense",
+            "isAbsolute": true
+        },
+        {
+            "key": "spd",
+            "attrKey": "speed",
+            "label": "Speed",
+            "isAbsolute": true
+        },
+        {
+            "key": "cr",
+            "attrKey": "criticalChance",
+            "label": "Crit Rate(%)",
+            "isAbsolute": false
+        },
+        {
+            "key": "cd",
+            "attrKey": "CriticalDamage",
+            "label": "Crit Damage(%)",
+            "isAbsolute": false
+        },
+        {
+            "key": "res",
+            "attrKey": "resistance",
+            "label": "Resistance",
+            "isAbsolute": true
+        },
+        {
+            "key": "acc",
+            "attrKey": "accuracy",
+            "label": "Accuracy",
+            "isAbsolute": true
+        }
+    ]
+}

@@ -14,6 +14,10 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.18 (15 August)
+Added ability to filter artifacts by how many rolls they do/don't have
+either overall, or on a particular substat.
+
 ## 1.17 (14 July)
 Champion page displays # of masteries, and can filter on none/some/all.
 

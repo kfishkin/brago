@@ -8,6 +8,7 @@ import ArtifactRune from './ArtifactRune';
 import artifactTypesConfig from './config/artifact_types.json';
 import ChampionRune from './ChampionRune';
 import BarSpecifier from './BarSpecifier';
+import substatsConfig from './config/substats.json';
 
 import {
   DIMENSION_NONE,
@@ -28,6 +29,14 @@ const WORN_INITIAL = "no";
 const LEVEL_INTRO = "Level";
 const LEVEL_KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 const LEVEL_INITIAL = 15;
+
+const SUBSTAT_INTRO = "has Substat";
+
+const ROLLS_INTRO = "Rolls"
+// if the keys are number-y, they are converted into array indices :()
+const ROLLS_KEYS = ["1", "2", "3", "4"];
+const ROLLS_LABELS = ["1", "2", "3", "4"];
+const ROLLS_INITIAL = "1";
 
 class ArtifactSellPage extends React.Component {
   constructor(props) {
@@ -51,6 +60,22 @@ class ArtifactSellPage extends React.Component {
       slotKeys.push(typeConfig.key.toLowerCase());
       slotLabels[typeConfig.key] = typeConfig.label;
     });
+
+    var substatLabels = {};
+    var substatKeys = [];
+    var substatsByKey = {};
+    substatsConfig.substats.forEach((substatConfig) => {
+      var key = substatConfig.key.toLowerCase();
+      substatKeys.push(key);
+      substatLabels[key] = substatConfig.label;
+      substatsByKey[key] = substatConfig;
+    });
+
+    var rollsLabelHash = {};
+    for (var i = 0; i < ROLLS_KEYS.length; i++) {
+      rollsLabelHash[ROLLS_KEYS[i]] = ROLLS_LABELS[i];
+    }
+
     var levelLabels = {};
     LEVEL_KEYS.forEach((level) => {
       levelLabels[level] = level;
@@ -110,6 +135,31 @@ class ArtifactSellPage extends React.Component {
       }),
       fn: this.CheckBySlot,
     });
+    var substatCheckerId = id;
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: SUBSTAT_INTRO,
+        is_exact: true,
+        reporter: (v, b) => this.onSubstatBarChange(v, b),
+        keys: substatKeys,
+        labels: substatLabels,
+        dynamic: () => { return { 'initial': this.state.substatBar } },
+      }),
+      fn: this.CheckBySubstat,
+    });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: ROLLS_INTRO,
+        reporter: (v, b) => this.onRollBarChange(v, b),
+        keys: ROLLS_KEYS,
+        labels: rollsLabelHash,
+        dynamic: () => { return { 'initial': this.state.rollBar, 'is_lower_bound': this.state.roll_is_lower_bound } },
+      }),
+      fn: this.CheckByRoll,
+    });
+
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
@@ -168,9 +218,14 @@ class ArtifactSellPage extends React.Component {
       rarityBar: INITIAL_RARITY_BAR,
       rarity_is_lower_bound: STARTING_RARITY_IS_LOWER_BOUND,
       slotBar: "boots",
+      substatBar: "spd",
       wornBar: WORN_INITIAL,
       levelBar: LEVEL_INITIAL,
-      level_is_lower_bound: false
+      rollBar: ROLLS_INITIAL,
+      roll_is_lower_bound: true,
+      level_is_lower_bound: false,
+      substatsByKey: substatsByKey,
+      substatCheckerId: substatCheckerId
     }
   }
 
@@ -220,6 +275,21 @@ class ArtifactSellPage extends React.Component {
     this.setState({
       slotBar: v
     });
+  }
+
+  onSubstatBarChange(v, is_lower_bound) {
+    //console.log('onSubstatBarChange:', v);
+    this.setState({
+      substatBar: v
+    });
+  }
+
+  onRollBarChange(v, is_lower_bound) {
+    this.setState({
+      rollBar: v,
+      roll_is_lower_bound: is_lower_bound
+    });
+    //console.log('onRollBarChange', v, is_lower_bound);
   }
 
   CheckWorn(artifact, extra) {
@@ -441,6 +511,75 @@ class ArtifactSellPage extends React.Component {
     return (bar === artifact.kind.toLowerCase()) ? DONT_DISPLAY : null;
   }
 
+  CheckBySubstat(artifact, extra) {
+    var substatKey = extra.substatBar;
+    var substats = artifact.secondaryBonuses;
+    if (!substats) return null;
+    var substatConfig = extra.substatsByKey[substatKey];
+    if (!substatConfig) return null;
+    // do they have a substat whose 'kind' is equal
+    // to substatConfig.key, and whose 'isAbsolute' matches.
+    var found = false;
+    var lc = substatConfig.attrKey.toLowerCase();
+    artifact.secondaryBonuses.some((substat) => {
+      if (substat.kind.toLowerCase() === lc
+        && substat.isAbsolute === substatConfig.isAbsolute) {
+        found = true;
+        return true;
+      }
+      return false;
+    });
+    return found ? DONT_DISPLAY : null;
+  }
+
+  CheckByRoll(artifact, extra) {
+    if (!artifact || !artifact.secondaryBonuses) return null;
+    // a kludge. We need to look into the substat filter
+    // and find out which substat we care about. Otherwise
+    // use any substat.
+    // kludge is to look into the global state for that checker
+    // and whether it's on, and if so to what value.
+    var attrKey = null;
+    var attrIsAbsolute = null;
+    var substatCheckerId = extra.substatCheckerId;
+    if (extra.checkedByCheckerId[substatCheckerId]) {
+      // yup, it's on
+      var substatKey = extra.substatBar;
+      var substatConfig = extra.substatsByKey[substatKey];
+      attrKey = substatConfig.attrKey.toLowerCase();
+      attrIsAbsolute = substatConfig.isAbsolute;
+    }
+    // ok, now each secondary bonus (substat) must pass two
+    // tests:
+    // (1) # rolls (the 'level' field) <= or >= the 'rollBar'
+    // (2) is the substat filter is on, for that substat.
+    var bar = extra.rollBar;
+    var is_lower_bound = extra.roll_is_lower_bound;
+    var whys = null;
+    artifact.secondaryBonuses.some((substat) => {
+      var passes = is_lower_bound ? (substat.level >= bar) : (substat.level <= bar);
+      if (!passes) {
+        return false;
+      }
+      // check the substat type
+      if (attrKey != null) {
+        if (substat.kind.toLowerCase() !== attrKey) {
+          return false;
+        }
+        if (substat.isAbsolute !== attrIsAbsolute) {
+          return false;
+        }
+      }
+
+
+      var msg = substat.level + " rolls on " + substat.kind;
+      whys = whys ? (whys + ". " + msg) : msg;
+
+      return false;
+    });
+    return whys;
+  }
+
   CheckByRarity(artifact, extra) {
     if (!artifact || !artifact.rarity) return null;
     var bar = extra.numberer.Rarity(extra.rarityBar);
@@ -544,7 +683,7 @@ class ArtifactSellPage extends React.Component {
     return (<div style={divStyle}>
       <p><b>Show Artifacts that pass <i>all</i> of these checks:</b></p>
       <hr />
-      { rows}
+      {rows}
       <hr />
     </div >);
   }
@@ -612,18 +751,11 @@ class ArtifactSellPage extends React.Component {
     ];
     const dataByRows = [
     ];
-
-    var extra = {
+    var extra = Object.assign({
       numberer: numberer,
-      rankBar: this.state.rankBar,
-      is_lower_bound: this.state.is_lower_bound,
-      rarityBar: this.state.rarityBar,
-      rarity_is_lower_bound: this.state.rarity_is_lower_bound,
-      slotBar: this.state.slotBar,
-      wornBar: this.state.wornBar,
-      levelBar: this.state.levelBar,
-      level_is_lower_bound: this.state.level_is_lower_bound
-    };
+    },
+      this.state
+    );
     var shown = 0;
     this.props.artifacts.some((artifact) => {
       var toCheck = artifact.isSeen;
@@ -673,7 +805,7 @@ class ArtifactSellPage extends React.Component {
     const paginationConfig = false;
     return (
       <div>
-        { this.renderSelectorPart()}
+        {this.renderSelectorPart()}
         <h3>{shown >= MAX_TO_SHOW ? "at least " : ""} {dataByRows.length} artifacts pass the checks.</h3>
         <Table pagination={paginationConfig} dataSource={dataByRows} columns={columns} />
       </div >

@@ -83,12 +83,16 @@ class Formatter {
     }
 
     // (bonus) is a dict with (kind), (isAbsolute), and (value) keys
-    Bonus(bonus) {
+    // (rolls) is how many rolls the stat/substat has.
+    Bonus(bonus, rolls) {
         if (!bonus || !('value' in bonus) || (bonus.value === 0)) {
             return "";
         }
         var kind = ('kind' in bonus) ? bonus['kind'] : bonus['what'];
         var prefix = this.Attribute(kind);
+        if (rolls > 0) {
+            prefix += " (" + rolls + ")";
+        }
         return prefix + ((prefix && prefix.length > 0) ? ' ' : '')
             + this.BonusAmount(bonus.isAbsolute, bonus.value);
     }
@@ -101,17 +105,17 @@ class Formatter {
         return (rank > 0 && rank <= labels.length) ? labels[rank - 1] : rank;
     }
 
-    // a Main stat
-    Stat(stat) {
+    // a Stat
+    Stat(stat, rolls) {
         //console.log("stat = " + JSON.stringify(stat));
-        var bonus = this.Bonus(stat)
+        var bonus = this.Bonus(stat, rolls)
         if (stat.enhancement > 0) {
             var glyphBonus = {
                 kind: 'glyph',
                 isAbsolute: stat.isAbsolute,
                 value: stat.enhancement
             }
-            bonus += " +(" + this.Bonus(glyphBonus) + ")";
+            bonus += " +(" + this.Bonus(glyphBonus, 0) + ")";
         }
         return bonus;
 
@@ -123,11 +127,11 @@ class Formatter {
             return null;
         }
         if (subStats.length === 1) {
-            return this.Stat(subStats[0]);
+            return this.Stat(subStats[0], subStats[0].level);
         }
         var entries = [];
         subStats.forEach((subStat, index) => {
-            entries.push(<li key={index}>{this.Stat(subStat)}</li>);
+            entries.push(<li key={index}>{this.Stat(subStat, subStat.level)}</li>);
         });
         return <ul className="substats">{entries}</ul>;
     }

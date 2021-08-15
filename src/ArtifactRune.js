@@ -89,7 +89,7 @@ class ArtifactRune extends React.Component {
       {level}
       {meatball}
     </div>
-    var toRight = artifact.primaryBonus ? (<div className="primary">{this.formatter.Bonus(artifact.primaryBonus)}</div>)
+    var toRight = artifact.primaryBonus ? (<div className="primary">{this.formatter.Bonus(artifact.primaryBonus, 0)}</div>)
       : <div className="primary" />;
     return <div className="artifact_rune">
       {containerDiv}

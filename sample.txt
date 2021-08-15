@@ -1,0 +1,8 @@
+uno
+  "SkillData": {
+dos
+tres
+cuatro
+  "EffectData": {
+ bad1
+ bad2
