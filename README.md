@@ -14,6 +14,9 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.19 (15 August)
+Switch to using only images from raidchamps.com
+
 ## 1.18 (15 August)
 Added ability to filter artifacts by how many rolls they do/don't have
 either overall, or on a particular substat.

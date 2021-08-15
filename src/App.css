@@ -246,6 +246,14 @@ img.meatball {
   left: 5px;
 }
 
+picture.champion_avatar {
+  margin-right: 1em;
+  border-width: medium;
+  border-style: solid;
+  background-color: #444;
+  object-fit: contain;
+}
+
 img.champion_avatar {
   margin-right: 1em;
   border-width: medium;

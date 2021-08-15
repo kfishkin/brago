@@ -108,15 +108,24 @@ class ChampionRune extends React.Component {
       label += " (vault)"
     }
     var imgName = champion.name.replace(/ /g, "_");
-    var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
+    //var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
     //var imgName = champion.name.replace(/ /g, "-").toLowerCase();
     //var imgUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/" + imgName + "/image.png";
-    var tryNum = 0;
+    //var tryNum = 0;
+    var folderName = champion.name.replace(/ /g, "-").toLowerCase();
 
+    //var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
+    var imgUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/" + folderName + "/image.png";
+    var unknownUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/1default/image.png";
+
+    //       <img className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label} src={imgUrl}
+    // onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} />
     return (<div className="container">
       {this.maybeRarity(champion.rarity, label)}
-      <img className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label} src={imgUrl}
-        onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} />
+      <picture className="floats_above champion_avatar_small" rarity={champion.rarity} alt={label} title={label}>
+        <source srcset={imgUrl} />
+        <img src={unknownUrl} className="floats_above champion_avatar_small" />
+      </picture>
       <div className="floats_above champion_stars_overlay">{starTxt}</div>
       {faction ? formatter.Image(faction.icon, label, { 'className': 'floats_above champion_faction_overlay' }) : null}
       {this.maybeMarker(champion.marker, label)}

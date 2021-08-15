@@ -331,28 +331,6 @@ class ChampionDetailPage extends React.Component {
     return (<div><p><b>Masteries:</b> {blurb}</p><ul className="mastery_list">{elements}</ul></div >);
   }
 
-  onError(evt, tryNum, imgUrl) {
-    //console.log("tryNum = " + tryNum);
-    // don't infinite loop.
-    // 0 --> 1 replace https with http
-    // 1 --> 2, try 'unknown' image.
-    // after 1, stop
-    switch (tryNum) {
-      case 0:
-        var newUrl = imgUrl.replace("https", "http");
-        if (newUrl !== imgUrl) {
-          evt.target.src = newUrl;
-        }
-        break;
-      case 1:
-        evt.target.src = process.env.PUBLIC_URL + "pix/champions/Unknown.png";
-        break;
-      default:
-        break;
-    }
-    return tryNum + 1;
-  }
-
   renderChamp(champ) {
     var formatter = this.formatter;
     var numberer = this.numberer;
@@ -361,10 +339,18 @@ class ChampionDetailPage extends React.Component {
     }
     var parts = [];
     var imgName = champ.name.replace(/ /g, "_");
-    var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
-    var tryNum = 0;
+    // folder name is champ name, all lcs, with spaces to dashes.
+    var folderName = champ.name.replace(/ /g, "-").toLowerCase();
 
-    parts.push(<img key="c0" className="champion_avatar" alt="avatar" title={champ.name} onError={(e) => tryNum = this.onError(e, tryNum, imgUrl)} src={imgUrl} />);
+    //var imgUrl = "https://raw.githubusercontent.com/PatPat1567/RaidShadowLegendsData/master/images/avatar/" + imgName + ".png";
+    var imgUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/" + folderName + "/image.png";
+    var unknownUrl = "https://raw.githubusercontent.com/raidchamps/static-data/main/images/avatar/1default/image.png";
+
+    // <source srcset={imgUrl} />
+    parts.push(<picture key="c0">
+      <source srcset={imgUrl} />
+      <img src={unknownUrl} className="champion_avatar" />
+    </picture>);
     parts.push(<span key="c1">{champ.rarity}</span>);
     parts.push(<span key="c2"> {champ.element}</span>);
     parts.push(<span key="c3"> {numberer.RankFromStars(champ.grade)} *</span>);
