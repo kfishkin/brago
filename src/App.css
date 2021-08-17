@@ -357,6 +357,13 @@ div.bar_specifier div.ant-select-selector {
   width: 80px;
 }
 
+div.range_specifier {
+  display:inline-block;
+  vertical-align: middle;
+  width: 90px;
+  padding-bottom: 30px;
+}
+
 button.is_lower_bound {
   padding-left: 0.4em;
   padding-right: 0.4em;

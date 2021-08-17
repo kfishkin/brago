@@ -14,6 +14,9 @@ learning experiment, so be gentle with your comments :)
 
 ## Version log
 
+## 1.20 (16 August)
+Artifact page now lets you filter with ranges.
+
 ## 1.19 (15 August)
 Switch to using only images from raidchamps.com
 

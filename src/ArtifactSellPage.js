@@ -8,6 +8,7 @@ import ArtifactRune from './ArtifactRune';
 import artifactTypesConfig from './config/artifact_types.json';
 import ChampionRune from './ChampionRune';
 import BarSpecifier from './BarSpecifier';
+import RangeSpecifier from './RangeSpecifier';
 import substatsConfig from './config/substats.json';
 
 import {
@@ -17,43 +18,20 @@ import {
 
 const DONT_DISPLAY = "Uninteresting";
 const MAX_TO_SHOW = 500;
-const RANK_INTRO = "Rank"
-const RANK_KEYS = [1, 2, 3, 4, 5, 6];
-const RARITY_INTRO = "Rarity"
-const RARITY_KEYS = ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
+const RANK_INTRO = "Ranks: ";
 const SLOT_INTRO = "Slot"
 const WORN_INTRO = "Worn";
 const WORN_KEYS = ["no", "yes"];
 const WORN_LABELS = { "no": "No", "yes": "Yes" };
 const WORN_INITIAL = "no";
-const LEVEL_INTRO = "Level";
-const LEVEL_KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-const LEVEL_INITIAL = 15;
 
 const SUBSTAT_INTRO = "has Substat";
 
-const ROLLS_INTRO = "Rolls"
-// if the keys are number-y, they are converted into array indices :()
-const ROLLS_KEYS = ["1", "2", "3", "4"];
-const ROLLS_LABELS = ["1", "2", "3", "4"];
 const ROLLS_INITIAL = "1";
 
 class ArtifactSellPage extends React.Component {
   constructor(props) {
     super(props);
-    const INITIAL_RANK_BAR = 4;
-    const STARTING_RANK_IS_LOWER_BOUND = false;
-    const INITIAL_RARITY_BAR = "Epic";
-    const STARTING_RARITY_IS_LOWER_BOUND = false;
-    var rankLabels = {};
-    var formatter = new Formatter();
-    RANK_KEYS.forEach((key) => {
-      rankLabels[key] = formatter.Rank(key);
-    });
-    var rarityLabels = {};
-    RARITY_KEYS.forEach((key) => {
-      rarityLabels[key] = key;
-    });
     var slotLabels = {};
     var slotKeys = [];
     artifactTypesConfig.artifact_types.forEach((typeConfig) => {
@@ -71,57 +49,83 @@ class ArtifactSellPage extends React.Component {
       substatsByKey[key] = substatConfig;
     });
 
-    var rollsLabelHash = {};
-    for (var i = 0; i < ROLLS_KEYS.length; i++) {
-      rollsLabelHash[ROLLS_KEYS[i]] = ROLLS_LABELS[i];
-    }
-
-    var levelLabels = {};
-    LEVEL_KEYS.forEach((level) => {
-      levelLabels[level] = level;
-    });
-
     // all the checkers for what to sell.
     // a checker is a function that takes an artifact JSON blob,
     // and returns null/empty string if the artifact isn't recommended for sale by this checker,
     // a 'why' string if it is.
     var checkers = [];
     var id = 0;
+    // make the marks for ranks
+    const MIN_RANK = 1;
+    const MAX_RANK = 6;
+    var marks = {};
+    for (let i = MIN_RANK; i <= MAX_RANK; i++) {
+      marks[i] = "" + i;
+    }
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
+        is_range: true,
         intro: RANK_INTRO,
-        reporter: (v, b) => this.onRankBarChange(v, b),
-        keys: RANK_KEYS,
-        labels: rankLabels,
-        // some of the bar attributes must be derived at render-time, not now.
-        // do this by making a function, evaluated at render-time, which returns
-        // (key, value) attributes for the bar specifier.
-        dynamic: () => { return { 'initial': this.state.rankBar, 'is_lower_bound': this.state.is_lower_bound } },
+        reporter: (v) => this.onRankRangeChange(v),
+        dynamic: () => { return { 'value': this.state.rankRange } },
+        opts: {
+          defaultValue: [MIN_RANK, MAX_RANK],
+          min: MIN_RANK,
+          max: MAX_RANK,
+          step: 1,
+          marks: marks
+        }
       }),
-      fn: this.CheckByRank,
+      fn: this.CheckByRankRange,
     });
+
+    const MIN_RARITY = 0;
+    const MAX_RARITY = 4;
+    const RARITY_LABELS = ["Common", "Uncommon", "Rare", "Epic", "Legendary"]
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
-        intro: RARITY_INTRO,
-        reporter: (v, b) => this.onRarityBarChange(v, b),
-        keys: RARITY_KEYS,
-        labels: rarityLabels,
-        dynamic: () => { return { 'initial': this.state.rarityBar, 'is_lower_bound': this.state.rarity_is_lower_bound } },
+        is_range: true,
+        intro: "Rarities: ",
+        reporter: (v) => this.onRarityRangeChange(v),
+        dynamic: () => { return { 'value': this.state.rarityRange } },
+        opts: {
+          defaultValue: [MIN_RARITY, MAX_RARITY],
+          min: MIN_RARITY,
+          max: MAX_RARITY,
+          step: 1,
+          //marks: marks,
+          tipFormatter: (v) => { return <span style={{ 'font-size': 'smaller' }}>{RARITY_LABELS[v]}</span> },
+          tooltipVisible: true
+        }
       }),
-      fn: this.CheckByRarity,
+      fn: this.CheckByRarityRange,
     });
+    const MIN_LEVEL = 1;
+    const MAX_LEVEL = 16;
+    marks = {};
+    for (let i = MIN_LEVEL; i <= MAX_LEVEL; i++) {
+      // only mark some, gets too cluttered otherwise.
+      if ((i % 4) === 0)
+        marks[i] = "" + i;
+    }
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
-        intro: LEVEL_INTRO,
-        reporter: (v, b) => this.onLevelBarChange(v, b),
-        keys: LEVEL_KEYS,
-        labels: levelLabels,
-        dynamic: () => { return { 'initial': this.state.levelBar, 'is_lower_bound': this.state.level_is_lower_bound } },
+        is_range: true,
+        intro: "Levels: ",
+        reporter: (v) => this.onLevelRangeChange(v),
+        opts: {
+          defaultValue: [MIN_LEVEL, MAX_LEVEL],
+          min: MIN_LEVEL,
+          max: MAX_LEVEL,
+          step: 1,
+          marks: marks
+        },
+        dynamic: () => { return { 'value': this.state.levelRange } },
       }),
-      fn: this.CheckByLevel,
+      fn: this.CheckByLevelRange,
     });
     checkers.push({
       id: id++,
@@ -148,16 +152,28 @@ class ArtifactSellPage extends React.Component {
       }),
       fn: this.CheckBySubstat,
     });
+    const MIN_ROLL = 0;
+    const MAX_ROLL = 4;
+    marks = {};
+    for (let i = MIN_ROLL; i <= MAX_ROLL; i++) {
+      marks[i] = "" + i;
+    }
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
-        intro: ROLLS_INTRO,
-        reporter: (v, b) => this.onRollBarChange(v, b),
-        keys: ROLLS_KEYS,
-        labels: rollsLabelHash,
-        dynamic: () => { return { 'initial': this.state.rollBar, 'is_lower_bound': this.state.roll_is_lower_bound } },
+        is_range: true,
+        intro: "Rolls: ",
+        reporter: (v) => this.onRollRangeChange(v),
+        dynamic: () => { return { 'value': this.state.rollRange } },
+        opts: {
+          defaultValue: [MIN_ROLL, MAX_ROLL],
+          min: MIN_ROLL,
+          max: MAX_ROLL,
+          step: 1,
+          marks: marks
+        }
       }),
-      fn: this.CheckByRoll,
+      fn: this.CheckByRollRange,
     });
 
     checkers.push({
@@ -213,17 +229,15 @@ class ArtifactSellPage extends React.Component {
       'numberer': new Numberer(),
       'artifactDimension': DIMENSION_NONE,
       'comparer': comparer,
-      'rankBar': INITIAL_RANK_BAR,
-      'is_lower_bound': STARTING_RANK_IS_LOWER_BOUND,
-      rarityBar: INITIAL_RARITY_BAR,
-      rarity_is_lower_bound: STARTING_RARITY_IS_LOWER_BOUND,
+      'rankRange': [MIN_RANK, MAX_RANK],
+      'rarityRange': [MIN_RARITY, MAX_RARITY],
+      'levelRange': [MIN_LEVEL, MAX_LEVEL],
+      'rollRange': [MIN_ROLL, MAX_ROLL],
       slotBar: "boots",
       substatBar: "spd",
       wornBar: WORN_INITIAL,
-      levelBar: LEVEL_INITIAL,
       rollBar: ROLLS_INITIAL,
       roll_is_lower_bound: true,
-      level_is_lower_bound: false,
       substatsByKey: substatsByKey,
       substatCheckerId: substatCheckerId
     }
@@ -238,7 +252,9 @@ class ArtifactSellPage extends React.Component {
   makeLabelInfo(info) {
     if (typeof (info) === "string") {
       return { 'text': info };
-    } else {  // assume a BarSpecifier, could add more later.
+    } else if ("is_range" in info) {  // assume a BarSpecifier
+      return { 'range': info };
+    } else {
       return { 'bar': info };
     }
   }
@@ -249,24 +265,23 @@ class ArtifactSellPage extends React.Component {
     });
   }
 
-  onRankBarChange(v, is_lower_bound) {
+  onRankRangeChange(v) {
+    //console.log('onRankRangeChange', v);
     this.setState({
-      rankBar: v,
-      is_lower_bound: is_lower_bound
+      rankRange: v
     });
   }
 
-  onRarityBarChange(v, is_lower_bound) {
+  onRarityRangeChange(v) {
+    //console.log('onRarityRangeChange', v);
     this.setState({
-      rarityBar: v,
-      rarity_is_lower_bound: is_lower_bound
+      rarityRange: v
     });
   }
 
-  onLevelBarChange(v, is_lower_bound) {
+  onLevelRangeChange(v) {
     this.setState({
-      levelBar: v,
-      level_is_lower_bound: is_lower_bound
+      levelRange: v
     });
   }
 
@@ -284,13 +299,12 @@ class ArtifactSellPage extends React.Component {
     });
   }
 
-  onRollBarChange(v, is_lower_bound) {
+  onRollRangeChange(v) {
     this.setState({
-      rollBar: v,
-      roll_is_lower_bound: is_lower_bound
+      rollRange: v
     });
-    //console.log('onRollBarChange', v, is_lower_bound);
   }
+
 
   CheckWorn(artifact, extra) {
     if (!artifact) return null;
@@ -492,18 +506,11 @@ class ArtifactSellPage extends React.Component {
     return null;
   }
 
-  CheckByRank(artifact, extra) {
-    if (!artifact) return null;
-    //if (artifact.requiredFraction) return null; // accessory
-    if (!artifact.rank) return null;
-    var bar = extra.rankBar;
-    var is_lower_bound = extra.is_lower_bound;
+  CheckByRankRange(artifact, extra) {
+    if (!artifact || !artifact.rank) return null;
     var asNum = extra.numberer.Rank(artifact.rank);
-    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
-    if (passed) {
-      return DONT_DISPLAY;
-    }
-    return null;
+    var bounds = extra.rankRange || [1, 6];
+    return (asNum >= bounds[0] && asNum <= bounds[1]) ? DONT_DISPLAY : null;
   }
 
   CheckBySlot(artifact, extra) {
@@ -532,7 +539,7 @@ class ArtifactSellPage extends React.Component {
     return found ? DONT_DISPLAY : null;
   }
 
-  CheckByRoll(artifact, extra) {
+  CheckByRollRange(artifact, extra) {
     if (!artifact || !artifact.secondaryBonuses) return null;
     // a kludge. We need to look into the substat filter
     // and find out which substat we care about. Otherwise
@@ -549,15 +556,14 @@ class ArtifactSellPage extends React.Component {
       attrKey = substatConfig.attrKey.toLowerCase();
       attrIsAbsolute = substatConfig.isAbsolute;
     }
+    var bounds = extra.rollRange;
     // ok, now each secondary bonus (substat) must pass two
     // tests:
     // (1) # rolls (the 'level' field) <= or >= the 'rollBar'
     // (2) is the substat filter is on, for that substat.
-    var bar = extra.rollBar;
-    var is_lower_bound = extra.roll_is_lower_bound;
     var whys = null;
     artifact.secondaryBonuses.some((substat) => {
-      var passes = is_lower_bound ? (substat.level >= bar) : (substat.level <= bar);
+      var passes = substat.level >= bounds[0] && substat.level <= bounds[1];
       if (!passes) {
         return false;
       }
@@ -570,8 +576,6 @@ class ArtifactSellPage extends React.Component {
           return false;
         }
       }
-
-
       var msg = substat.level + " rolls on " + substat.kind;
       whys = whys ? (whys + ". " + msg) : msg;
 
@@ -580,28 +584,18 @@ class ArtifactSellPage extends React.Component {
     return whys;
   }
 
-  CheckByRarity(artifact, extra) {
+  CheckByRarityRange(artifact, extra) {
     if (!artifact || !artifact.rarity) return null;
-    var bar = extra.numberer.Rarity(extra.rarityBar);
-    var is_lower_bound = extra.rarity_is_lower_bound;
     var asNum = extra.numberer.Rarity(artifact.rarity);
-    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
-    if (passed) {
-      return DONT_DISPLAY;
-    }
-    return null;
+    var bounds = extra.rarityRange;
+    return (asNum >= bounds[0] && asNum <= bounds[1]) ? DONT_DISPLAY : null;
   }
 
-  CheckByLevel(artifact, extra) {
+  CheckByLevelRange(artifact, extra) {
     if (!artifact || !('level' in artifact)) return null;
-    var bar = extra.levelBar;
-    var is_lower_bound = extra.level_is_lower_bound;
     var asNum = artifact.level;
-    var passed = (is_lower_bound) ? (asNum >= bar) : (asNum <= bar);
-    if (passed) {
-      return DONT_DISPLAY;
-    }
-    return null;
+    var bounds = extra.levelRange;
+    return (asNum >= bounds[0] && asNum <= bounds[1]) ? DONT_DISPLAY : null;
   }
 
   CheckBottomRowFlatMainStat(artifact) {
@@ -649,6 +643,13 @@ class ArtifactSellPage extends React.Component {
         var stamped = Object.assign({}, props, dynamicProps);
         // the bar specifier
         body = <BarSpecifier {...stamped} />;
+      } else if ('range' in checker.labelInfo) {
+        props = checker.labelInfo.range;
+        dynamicProps = ('dynamic' in props) ? props.dynamic() : {};
+        //console.log('dynamicProps =', JSON.stringify(dynamicProps));
+        // put dynamicProps last here so it 'trumps' static values.
+        stamped = Object.assign({}, props, dynamicProps);
+        body = <RangeSpecifier {...stamped} />;
       }
     }
     return checker.ttip ?
