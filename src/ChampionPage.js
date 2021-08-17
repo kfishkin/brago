@@ -12,6 +12,7 @@ import factionsConfig from './config/factions.json';
 import markersConfig from './config/markers.json';
 import TotalStatsCalculator, { TOTALS_COLUMN } from './TotalStatsCalculator';
 import SkillsFactory from './SkillsFactory';
+import RangeSpecifier from './RangeSpecifier';
 
 const RANK_INTRO = "Rank";
 const RANK_KEYS = [1, 2, 3, 4, 5, 6];
@@ -107,19 +108,29 @@ class ChampionPage extends React.Component {
       booksBar: BOOKS_INITIAL,
       masteriesBar: MASTERIES_INITIAL
     };
+    // make the marks for ranks
+    const MIN_RANK = 1;
+    const MAX_RANK = 6;
+    var marks = {};
+    for (let i = MIN_RANK; i <= MAX_RANK; i++) {
+      marks[i] = "" + i;
+    }
     checkers.push({
       id: id++,
       labelInfo: this.makeLabelInfo({
+        is_range: true,
         intro: RANK_INTRO,
-        reporter: (v, b) => this.onRankBarChange(v, b),
-        keys: RANK_KEYS,
-        labels: rankLabels,
-        // some of the bar attributes must be derived at render-time, not now.
-        // do this by making a function, evaluated at render-time, which returns
-        // (key, value) attributes for the bar specifier.
-        dynamic: () => { return { 'initial': this.state.rankBar, 'is_lower_bound': this.state.is_lower_bound } },
+        reporter: (v) => this.onRankRangeChange(v),
+        dynamic: () => { return { 'value': this.state.rankRange } },
+        opts: {
+          defaultValue: [MIN_RANK, MAX_RANK],
+          min: MIN_RANK,
+          max: MAX_RANK,
+          step: 1,
+          marks: marks
+        }
       }),
-      fn: this.CheckRank,
+      fn: this.CheckByRankRange,
     });
     checkers.push({
       id: id++,
@@ -254,7 +265,8 @@ class ChampionPage extends React.Component {
       attributesByKey: attributesByKey,
       factionsByKey: factionsByKey,
       includeTotalStats: false,
-      championDimension: DIMENSION_NONE
+      championDimension: DIMENSION_NONE,
+      numberer: new Numberer()
     });
   }
 
@@ -267,15 +279,16 @@ class ChampionPage extends React.Component {
   makeLabelInfo(info) {
     if (typeof (info) === "string") {
       return { 'text': info };
-    } else {  // assume a BarSpecifier, could add more later.
+    } else if ("is_range" in info) {
+      return { 'range': info };
+    } else {
       return { 'bar': info };
     }
   }
 
-  onRankBarChange(v, is_lower_bound) {
+  onRankRangeChange(v) {
     this.setState({
-      rankBar: v,
-      is_lower_bound: is_lower_bound
+      rankRange: v
     });
   }
 
@@ -307,15 +320,11 @@ class ChampionPage extends React.Component {
     this.setState({ masteriesBar: v });
   }
 
-  // these guys can't refer to 'this', so extra state is passed
-  // in 2nd param.
-  CheckRank(champion, extra) {
+  CheckByRankRange(champion, extra) {
     if (!champion || !champion.grade) return null;
-    var numberer = new Numberer();
-    var rank = numberer.RankFromStars(champion.grade);
-    var rankBar = extra.rankBar;
-    var passes = (extra.is_lower_bound) ? (rank >= rankBar) : (rank <= rankBar);
-    return passes ? DONT_DISPLAY : null;
+    var asNum = extra.numberer.RankFromStars(champion.grade);
+    var bounds = extra.rankRange || [1, 6];
+    return (asNum >= bounds[0] && asNum <= bounds[1]) ? DONT_DISPLAY : null;
   }
 
   // these guys can't refer to 'this', so extra state is passed
@@ -601,6 +610,13 @@ class ChampionPage extends React.Component {
         var stamped = Object.assign({}, props, dynamicProps);
         // the bar specifier
         body = <BarSpecifier {...stamped} />;
+      } else if ('range' in checker.labelInfo) {
+        props = checker.labelInfo.range;
+        dynamicProps = ('dynamic' in props) ? props.dynamic() : {};
+        //console.log('dynamicProps =', JSON.stringify(dynamicProps));
+        // put dynamicProps last here so it 'trumps' static values.
+        stamped = Object.assign({}, props, dynamicProps);
+        body = <RangeSpecifier {...stamped} />;
       }
     }
     return checker.ttip ?
