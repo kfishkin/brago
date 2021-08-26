@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const VERSION = "1.20";
+export const VERSION = "1.22";
 
 class AboutPage extends React.Component {
     render() {

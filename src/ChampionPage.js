@@ -779,7 +779,7 @@ class ChampionPage extends React.Component {
     }
     // must match the values in Comparer.js:
     var dimensionLabels = [
-      "None",
+      "Name",
       "Rank",
       "Rarity",
       "Level",

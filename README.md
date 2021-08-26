@@ -13,6 +13,11 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.22 (26 August)
+"Epic non-speed boots" is now "non-Legendary non-speed boots"
+
+## 1.21 (17 August)
+Rank filter on Champions page now a range.
 
 ## 1.20 (16 August)
 Artifact page now lets you filter with ranges.

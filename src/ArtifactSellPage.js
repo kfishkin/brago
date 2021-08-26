@@ -211,7 +211,7 @@ class ArtifactSellPage extends React.Component {
       id: id++, labelInfo: this.makeLabelInfo("CD Gloves w/o CR or SPD"), fn: this.CheckMostCDGloves,
       ttip: "Crit Damage gloves without either a Crit Rate or Speed substat"
     });
-    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Epic Non-Speed Boots"), fn: this.CheckEpicNonSpeedBoots });
+    checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Non-Lego Non-Speed Boots"), fn: this.CheckNonLegoNonSpeedBoots });
     checkers.push({ id: id++, labelInfo: this.makeLabelInfo("Defensive Boots Without SPD substat"), fn: this.CheckDefensiveBootsWithoutSpeed });
     checkers.push({ id: id++, labelInfo: this.makeLabelInfo("> 2 substats, none SPD"), fn: this.CheckThreeSubstatsNoSpeed });
 
@@ -339,17 +339,17 @@ class ArtifactSellPage extends React.Component {
     }
   }
 
-  CheckEpicNonSpeedBoots(artifact) {
+  CheckNonLegoNonSpeedBoots(artifact) {
     if (!artifact) return null;
     if (!artifact.rarity) return null;
     if (artifact.requiredFraction) return null; // accessory
     var lc = artifact.rarity.toLowerCase();
-    if (!(lc === "epic")) return null;
+    if (lc === "legendary") return null;
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "boots")) return null;
     var main = artifact.primaryBonus;
     if (main.kind.toLowerCase() === "speed") return null;
-    return "Epic non-SPD boots";
+    return DONT_DISPLAY;
   }
 
   CheckDefensiveBootsWithoutSpeed(artifact) {
