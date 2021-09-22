@@ -212,7 +212,7 @@ class TotalStatsCalculator {
                         }
                         var setName = this.artifactSetInfo[setKey].label;
                         this.artifactSetInfo[setKey].bonuses.forEach((setBonus) => {
-                            var amplification = setBonus.value * bonus.value;
+                            var amplification = setBonus.value * bonus.value * count;
                             var toAttr = setBonus.kind.toLowerCase();
 
                             if (!(toAttr in column)) {

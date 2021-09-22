@@ -13,6 +13,9 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.23 (22 September)
+  Fixed a bug reported by caberniqui@yahoo.es, where 'Lore of Steel' bonus was only being applied once even if you had multiples of the same set.
+
 ## 1.22 (26 August)
 "Epic non-speed boots" is now "non-Legendary non-speed boots"
 
