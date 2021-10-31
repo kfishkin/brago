@@ -45,8 +45,7 @@ class ArtifactRune extends React.Component {
     msg = starsText + " " + msg;
     // then a container div wrapping the image and stuff atop it
     var containerDiv;
-    // the base image
-    var baseImg = this.formatter.Image(typeSpec.icon, msg, { "className": "artifact_icon", "rarity": artifact.rarity });
+    let src = process.env.PUBLIC_URL + typeSpec.icon;
     // the 'meatball' denoting the artifact set.
     var meatball = null;
     if (artifact.setKind && artifact.setKind !== "None") {
@@ -57,29 +56,30 @@ class ArtifactRune extends React.Component {
       if (spec != null) {
         msg = msg + " of " + spec.label;
         if (spec.piece_icon_base) { // there is an icon for this piece, including the 'meatball' (the armor set)
-          baseImg = <img src={spec.piece_icon_base + typeSpec.label + ".png"}
-            alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
+          src = spec.piece_icon_base + typeSpec.label + ".png"
         } else {
-          baseImg = this.formatter.Image(typeSpec.icon, msg, { "className": "artifact_icon", "rarity": artifact.rarity });
           meatball = this.formatter.Image("pix/armor_sets/" + spec.icon, spec.label,
             { "className": "floats_above meatball" });
         }
       }
     }
     // if it's an accessory, perhaps over-ride:
-    if (artifact.setKind === "None" && artifact.requiredFraction) {
+    if (artifact.requiredFraction) {
       // we need a prefix and a suffix.
       var factionSpec = this.factionSpecMap[artifact.requiredFraction];
       var prefix = factionSpec ? factionSpec.accessory_prefix : null;
       var suffix = typeSpec ? typeSpec.faction_icon_suffix : null;
-      if (factionSpec.label) {
-        msg = msg + " (" + factionSpec.label + ")";
+      let factionName = artifact.requiredFraction;
+      if (factionSpec && factionSpec.label) {
+        factionName = factionSpec.label;
       }
+      msg = msg + " (" + factionName + ")";
       if (prefix && suffix) {
-        baseImg = <img src={prefix + suffix + ".png"}
-          alt={msg} title={msg} className="artifact_icon" rarity={artifact.rarity} />
+        src = prefix + suffix + ".png";
       }
     }
+    //  <img src={process.env.PUBLIC_URL + src} title={label} alt={label} {...additional} 
+    let baseImg = <img src={src} title={msg} className="artifact_icon" rarity={artifact.rarity} alt={msg} />;
     var levelText = artifact.level ? ("+" + artifact.level) : "";
     var level = <div className="floats_above level_overlay">{levelText}</div>
     var stars = <div className="floats_above stars_overlay">{starsImg}</div>

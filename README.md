@@ -13,6 +13,9 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.24 (31 October)
+  Fixed a bug reported by JimmyFlash where accessories with no icon wouldn't show the faction in their 'alt' text.
+  
 ## 1.23 (22 September)
   Fixed a bug reported by caberniqui@yahoo.es, where 'Lore of Steel' bonus was only being applied once even if you had multiples of the same set.
 
