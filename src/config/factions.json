@@ -95,7 +95,8 @@
             "key": "Samurai",
             "ordinality": 13,
             "label": "Shadowkin",
-            "icon": "pix/factions/shadowkin.png"
+            "icon": "pix/factions/shadowkin.png",
+            "accessory_prefix": "https://raw.githubusercontent.com/raidchamps/static-data/main/images/FactionAccessories/Shadowkin"
         },
         {
             "key": "AssassinsGuild",
