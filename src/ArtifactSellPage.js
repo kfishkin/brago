@@ -102,7 +102,7 @@ class ArtifactSellPage extends React.Component {
       }),
       fn: this.CheckByRarityRange,
     });
-    const MIN_LEVEL = 1;
+    const MIN_LEVEL = 0; // totally unenchanted.
     const MAX_LEVEL = 16;
     marks = {};
     for (let i = MIN_LEVEL; i <= MAX_LEVEL; i++) {
@@ -174,6 +174,7 @@ class ArtifactSellPage extends React.Component {
         }
       }),
       fn: this.CheckByRollRange,
+      ttip: "the 'hasSubstat' stat has the desired # of rolls. If 'hasSubstat' is not ON, then if <i>any</i> stat does."
     });
 
     checkers.push({

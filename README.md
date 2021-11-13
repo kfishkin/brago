@@ -13,6 +13,9 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.25 (13 November)
+  Added '0' (unenchanted) to gear level filter.
+  
 ## 1.24 (31 October)
   Fixed a bug reported by JimmyFlash where accessories with no icon wouldn't show the faction in their 'alt' text. Added pix for Shadowkin accessories.
   
