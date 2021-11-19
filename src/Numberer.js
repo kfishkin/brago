@@ -28,6 +28,9 @@ class Numberer {
             'five': 5,
             'six': 6
         };
+        if (!rank || !rank.toLowerCase) {
+            return 0;
+        }
         var key = rank.toLowerCase();
         return (key in map) ? map[key] : key;
     }
@@ -42,6 +45,9 @@ class Numberer {
             'stars5': 5,
             'stars6': 6
         };
+        if (!rank || !rank.toLowerCase) {
+            return 0;
+        }
         var key = rank.toLowerCase();
         return (key in map) ? map[key] : key;
     }

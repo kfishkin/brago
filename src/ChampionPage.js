@@ -863,7 +863,7 @@ class ChampionPage extends React.Component {
           if (artifactId in this.props.artifactsById) {
             artifacts.push(this.props.artifactsById[artifactId]);
           } else {
-            artifacts.push("[" + artifactId + "]");
+            console.log('champion id', champion.id, ' has artifact ', artifactId, ' which isnt in the table');
           }
         });
       }
