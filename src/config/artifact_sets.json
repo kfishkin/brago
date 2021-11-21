@@ -75,8 +75,8 @@
             "bonuses": [
                 {
                     "kind": "criticalDamage",
-                    "isAbsolute": false,
-                    "value": 0.20
+                    "isAbsolute": true,
+                    "value": 20
                 }
             ]
         },

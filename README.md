@@ -13,6 +13,9 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.27 (20 November)
+  fixed bug in crit-damage set bonus specification.
+
 ## 1.26 (19 November)
   screens out bogus artifact '0' from a champion list.
   
