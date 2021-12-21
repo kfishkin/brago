@@ -159,6 +159,18 @@ class ArtifactSellPage extends React.Component {
       }),
       fn: this.CheckBySubstat,
     });
+    checkers.push({
+      id: id++,
+      labelInfo: this.makeLabelInfo({
+        intro: "NO substat in",
+        is_exact: true,
+        reporter: (v, b) => this.onNoSubstatBarChange(v, b),
+        keys: substatKeys,
+        labels: substatLabels,
+        dynamic: () => { return { 'initial': this.state.noSubstatBar } },
+      }),
+      fn: this.CheckByNoSubstat,
+    });
     const MIN_ROLL = 0;
     const MAX_ROLL = 4;
     marks = {};
@@ -169,7 +181,7 @@ class ArtifactSellPage extends React.Component {
       id: id++,
       labelInfo: this.makeLabelInfo({
         is_range: true,
-        intro: "Rolls: ",
+        intro: "Max. Rolls: ",
         reporter: (v) => this.onRollRangeChange(v),
         dynamic: () => { return { 'value': this.state.rollRange } },
         opts: {
@@ -181,7 +193,7 @@ class ArtifactSellPage extends React.Component {
         }
       }),
       fn: this.CheckByRollRange,
-      ttip: "the 'hasSubstat' stat has the desired # of rolls. If 'hasSubstat' is not ON, then if <i>any</i> stat does."
+      ttip: "the most rolls that <i>any</i> substat has"
     });
 
     checkers.push({
@@ -243,6 +255,7 @@ class ArtifactSellPage extends React.Component {
       'rollRange': [MIN_ROLL, MAX_ROLL],
       slotBar: "boots",
       substatBar: "spd",
+      noSubstatBar: "spd",
       wornBar: WORN_INITIAL,
       rollBar: ROLLS_INITIAL,
       roll_is_lower_bound: true,
@@ -304,6 +317,12 @@ class ArtifactSellPage extends React.Component {
     //console.log('onSubstatBarChange:', v);
     this.setState({
       substatBar: v
+    });
+  }
+
+  onNoSubstatBarChange(v, is_lower_bound) {
+    this.setState({
+      noSubstatBar: v
     });
   }
 
@@ -560,6 +579,27 @@ class ArtifactSellPage extends React.Component {
     return found ? DONT_DISPLAY : null;
   }
 
+  CheckByNoSubstat(artifact, extra) {
+    var substatKey = extra.noSubstatBar;
+    var substats = artifact.secondaryBonuses;
+    if (!substats) return DONT_DISPLAY;
+    var substatConfig = extra.substatsByKey[substatKey];
+    if (!substatConfig) return DONT_DISPLAY;
+    // do they have a substat whose 'kind' is equal
+    // to substatConfig.key, and whose 'isAbsolute' matches.
+    var found = false;
+    var lc = substatConfig.attrKey.toLowerCase();
+    artifact.secondaryBonuses.some((substat) => {
+      if (substat.kind.toLowerCase() === lc
+        && substat.isAbsolute === substatConfig.isAbsolute) {
+        found = true;
+        return true;
+      }
+      return false;
+    });
+    return found ? null : DONT_DISPLAY;
+  }
+
   CheckByRollRange(artifact, extra) {
     if (!artifact || !artifact.secondaryBonuses) return null;
     // a kludge. We need to look into the substat filter
@@ -583,26 +623,22 @@ class ArtifactSellPage extends React.Component {
     // (1) # rolls (the 'level' field) <= or >= the 'rollBar'
     // (2) is the substat filter is on, for that substat.
     var whys = null;
+    // find the max # of rolls.
+    let maxRolls = 0;
+    let maxRollStat = null;
     artifact.secondaryBonuses.some((substat) => {
-      var passes = substat.level >= bounds[0] && substat.level <= bounds[1];
-      if (!passes) {
-        return false;
+      if (substat.level > maxRolls) {
+        maxRolls = substat.level;
+        maxRollStat = substat.kind;
       }
-      // check the substat type
-      if (attrKey != null) {
-        if (substat.kind.toLowerCase() !== attrKey) {
-          return false;
-        }
-        if (substat.isAbsolute !== attrIsAbsolute) {
-          return false;
-        }
-      }
-      var msg = substat.level + " rolls on " + substat.kind;
-      whys = whys ? (whys + ". " + msg) : msg;
-
       return false;
     });
-    return whys;
+    if (maxRolls >= bounds[0] && maxRolls <= bounds[1]) {
+      whys = "" + maxRolls + " rolls on " + maxRollStat;
+      return whys;
+    } else {
+      return null;
+    }
   }
 
   CheckByRarityRange(artifact, extra) {
