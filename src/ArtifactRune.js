@@ -1,5 +1,6 @@
 import React from 'react';
 import Formatter from './Formatter';
+import { isAccessory } from './ArtifactSellPage';
 import artifactSetsConfig from './config/artifact_sets.json';
 import artifactTypeConfig from './config/artifact_types.json';
 import factionConfig from './config/factions.json';
@@ -64,7 +65,7 @@ class ArtifactRune extends React.Component {
       }
     }
     // if it's an accessory, perhaps over-ride:
-    if (artifact.requiredFraction) {
+    if (isAccessory(artifact)) {
       // we need a prefix and a suffix.
       var factionSpec = this.factionSpecMap[artifact.requiredFraction];
       var prefix = factionSpec ? factionSpec.accessory_prefix : null;

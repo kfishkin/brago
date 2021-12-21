@@ -8,7 +8,7 @@ import Arena from './Arena';
 import RaidJsonLoader from './RaidJsonLoader';
 import ArtifactPage from './ArtifactPage';
 import ArtifactBumpPage from './ArtifactBumpPage';
-import ArtifactSellPage from './ArtifactSellPage';
+import { ArtifactSellPage } from './ArtifactSellPage';
 import ChampionDetailPage from './ChampionDetailPage';
 import ChampionPage from './ChampionPage';
 import HeaderDetail from './HeaderDetail';

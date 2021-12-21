@@ -13,6 +13,8 @@ This is my first React app, and was written as a personal
 learning experiment, so be gentle with your comments :)
 
 ## Version log
+## 1.28 (20 December)
+  fixed bug reported by Doorjamb where json save file now shows 'unknown' for armors 'requiredFraction' instead of omitting the field.
 ## 1.27 (20 November)
   fixed bug in crit-damage set bonus specification.
 

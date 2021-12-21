@@ -29,6 +29,13 @@ const SUBSTAT_INTRO = "has Substat";
 
 const ROLLS_INITIAL = "1";
 
+function isAccessory(artifact) {
+  if (!artifact) return false;
+  if (!artifact.requiredFraction) return false;
+  if (artifact.requiredFraction.toLowerCase() === 'unknown') return false;
+  return true;
+}
+
 class ArtifactSellPage extends React.Component {
   constructor(props) {
     super(props);
@@ -327,7 +334,7 @@ class ArtifactSellPage extends React.Component {
   CheckThreeSubstatsNoSpeed(artifact) {
     if (!artifact) return null;
     if (!artifact.rarity) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    if (isAccessory(artifact)) return null; // accessory
     var main = artifact.primaryBonus;
     if (main.kind.toLowerCase() === "speed") return null;
     var secondaries = artifact.secondaryBonuses;
@@ -342,20 +349,33 @@ class ArtifactSellPage extends React.Component {
 
   CheckNonLegoNonSpeedBoots(artifact) {
     if (!artifact) return null;
-    if (!artifact.rarity) return null;
-    if (artifact.requiredFraction) return null; // accessory
-    var lc = artifact.rarity.toLowerCase();
-    if (lc === "legendary") return null;
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "boots")) return null;
+    if (!artifact.rarity) {
+      //console.log('no rarity for', JSON.stringify(artifact));
+      return null;
+    }
+    if (isAccessory(artifact)) {
+      //console.log('fraction for', JSON.stringify(artifact));
+      return null; // accessory
+    }
+    var lc = artifact.rarity.toLowerCase();
+    if (lc === "legendary") {
+      //console.log('legendary', artifact.rarity);
+      return null;
+    }
     var main = artifact.primaryBonus;
-    if (main.kind.toLowerCase() === "speed") return null;
+    if (main.kind.toLowerCase() === "speed") {
+      //console.log('boots of speed', main.kind);
+      return null;
+    }
+    //console.log('winner', JSON.stringify(artifact));
     return DONT_DISPLAY;
   }
 
   CheckDefensiveBootsWithoutSpeed(artifact) {
     if (!artifact) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    if (isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "boots")) return null;
     var main = artifact.primaryBonus;
@@ -377,7 +397,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckAttackAmulets(artifact) {
     if (!artifact) return null;
-    if (!artifact.requiredFraction) return null; // accessory
+    if (!isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "cloak")) return null;
     var main = artifact.primaryBonus;
@@ -388,7 +408,7 @@ class ArtifactSellPage extends React.Component {
   CheckDefenseRingWithoutTwoGoodSubstats(artifact) {
     // a 'good' substat is a % stat, or SPD
     if (!artifact) return null;
-    if (!artifact.requiredFraction) return null; // accessory
+    if (!isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "ring")) return null;
     var main = artifact.primaryBonus;
@@ -412,7 +432,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckDefensiveRingWithoutDefensiveSubstats(artifact) {
     if (!artifact) return null;
-    if (!artifact.requiredFraction) return null; // accessory
+    if (!isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "ring")) return null;
     var main = artifact.primaryBonus;
@@ -440,7 +460,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckNonLegoRingWith2BadSubstats(artifact) {
     if (!artifact) return null;
-    if (!artifact.requiredFraction) return null; // accessory
+    if (!isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "ring")) return null;
     var lc = artifact.rarity.toLowerCase();
@@ -462,7 +482,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckTopRowWith2BadSubstats(artifact) {
     if (!artifact) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    if (isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     var topKinds = ["weapon", "helmet", "shield"];
     var index = topKinds.indexOf(artifact.kind.toLowerCase());
@@ -488,7 +508,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckMostCDGloves(artifact) {
     if (!artifact) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    if (isAccessory(artifact)) return null; // accessory
     if (!artifact.kind) return null;
     if (!(artifact.kind.toLowerCase() === "gloves")) return null;
     var main = artifact.primaryBonus;
@@ -601,7 +621,7 @@ class ArtifactSellPage extends React.Component {
 
   CheckBottomRowFlatMainStat(artifact) {
     if (!artifact) return null;
-    if (artifact.requiredFraction) return null; // accessory
+    if (isAccessory(artifact)) return null; // accessory
     var kind = artifact.kind;
     if (!kind) return null;
     kind = kind.toLowerCase();
@@ -815,4 +835,4 @@ class ArtifactSellPage extends React.Component {
   }
 }
 
-export default ArtifactSellPage;
+export { ArtifactSellPage, isAccessory };
