@@ -602,21 +602,6 @@ class ArtifactSellPage extends React.Component {
 
   CheckByRollRange(artifact, extra) {
     if (!artifact || !artifact.secondaryBonuses) return null;
-    // a kludge. We need to look into the substat filter
-    // and find out which substat we care about. Otherwise
-    // use any substat.
-    // kludge is to look into the global state for that checker
-    // and whether it's on, and if so to what value.
-    var attrKey = null;
-    var attrIsAbsolute = null;
-    var substatCheckerId = extra.substatCheckerId;
-    if (extra.checkedByCheckerId[substatCheckerId]) {
-      // yup, it's on
-      var substatKey = extra.substatBar;
-      var substatConfig = extra.substatsByKey[substatKey];
-      attrKey = substatConfig.attrKey.toLowerCase();
-      attrIsAbsolute = substatConfig.isAbsolute;
-    }
     var bounds = extra.rollRange;
     // ok, now each secondary bonus (substat) must pass two
     // tests:
